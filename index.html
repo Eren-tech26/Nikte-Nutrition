@@ -274,535 +274,504 @@
       </div>
     </div>
   </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+  import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyDF6_9adRR6L_OFlqEVxXWhD1vzu5s-rdQ",
+    authDomain: "nikte-nutritions.firebaseapp.com",
+    databaseURL: "https://nikte-nutritions-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "nikte-nutritions",
+    storageBucket: "nikte-nutritions.firebasestorage.app",
+    messagingSenderId: "529855257412",
+    appId: "1:529855257412:web:0079f82673f2f956641511"
+  };
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDF6_9adRR6L_OFlqEVxXWhD1vzu5s-rdQ",
-      authDomain: "nikte-nutritions.firebaseapp.com",
-      databaseURL: "https://nikte-nutritions-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "nikte-nutritions",
-      storageBucket: "nikte-nutritions.firebasestorage.app",
-      messagingSenderId: "529855257412",
-      appId: "1:529855257412:web:0079f82673f2f956641511"
-    };
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+  let cart = [];
+  let activeCoupon = null;
+  let chatUser = JSON.parse(localStorage.getItem('chatUser')) || null;
+  let currentProductId = null;
+  let pdSelectedRating = 0;
+  let pendingOrder = null;
+  let issueImageBase64 = null;
 
-    let cart = [];
-    let activeCoupon = null;
-    let chatUser = JSON.parse(localStorage.getItem('chatUser')) || null;
-    let currentProductId = null;
-    let pdSelectedRating = 0;
-    let pendingOrder = null; // holds order details between checkout and payment step
+  let allProducts = {};
+  let activeFilter = 'all';
 
-    let allProducts = {};
-    let activeFilter = 'all';
+  const UPI_ID = "918698343237@ptyes";
+  const categoryMap = { cat_01: 'Whey Protein', cat_02: 'Creatine & Pre', cat_03: 'Vitamins', cat_04: 'Gainers' };
 
-    const UPI_ID = "918698343237@ptyes";
-    const categoryMap = { cat_01: 'Whey Protein', cat_02: 'Creatine & Pre', cat_03: 'Vitamins', cat_04: 'Gainers' };
+  window.switchTab = (tabId) => {
+    document.querySelectorAll('.view-tab').forEach(v => v.classList.add('hidden'));
+    document.getElementById(`view-${tabId}`).classList.remove('hidden');
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.classList.toggle('text-black', btn.dataset.tab === tabId);
+      btn.classList.toggle('text-gray-400', btn.dataset.tab !== tabId);
+    });
+  };
 
-    window.switchTab = (tabId) => {
-      document.querySelectorAll('.view-tab').forEach(v => v.classList.add('hidden'));
-      document.getElementById(`view-${tabId}`).classList.remove('hidden');
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.toggle('text-black', btn.dataset.tab === tabId);
-        btn.classList.toggle('text-gray-400', btn.dataset.tab !== tabId);
-      });
-    };
+  window.setShopFilter = (cat) => {
+    activeFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      const isActive = btn.dataset.filter === cat;
+      btn.className = `filter-btn shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${isActive ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'}`;
+    });
+    renderShopProducts();
+  };
 
-    window.setShopFilter = (cat) => {
-      activeFilter = cat;
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        const isActive = btn.dataset.filter === cat;
-        btn.className = `filter-btn shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${isActive ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'}`;
-      });
-      renderShopProducts();
-    };
+  window.filterByCategory = (cat) => {
+    switchTab('shop');
+    setShopFilter(cat);
+  };
 
-    window.filterByCategory = (cat) => {
-      switchTab('shop');
-      setShopFilter(cat);
-    };
+  window.renderShopProducts = () => {
+    const query = (document.getElementById('shop-search').value || '').toLowerCase().trim();
+    const list = document.getElementById('products-list');
+    const noResults = document.getElementById('shop-no-results');
+    list.innerHTML = '';
 
-    window.renderShopProducts = () => {
-      const query = (document.getElementById('shop-search').value || '').toLowerCase().trim();
-      const list = document.getElementById('products-list');
-      const noResults = document.getElementById('shop-no-results');
-      list.innerHTML = '';
+    const entries = Object.entries(allProducts);
+    const filtered = entries.filter(([id, p]) => {
+      const matchCat = activeFilter === 'all' || p.categoryId === activeFilter;
+      const matchSearch = !query || p.name.toLowerCase().includes(query) || (p.description || '').toLowerCase().includes(query);
+      return matchCat && matchSearch;
+    });
 
-      const entries = Object.entries(allProducts);
-      const filtered = entries.filter(([id, p]) => {
-        const matchCat = activeFilter === 'all' || p.categoryId === activeFilter;
-        const matchSearch = !query || p.name.toLowerCase().includes(query) || (p.description || '').toLowerCase().includes(query);
-        return matchCat && matchSearch;
-      });
+    if (filtered.length === 0) {
+      noResults.classList.remove('hidden');
+      return;
+    }
+    noResults.classList.add('hidden');
 
-      if (filtered.length === 0) {
-        noResults.classList.remove('hidden');
-        return;
-      }
-      noResults.classList.add('hidden');
+    filtered.forEach(([id, prod]) => {
+      const catLabel = categoryMap[prod.categoryId] || 'Featured';
+      const fallbackDesc = "Premium sports nutrition made to help with muscle recovery, endurance, and real results.";
+      const desc = prod.description || fallbackDesc;
 
-      filtered.forEach(([id, prod]) => {
-        const catLabel = categoryMap[prod.categoryId] || 'Featured';
-        const fallbackDesc = "Premium sports nutrition made to help with muscle recovery, endurance, and real results.";
-        const desc = prod.description || fallbackDesc;
-
-        const div = document.createElement('div');
-        div.className = 'apple-card p-4 flex items-center justify-between cursor-pointer border border-gray-50 bg-gray-50/40 hover:bg-gray-50/80 transition-colors';
-        div.innerHTML = `
-          <div class="flex items-center gap-4">
-            <img src="${prod.image || ''}" class="w-16 h-16 object-contain rounded-xl bg-white p-1 border border-gray-100/50 mix-blend-multiply" onerror="this.src='https://images.unsplash.com/photo-1579758629938-03607ccdbaba?w=120'">
-            <div>
-              <span class="text-[8px] font-black text-gray-400 uppercase tracking-widest">${catLabel}</span>
-              <h4 class="font-black text-xs text-black leading-tight mt-0.5">${prod.name}</h4>
-              <p class="text-xs text-black font-black mt-1">₹${prod.price}</p>
-              <span class="text-[8px] mt-1.5 inline-block px-2 py-0.5 font-black rounded ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'} uppercase tracking-wide">
-                ${prod.inStock ? 'In Stock' : 'Out of Stock'}
-              </span>
-            </div>
+      const div = document.createElement('div');
+      div.className = 'apple-card p-4 flex items-center justify-between cursor-pointer border border-gray-50 bg-gray-50/40 hover:bg-gray-50/80 transition-colors';
+      div.innerHTML = `
+        <div class="flex items-center gap-4">
+          <img src="${prod.image || ''}" class="w-16 h-16 object-contain rounded-xl bg-white p-1 border border-gray-100/50 mix-blend-multiply" onerror="this.src='https://images.unsplash.com/photo-1579758629938-03607ccdbaba?w=120'">
+          <div>
+            <span class="text-[8px] font-black text-gray-400 uppercase tracking-widest">${catLabel}</span>
+            <h4 class="font-black text-xs text-black leading-tight mt-0.5">${prod.name}</h4>
+            <p class="text-xs text-black font-black mt-1">₹${prod.price}</p>
+            <span class="text-[8px] mt-1.5 inline-block px-2 py-0.5 font-black rounded ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'} uppercase tracking-wide">
+              ${prod.inStock ? 'In Stock' : 'Out of Stock'}
+            </span>
           </div>
-          <button class="w-8 h-8 bg-white border border-gray-200 text-black text-xs font-black rounded-lg flex items-center justify-center"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-        `;
-        div.addEventListener('click', () => openProductView(id, prod.name, prod.price, prod.image, prod.inStock, desc, catLabel));
-        list.appendChild(div);
-      });
+        </div>
+        <button class="w-8 h-8 bg-white border border-gray-200 text-black text-xs font-black rounded-lg flex items-center justify-center"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+      `;
+      div.addEventListener('click', () => openProductView(id, prod.name, prod.price, prod.image, prod.inStock, desc, catLabel));
+      list.appendChild(div);
+    });
+  };
+
+  onValue(ref(db, 'shopStatus'), (snap) => {
+    const data = snap.val();
+    if (data) {
+      const badge = document.getElementById('shop-status-badge');
+      badge.innerHTML = data.isOpen
+        ? `<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Open`
+        : `<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Closed`;
+      badge.className = data.isOpen
+        ? "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5"
+        : "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5";
+    }
+  });
+
+  onValue(ref(db, 'products'), (snap) => {
+    allProducts = snap.val() || {};
+    renderShopProducts();
+  });
+
+  window.openProductView = (id, name, price, image, inStock, desc, catLabel) => {
+    currentProductId = id;
+    pdSelectedRating = 0;
+    const modal = document.getElementById('product-detail-view');
+    document.getElementById('pd-image').src = image || '';
+    document.getElementById('pd-name').textContent = name;
+    document.getElementById('pd-price').textContent = `₹${price}`;
+    document.getElementById('pd-desc').textContent = desc;
+    document.getElementById('pd-cat-badge').textContent = catLabel.toUpperCase();
+    document.getElementById('pd-review-name').value = '';
+    document.getElementById('pd-review-text').value = '';
+    document.getElementById('pd-rating-text').textContent = 'Select rating';
+    document.getElementById('pd-char-count').textContent = '0 / 300 characters';
+    document.querySelectorAll('.pd-rating-btn').forEach(btn => {
+      btn.classList.remove('bg-black', 'text-white', 'border-black');
+      btn.classList.add('bg-gray-50', 'text-black', 'border-gray-100');
+    });
+    loadProductReviews(id);
+
+    const addBtn = document.getElementById('pd-add-btn');
+    const buyBtn = document.getElementById('pd-buy-btn');
+
+    if (inStock) {
+      addBtn.textContent = "Add to Cart";
+      addBtn.className = "flex-1 py-4 bg-gray-50 text-black rounded-xl font-bold text-xs uppercase tracking-wider border border-gray-100 transition-colors hover:bg-gray-100";
+      addBtn.onclick = () => {
+        addToCart(id, name, price);
+        addBtn.textContent = "Added!";
+        setTimeout(() => addBtn.textContent = "Add to Cart", 1200);
+      };
+      buyBtn.style.display = "block";
+      buyBtn.onclick = () => { addToCart(id, name, price); closeProductView(); switchTab('buy'); };
+    } else {
+      addBtn.textContent = "Out of Stock";
+      addBtn.className = "w-full py-4 bg-red-50 text-red-500 rounded-xl font-bold text-xs uppercase tracking-wider text-center";
+      addBtn.onclick = null;
+      buyBtn.style.display = "none";
+    }
+
+    modal.classList.remove('hidden');
+    setTimeout(() => modal.classList.remove('translate-y-full'), 10);
+  };
+
+  window.closeProductView = () => {
+    const modal = document.getElementById('product-detail-view');
+    modal.classList.add('translate-y-full');
+    setTimeout(() => modal.classList.add('hidden'), 300);
+  };
+
+  window.addToCart = (id, name, price) => {
+    const existing = cart.find(item => item.id === id);
+    if (existing) existing.qty += 1;
+    else cart.push({ id, name, price, qty: 1 });
+    updateCartUI();
+  };
+
+  function updateCartUI() {
+    const badge = document.getElementById('cart-count-badge');
+    const itemsContainer = document.getElementById('cart-items');
+    const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+
+    if (totalCount > 0) { badge.textContent = totalCount; badge.classList.remove('hidden'); }
+    else badge.classList.add('hidden');
+
+    if (cart.length === 0) {
+      itemsContainer.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50 border border-gray-150">Your cart is empty.</p>`;
+      document.getElementById('cart-subtotal').textContent = `₹0`;
+      document.getElementById('cart-discount').textContent = `- ₹0`;
+      document.getElementById('cart-total').textContent = `₹0`;
+      return;
+    }
+
+    itemsContainer.innerHTML = cart.map(item => `
+      <div class="flex justify-between items-center bg-gray-50 border border-gray-100 p-4 rounded-2xl">
+        <div class="flex-1 pr-4">
+          <h5 class="font-black text-xs text-black leading-tight">${item.name}</h5>
+          <span class="text-[10px] text-gray-400 font-bold mt-1 block">₹${item.price} each</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="changeQty('${item.id}', -1)" class="w-7 h-7 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-xs text-black font-black hover:bg-gray-50">-</button>
+          <span class="text-xs font-black text-black w-3 text-center">${item.qty}</span>
+          <button onclick="changeQty('${item.id}', 1)" class="w-7 h-7 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-xs text-black font-black hover:bg-gray-50">+</button>
+        </div>
+      </div>
+    `).join('');
+
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    const discount = activeCoupon ? (activeCoupon.discountType === 'percentage' ? (subtotal * activeCoupon.value / 100) : activeCoupon.value) : 0;
+    const total = Math.max(0, subtotal - discount);
+    document.getElementById('cart-subtotal').textContent = `₹${subtotal}`;
+    document.getElementById('cart-discount').textContent = `- ₹${discount}`;
+    document.getElementById('cart-total').textContent = `₹${total}`;
+  }
+
+  window.changeQty = (id, change) => {
+    const item = cart.find(i => i.id === id);
+    if (item) { item.qty += change; if (item.qty <= 0) cart = cart.filter(i => i.id !== id); }
+    updateCartUI();
+  };
+
+  window.applyCoupon = () => {
+    const code = document.getElementById('coupon-input').value.toUpperCase().trim();
+    const msg = document.getElementById('coupon-message');
+    if (!code) return;
+    onValue(ref(db, `coupons/${code}`), (snap) => {
+      const val = snap.val();
+      if (val && val.isActive) {
+        activeCoupon = val;
+        msg.textContent = `${val.value}% DISCOUNT APPLIED!`;
+        msg.className = "text-[10px] mt-2 text-black font-black uppercase tracking-widest";
+        updateCartUI();
+      } else {
+        msg.textContent = "INVALID OR EXPIRED CODE";
+        msg.className = "text-[10px] mt-2 text-red-500 font-black uppercase tracking-widest";
+      }
+    }, { onlyOnce: true });
+  };
+
+  // ================= CHECKOUT -> PAYMENT STEP =================
+  window.goToPayment = () => {
+    const name = document.getElementById('cust-name').value.trim();
+    const phone = document.getElementById('cust-phone').value.trim();
+    const address = document.getElementById('cust-address').value.trim();
+    if (!name || !phone || !address || cart.length === 0) { alert("Please fill in all fields before proceeding."); return; }
+
+    const totalAmount = parseFloat(document.getElementById('cart-total').textContent.replace('₹', ''));
+    pendingOrder = { customerName: name, customerPhone: phone, address, items: JSON.parse(JSON.stringify(cart)), totalAmount };
+
+    document.getElementById('pay-amount-display').textContent = `₹${totalAmount}`;
+    document.getElementById('pay-utr').value = '';
+    document.getElementById('pay-utr-error').classList.add('hidden');
+    switchTab('payment');
+  };
+
+  // ================= SUBMIT PAYMENT PROOF (UTR) =================
+  window.submitPaymentProof = () => {
+    if (!pendingOrder) { switchTab('buy'); return; }
+    const utr = document.getElementById('pay-utr').value.trim();
+    const errorEl = document.getElementById('pay-utr-error');
+
+    if (!utr || utr.length < 6) {
+      errorEl.textContent = "Please enter a valid UTR / Transaction ID.";
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    errorEl.classList.add('hidden');
+
+    const newOrder = {
+      ...pendingOrder,
+      utr,
+      status: "payment_submitted",
+      timestamp: Date.now()
     };
 
-    onValue(ref(db, 'shopStatus'), (snap) => {
-      const data = snap.val();
-      if (data) {
-        const badge = document.getElementById('shop-status-badge');
-        badge.innerHTML = data.isOpen
-          ? `<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Open`
-          : `<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Closed`;
-        badge.className = data.isOpen
-          ? "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5"
-          : "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5";
-      }
-    });
+    const pushRef = push(ref(db, 'orders'));
+    set(pushRef, newOrder).then(() => {
+      const history = JSON.parse(localStorage.getItem('orders_history')) || [];
+      history.push({ id: pushRef.key, ...newOrder });
+      localStorage.setItem('orders_history', JSON.stringify(history));
 
-    onValue(ref(db, 'products'), (snap) => {
-      allProducts = snap.val() || {};
-      renderShopProducts();
+      cart = [];
+      activeCoupon = null;
+      pendingOrder = null;
+      document.getElementById('coupon-input').value = '';
+      document.getElementById('coupon-message').textContent = '';
+      document.getElementById('cust-name').value = '';
+      document.getElementById('cust-phone').value = '';
+      document.getElementById('cust-address').value = '';
+      updateCartUI();
+      switchTab('history');
+      renderHistory();
     });
+  };
 
-    window.openProductView = (id, name, price, image, inStock, desc, catLabel) => {
-      currentProductId = id;
-      pdSelectedRating = 0;
-      const modal = document.getElementById('product-detail-view');
-      document.getElementById('pd-image').src = image || '';
-      document.getElementById('pd-name').textContent = name;
-      document.getElementById('pd-price').textContent = `₹${price}`;
-      document.getElementById('pd-desc').textContent = desc;
-      document.getElementById('pd-cat-badge').textContent = catLabel.toUpperCase();
+  // ================= SUPPORT: ISSUE REPORT WITH PHOTO =================
+  window.handleIssueImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    const status = document.getElementById('issue-upload-status');
+    status.textContent = 'Processing image...';
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX_DIM = 500;
+        let { width, height } = img;
+        if (width > height && width > MAX_DIM) { height *= MAX_DIM / width; width = MAX_DIM; }
+        else if (height > MAX_DIM) { width *= MAX_DIM / height; height = MAX_DIM; }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        issueImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
+        const preview = document.getElementById('issue-img-preview');
+        preview.src = issueImageBase64;
+        preview.classList.remove('hidden');
+        document.getElementById('issue-img-placeholder').classList.add('hidden');
+        const sizeKB = Math.round((issueImageBase64.length * 0.75) / 1024);
+        status.textContent = `Image ready (${sizeKB} KB)`;
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  window.sendIssueReport = () => {
+    const desc = document.getElementById('issue-desc').value.trim();
+    if (!desc) { alert("Please describe your issue first."); return; }
+
+    const reportData = {
+      description: desc,
+      image: issueImageBase64 || null,
+      timestamp: Date.now()
+    };
+
+    push(ref(db, 'supportReports'), reportData).then(() => {
+      const wpMsg = `Support Issue: ${desc}${issueImageBase64 ? ' (photo attached — check admin dashboard)' : ''}`;
+      window.open(`https://wa.me/918698343237?text=${encodeURIComponent(wpMsg)}`, '_blank');
+
+      document.getElementById('issue-desc').value = '';
+      issueImageBase64 = null;
+      document.getElementById('issue-img-preview').src = '';
+      document.getElementById('issue-img-preview').classList.add('hidden');
+      document.getElementById('issue-img-placeholder').classList.remove('hidden');
+      document.getElementById('issue-upload-status').textContent = '';
+      document.getElementById('issue-img-file').value = '';
+    });
+  };
+
+  function renderHistory() {
+    const list = document.getElementById('history-list');
+    const hist = JSON.parse(localStorage.getItem('orders_history')) || [];
+    if (hist.length === 0) { list.innerHTML = `<p class="text-xs text-gray-400 font-bold py-4 text-center">No past orders found.</p>`; return; }
+    list.innerHTML = '';
+    hist.reverse().forEach(item => {
+      onValue(ref(db, `orders/${item.id}`), (snap) => {
+        const live = snap.val();
+        const status = live ? live.status : 'payment_submitted';
+        const colorMap = {
+          payment_submitted: 'bg-yellow-50 text-yellow-600',
+          confirmed: 'bg-blue-50 text-blue-600',
+          shipping: 'bg-purple-50 text-purple-600',
+          delivered: 'bg-green-50 text-green-600',
+          rejected: 'bg-red-50 text-red-500'
+        };
+        const color = colorMap[status] || 'bg-yellow-50 text-yellow-600';
+        const html = `
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-[8px] text-gray-400 font-black uppercase tracking-widest">ORDER ID: #${item.id.slice(-6).toUpperCase()}</p>
+              <h5 class="font-black text-sm text-black mt-0.5">₹${item.totalAmount}</h5>
+              <p class="text-[9px] text-gray-400 font-medium mt-0.5">${(item.items || []).map(i => i.name).join(', ')}</p>
+              <p class="text-[8px] text-gray-300 font-bold mt-0.5">UTR: ${item.utr || '—'}</p>
+            </div>
+            <span class="text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider ${color}">${status.replace('_',' ')}</span>
+          </div>`;
+        const cont = document.getElementById(`ord-${item.id}`);
+        if (cont) cont.innerHTML = html;
+        else {
+          const div = document.createElement('div');
+          div.id = `ord-${item.id}`;
+          div.className = "apple-card p-4 border border-gray-100 bg-gray-50/50";
+          div.innerHTML = html;
+          list.appendChild(div);
+        }
+      });
+    });
+  }
+
+  window.setPDRating = (rating) => {
+    pdSelectedRating = rating;
+    document.querySelectorAll('.pd-rating-btn').forEach(btn => {
+      btn.classList.remove('bg-black', 'text-white', 'border-black');
+      btn.classList.add('bg-gray-50', 'text-black', 'border-gray-100');
+    });
+    document.querySelector(`.pd-rating-btn[data-rating="${rating}"]`).classList.add('bg-black', 'text-white', 'border-black');
+    document.getElementById('pd-rating-text').textContent = `${rating} star${rating > 1 ? 's' : ''} selected`;
+  };
+
+  document.addEventListener('input', (e) => {
+    if (e.target.id === 'pd-review-text') {
+      const count = e.target.value.length;
+      document.getElementById('pd-char-count').textContent = `${count} / 300 characters`;
+      if (count > 300) e.target.value = e.target.value.slice(0, 300);
+    }
+  });
+
+  window.submitPDReview = () => {
+    const name = document.getElementById('pd-review-name').value.trim();
+    const text = document.getElementById('pd-review-text').value.trim();
+    if (!name || pdSelectedRating === 0 || !text) { alert("Please fill all fields and select a rating."); return; }
+    if (!currentProductId) return;
+    const review = { productId: currentProductId, customerName: name, rating: pdSelectedRating, text, timestamp: Date.now() };
+    const pushRef = push(ref(db, `productReviews/${currentProductId}`));
+    set(pushRef, review).then(() => {
+      alert("Review posted successfully!");
       document.getElementById('pd-review-name').value = '';
       document.getElementById('pd-review-text').value = '';
+      pdSelectedRating = 0;
       document.getElementById('pd-rating-text').textContent = 'Select rating';
       document.getElementById('pd-char-count').textContent = '0 / 300 characters';
       document.querySelectorAll('.pd-rating-btn').forEach(btn => {
         btn.classList.remove('bg-black', 'text-white', 'border-black');
         btn.classList.add('bg-gray-50', 'text-black', 'border-gray-100');
       });
-      loadProductReviews(id);
-
-      const addBtn = document.getElementById('pd-add-btn');
-      const buyBtn = document.getElementById('pd-buy-btn');
-
-      if (inStock) {
-        addBtn.textContent = "Add to Cart";
-        addBtn.className = "flex-1 py-4 bg-gray-50 text-black rounded-xl font-bold text-xs uppercase tracking-wider border border-gray-100 transition-colors hover:bg-gray-100";
-        addBtn.onclick = () => {
-          addToCart(id, name, price);
-          addBtn.textContent = "Added!";
-          setTimeout(() => addBtn.textContent = "Add to Cart", 1200);
-        };
-        buyBtn.style.display = "block";
-        buyBtn.onclick = () => { addToCart(id, name, price); closeProductView(); switchTab('buy'); };
-      } else {
-        addBtn.textContent = "Out of Stock";
-        addBtn.className = "w-full py-4 bg-red-50 text-red-500 rounded-xl font-bold text-xs uppercase tracking-wider text-center";
-        addBtn.onclick = null;
-        buyBtn.style.display = "none";
-      }
-
-      modal.classList.remove('hidden');
-      setTimeout(() => modal.classList.remove('translate-y-full'), 10);
-    };
-
-    window.closeProductView = () => {
-      const modal = document.getElementById('product-detail-view');
-      modal.classList.add('translate-y-full');
-      setTimeout(() => modal.classList.add('hidden'), 300);
-    };
-
-    window.addToCart = (id, name, price) => {
-      const existing = cart.find(item => item.id === id);
-      if (existing) existing.qty += 1;
-      else cart.push({ id, name, price, qty: 1 });
-      updateCartUI();
-    };
-
-    function updateCartUI() {
-      const badge = document.getElementById('cart-count-badge');
-      const itemsContainer = document.getElementById('cart-items');
-      const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
-
-      if (totalCount > 0) { badge.textContent = totalCount; badge.classList.remove('hidden'); }
-      else badge.classList.add('hidden');
-
-      if (cart.length === 0) {
-        itemsContainer.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50 border border-gray-150">Your cart is empty.</p>`;
-        document.getElementById('cart-subtotal').textContent = `₹0`;
-        document.getElementById('cart-discount').textContent = `- ₹0`;
-        document.getElementById('cart-total').textContent = `₹0`;
-        return;
-      }
-
-      itemsContainer.innerHTML = cart.map(item => `
-        <div class="flex justify-between items-center bg-gray-50 border border-gray-100 p-4 rounded-2xl">
-          <div class="flex-1 pr-4">
-            <h5 class="font-black text-xs text-black leading-tight">${item.name}</h5>
-            <span class="text-[10px] text-gray-400 font-bold mt-1 block">₹${item.price} each</span>
-          </div>
-          <div class="flex items-center gap-3">
-            <button onclick="changeQty('${item.id}', -1)" class="w-7 h-7 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-xs text-black font-black hover:bg-gray-50">-</button>
-            <span class="text-xs font-black text-black w-3 text-center">${item.qty}</span>
-            <button onclick="changeQty('${item.id}', 1)" class="w-7 h-7 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-xs text-black font-black hover:bg-gray-50">+</button>
-          </div>
-        </div>
-      `).join('');
-
-      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      const discount = activeCoupon ? (activeCoupon.discountType === 'percentage' ? (subtotal * activeCoupon.value / 100) : activeCoupon.value) : 0;
-      const total = Math.max(0, subtotal - discount);
-      document.getElementById('cart-subtotal').textContent = `₹${subtotal}`;
-      document.getElementById('cart-discount').textContent = `- ₹${discount}`;
-      document.getElementById('cart-total').textContent = `₹${total}`;
-    }
-
-    window.changeQty = (id, change) => {
-      const item = cart.find(i => i.id === id);
-      if (item) { item.qty += change; if (item.qty <= 0) cart = cart.filter(i => i.id !== id); }
-      updateCartUI();
-    };
-
-    window.applyCoupon = () => {
-      const code = document.getElementById('coupon-input').value.toUpperCase().trim();
-      const msg = document.getElementById('coupon-message');
-      if (!code) return;
-      onValue(ref(db, `coupons/${code}`), (snap) => {
-        const val = snap.val();
-        if (val && val.isActive) {
-          activeCoupon = val;
-          msg.textContent = `${val.value}% DISCOUNT APPLIED!`;
-          msg.className = "text-[10px] mt-2 text-black font-black uppercase tracking-widest";
-          updateCartUI();
-        } else {
-          msg.textContent = "INVALID OR EXPIRED CODE";
-          msg.className = "text-[10px] mt-2 text-red-500 font-black uppercase tracking-widest";
-        }
-      }, { onlyOnce: true });
-    };
-
-    // ================= CHECKOUT -> PAYMENT STEP =================
-  window.goToPayment = () => {
-  const name = document.getElementById('cust-name').value.trim();
-  const phone = document.getElementById('cust-phone').value.trim();
-  const address = document.getElementById('cust-address').value.trim();
-  if (!name || !phone || !address || cart.length === 0) { alert("Please fill in all fields before proceeding."); return; }
-
-  const totalAmount = parseFloat(document.getElementById('cart-total').textContent.replace('₹', ''));
-  pendingOrder = { customerName: name, customerPhone: phone, address, items: JSON.parse(JSON.stringify(cart)), totalAmount };
-
-  document.getElementById('pay-amount-display').textContent = `₹${totalAmount}`;
-  document.getElementById('pay-utr').value = '';
-  document.getElementById('pay-utr-error').classList.add('hidden');
-  switchTab('payment');
-};
-
-let issueImageBase64 = null;
-
-window.handleIssueImageUpload = (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
-  const status = document.getElementById('issue-upload-status');
-  status.textContent = 'Processing image...';
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const img = new Image();
-    img.onload = () => {
-      const MAX_DIM = 500;
-      let { width, height } = img;
-      if (width > height && width > MAX_DIM) { height *= MAX_DIM / width; width = MAX_DIM; }
-      else if (height > MAX_DIM) { width *= MAX_DIM / height; height = MAX_DIM; }
-      const canvas = document.createElement('canvas');
-      canvas.width = width; canvas.height = height;
-      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-      issueImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
-      const preview = document.getElementById('issue-img-preview');
-      preview.src = issueImageBase64;
-      preview.classList.remove('hidden');
-      document.getElementById('issue-img-placeholder').classList.add('hidden');
-      const sizeKB = Math.round((issueImageBase64.length * 0.75) / 1024);
-      status.textContent = `Image ready (${sizeKB} KB)`;
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-};
-    
-    // ================= SUBMIT PAYMENT PROOF (UTR) =================
-    window.submitPaymentProof = () => {
-      if (!pendingOrder) { switchTab('buy'); return; }
-      const utr = document.getElementById('pay-utr').value.trim();
-      const errorEl = document.getElementById('pay-utr-error');
-
-      if (!utr || utr.length < 6) {
-        errorEl.textContent = "Please enter a valid UTR / Transaction ID.";
-        errorEl.classList.remove('hidden');
-        return;
-      }
-      errorEl.classList.add('hidden');
-
-      const newOrder = {
-        ...pendingOrder,
-        utr,
-        status: "payment_submitted", // admin flips to 'confirmed' or 'rejected' after checking bank statement
-        timestamp: Date.now()
-      };
-
-      const pushRef = push(ref(db, 'orders'));
-      set(pushRef, newOrder).then(() => {
-        const history = JSON.parse(localStorage.getItem('orders_history')) || [];
-        history.push({ id: pushRef.key, ...newOrder });
-        localStorage.setItem('orders_history', JSON.stringify(history));
-
-        cart = [];
-        activeCoupon = null;
-        pendingOrder = null;
-        document.getElementById('coupon-input').value = '';
-        document.getElementById('coupon-message').textContent = '';
-        document.getElementById('cust-name').value = '';
-        document.getElementById('cust-phone').value = '';
-        document.getElementById('cust-address').value = '';
-        updateCartUI();
-        switchTab('history');
-        renderHistory();
-      });
-    };
-
-    let issueImageBase64 = null;
-
-window.handleIssueImageUpload = (event) => {
-  const file = event.target.files[0];
-  if (!file) return;
-  const status = document.getElementById('issue-upload-status');
-  status.textContent = 'Processing image...';
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const img = new Image();
-    img.onload = () => {
-      const MAX_DIM = 500;
-      let { width, height } = img;
-      if (width > height && width > MAX_DIM) { height *= MAX_DIM / width; width = MAX_DIM; }
-      else if (height > MAX_DIM) { width *= MAX_DIM / height; height = MAX_DIM; }
-      const canvas = document.createElement('canvas');
-      canvas.width = width; canvas.height = height;
-      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-      issueImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
-      const preview = document.getElementById('issue-img-preview');
-      preview.src = issueImageBase64;
-      preview.classList.remove('hidden');
-      document.getElementById('issue-img-placeholder').classList.add('hidden');
-      const sizeKB = Math.round((issueImageBase64.length * 0.75) / 1024);
-      status.textContent = `Image ready (${sizeKB} KB)`;
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-};
-
-window.sendIssueReport = () => {
-  const desc = document.getElementById('issue-desc').value.trim();
-  if (!desc) { alert("Please describe your issue first."); return; }
-
-  const reportData = {
-    description: desc,
-    image: issueImageBase64 || null,
-    timestamp: Date.now()
-  };
-
-  push(ref(db, 'supportReports'), reportData).then(() => {
-    const wpMsg = `Support Issue: ${desc}${issueImageBase64 ? ' (photo attached — check admin dashboard)' : ''}`;
-    window.open(`https://wa.me/918698343237?text=${encodeURIComponent(wpMsg)}`, '_blank');
-
-    document.getElementById('issue-desc').value = '';
-    issueImageBase64 = null;
-    document.getElementById('issue-img-preview').src = '';
-    document.getElementById('issue-img-preview').classList.add('hidden');
-    document.getElementById('issue-img-placeholder').classList.remove('hidden');
-    document.getElementById('issue-upload-status').textContent = '';
-    document.getElementById('issue-img-file').value = '';
-  });
-  
-    function renderHistory() {
-      const list = document.getElementById('history-list');
-      const hist = JSON.parse(localStorage.getItem('orders_history')) || [];
-      if (hist.length === 0) { list.innerHTML = `<p class="text-xs text-gray-400 font-bold py-4 text-center">No past orders found.</p>`; return; }
-      list.innerHTML = '';
-      hist.reverse().forEach(item => {
-        onValue(ref(db, `orders/${item.id}`), (snap) => {
-          const live = snap.val();
-          const status = live ? live.status : 'payment_submitted';
-          const colorMap = {
-            payment_submitted: 'bg-yellow-50 text-yellow-600',
-            confirmed: 'bg-blue-50 text-blue-600',
-            shipping: 'bg-purple-50 text-purple-600',
-            delivered: 'bg-green-50 text-green-600',
-            rejected: 'bg-red-50 text-red-500'
-          };
-          const color = colorMap[status] || 'bg-yellow-50 text-yellow-600';
-          const html = `
-            <div class="flex justify-between items-center">
-              <div>
-                <p class="text-[8px] text-gray-400 font-black uppercase tracking-widest">ORDER ID: #${item.id.slice(-6).toUpperCase()}</p>
-                <h5 class="font-black text-sm text-black mt-0.5">₹${item.totalAmount}</h5>
-                <p class="text-[9px] text-gray-400 font-medium mt-0.5">${(item.items || []).map(i => i.name).join(', ')}</p>
-                <p class="text-[8px] text-gray-300 font-bold mt-0.5">UTR: ${item.utr || '—'}</p>
-              </div>
-              <span class="text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider ${color}">${status.replace('_',' ')}</span>
-            </div>`;
-          const cont = document.getElementById(`ord-${item.id}`);
-          if (cont) cont.innerHTML = html;
-          else {
-            const div = document.createElement('div');
-            div.id = `ord-${item.id}`;
-            div.className = "apple-card p-4 border border-gray-100 bg-gray-50/50";
-            div.innerHTML = html;
-            list.appendChild(div);
-          }
-        });
-      });
-    }
-
-    window.setPDRating = (rating) => {
-      pdSelectedRating = rating;
-      document.querySelectorAll('.pd-rating-btn').forEach(btn => {
-        btn.classList.remove('bg-black', 'text-white', 'border-black');
-        btn.classList.add('bg-gray-50', 'text-black', 'border-gray-100');
-      });
-      document.querySelector(`.pd-rating-btn[data-rating="${rating}"]`).classList.add('bg-black', 'text-white', 'border-black');
-      document.getElementById('pd-rating-text').textContent = `${rating} star${rating > 1 ? 's' : ''} selected`;
-    };
-
-    document.addEventListener('input', (e) => {
-      if (e.target.id === 'pd-review-text') {
-        const count = e.target.value.length;
-        document.getElementById('pd-char-count').textContent = `${count} / 300 characters`;
-        if (count > 300) e.target.value = e.target.value.slice(0, 300);
-      }
+      loadProductReviews(currentProductId);
     });
+  };
 
-    window.submitPDReview = () => {
-      const name = document.getElementById('pd-review-name').value.trim();
-      const text = document.getElementById('pd-review-text').value.trim();
-      if (!name || pdSelectedRating === 0 || !text) { alert("Please fill all fields and select a rating."); return; }
-      if (!currentProductId) return;
-      const review = { productId: currentProductId, customerName: name, rating: pdSelectedRating, text, timestamp: Date.now() };
-      const pushRef = push(ref(db, `productReviews/${currentProductId}`));
-      set(pushRef, review).then(() => {
-        alert("Review posted successfully!");
-        document.getElementById('pd-review-name').value = '';
-        document.getElementById('pd-review-text').value = '';
-        pdSelectedRating = 0;
-        document.getElementById('pd-rating-text').textContent = 'Select rating';
-        document.getElementById('pd-char-count').textContent = '0 / 300 characters';
-        document.querySelectorAll('.pd-rating-btn').forEach(btn => {
-          btn.classList.remove('bg-black', 'text-white', 'border-black');
-          btn.classList.add('bg-gray-50', 'text-black', 'border-gray-100');
-        });
-        loadProductReviews(currentProductId);
-      });
-    };
-
-    function loadProductReviews(productId) {
-      onValue(ref(db, `productReviews/${productId}`), (snap) => {
-        const data = snap.val();
-        const container = document.getElementById('pd-reviews-container');
-        container.innerHTML = '';
-        if (!data) {
-          container.innerHTML = `<p class="text-xs text-gray-400 font-bold py-4 text-center">No reviews yet. Be the first to review!</p>`;
-          return;
-        }
-        Object.values(data).reverse().forEach(review => {
-          const stars = '⭐'.repeat(review.rating);
-          container.innerHTML += `
-            <div class="bg-gray-50 border border-gray-100 p-4 rounded-2xl space-y-1.5">
-              <div class="flex justify-between items-center text-xs">
-                <span class="font-black text-black">${review.customerName}</span>
-                <div class="flex items-center gap-1.5 text-black font-bold text-[10px]">
-                  <span class="text-[9px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-circle-check text-black mr-0.5"></i> Verified Buyer</span>
-                  <span>•</span> ${stars}
-                </div>
+  function loadProductReviews(productId) {
+    onValue(ref(db, `productReviews/${productId}`), (snap) => {
+      const data = snap.val();
+      const container = document.getElementById('pd-reviews-container');
+      container.innerHTML = '';
+      if (!data) {
+        container.innerHTML = `<p class="text-xs text-gray-400 font-bold py-4 text-center">No reviews yet. Be the first to review!</p>`;
+        return;
+      }
+      Object.values(data).reverse().forEach(review => {
+        const stars = '⭐'.repeat(review.rating);
+        container.innerHTML += `
+          <div class="bg-gray-50 border border-gray-100 p-4 rounded-2xl space-y-1.5">
+            <div class="flex justify-between items-center text-xs">
+              <span class="font-black text-black">${review.customerName}</span>
+              <div class="flex items-center gap-1.5 text-black font-bold text-[10px]">
+                <span class="text-[9px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-circle-check text-black mr-0.5"></i> Verified Buyer</span>
+                <span>•</span> ${stars}
               </div>
-              <p class="text-xs text-gray-600 font-medium leading-relaxed">${review.text}</p>
-              <p class="text-[8px] text-gray-300">${new Date(review.timestamp).toLocaleDateString()}</p>
-            </div>`;
-        });
+            </div>
+            <p class="text-xs text-gray-600 font-medium leading-relaxed">${review.text}</p>
+            <p class="text-[8px] text-gray-300">${new Date(review.timestamp).toLocaleDateString()}</p>
+          </div>`;
       });
-    }
+    });
+  }
 
-    window.toggleChatWindow = () => {
-      const win = document.getElementById('chat-window');
-      win.classList.toggle('hidden');
-      if (!win.classList.contains('hidden') && chatUser) startChatSession();
-    };
+  window.toggleChatWindow = () => {
+    const win = document.getElementById('chat-window');
+    win.classList.toggle('hidden');
+    if (!win.classList.contains('hidden') && chatUser) startChatSession();
+  };
 
-    window.startChat = () => {
-      const n = document.getElementById('chat-user-name').value.trim();
-      const p = document.getElementById('chat-user-phone').value.trim();
-      if (!n || !p) return;
-      chatUser = { name: n, phone: p };
-      localStorage.setItem('chatUser', JSON.stringify(chatUser));
-      startChatSession();
-    };
+  window.startChat = () => {
+    const n = document.getElementById('chat-user-name').value.trim();
+    const p = document.getElementById('chat-user-phone').value.trim();
+    if (!n || !p) return;
+    chatUser = { name: n, phone: p };
+    localStorage.setItem('chatUser', JSON.stringify(chatUser));
+    startChatSession();
+  };
 
-    function startChatSession() {
-      document.getElementById('chat-setup').classList.add('hidden');
-      document.getElementById('chat-messages').classList.remove('hidden');
-      document.getElementById('chat-input-area').classList.remove('hidden');
-      onValue(ref(db, `chats/chat_${chatUser.phone}/messages`), (snap) => {
-        const box = document.getElementById('chat-messages');
-        box.innerHTML = '';
-        if (!snap.val()) return;
-        Object.values(snap.val()).forEach(msg => {
-          const isMe = msg.sender === 'customer';
-          box.innerHTML += `
-            <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
-              <div class="max-w-[80%] p-3 rounded-2xl ${isMe ? 'bg-black text-white rounded-br-none' : 'bg-gray-200 text-black rounded-bl-none'}">
-                <p class="font-semibold leading-relaxed">${msg.text}</p>
-              </div>
-            </div>`;
-        });
-        box.scrollTop = box.scrollHeight;
+  function startChatSession() {
+    document.getElementById('chat-setup').classList.add('hidden');
+    document.getElementById('chat-messages').classList.remove('hidden');
+    document.getElementById('chat-input-area').classList.remove('hidden');
+    onValue(ref(db, `chats/chat_${chatUser.phone}/messages`), (snap) => {
+      const box = document.getElementById('chat-messages');
+      box.innerHTML = '';
+      if (!snap.val()) return;
+      Object.values(snap.val()).forEach(msg => {
+        const isMe = msg.sender === 'customer';
+        box.innerHTML += `
+          <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
+            <div class="max-w-[80%] p-3 rounded-2xl ${isMe ? 'bg-black text-white rounded-br-none' : 'bg-gray-200 text-black rounded-bl-none'}">
+              <p class="font-semibold leading-relaxed">${msg.text}</p>
+            </div>
+          </div>`;
       });
-    }
+      box.scrollTop = box.scrollHeight;
+    });
+  }
 
-    window.sendChatMessage = () => {
-      const inp = document.getElementById('chat-msg-input');
-      const text = inp.value.trim();
-      if (!text || !chatUser) return;
-      set(push(ref(db, `chats/chat_${chatUser.phone}/messages`)), { sender: 'customer', text, timestamp: Date.now() });
-      set(ref(db, `chats/chat_${chatUser.phone}/customerInfo`), chatUser);
-      inp.value = '';
-    };
+  window.sendChatMessage = () => {
+    const inp = document.getElementById('chat-msg-input');
+    const text = inp.value.trim();
+    if (!text || !chatUser) return;
+    set(push(ref(db, `chats/chat_${chatUser.phone}/messages`)), { sender: 'customer', text, timestamp: Date.now() });
+    set(ref(db, `chats/chat_${chatUser.phone}/customerInfo`), chatUser);
+    inp.value = '';
+  };
 
-    renderHistory();
-  </script>
+  renderHistory();
+</script>
 </body>
 </html>
