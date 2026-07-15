@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nikate Nutrition & Supplements</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#1A1A1D;
+  --accent:#E8641C;
+  --text:#F5F1EA;
+  --gray:#8A8A8E;
+  --card:#242428;
+  --border:#2E2E32;
+}
+body{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;min-height:100vh}
+h1,h2,h3,.logo{font-family:'Anton',sans-serif;letter-spacing:1px}
+
+/* NAV - desktop */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,26,29,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:22px;color:var(--accent);cursor:pointer}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{color:var(--gray);text-decoration:none;font-size:14px;font-weight:600;transition:color .2s;cursor:pointer}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.cart-btn{background:var(--accent);color:white;border:none;padding:8px 18px;border-radius:20px;font-weight:700;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:6px}
+
+/* PILL NAV - mobile */
+.pill-nav{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;background:rgba(26,26,29,0.95);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:40px;padding:10px 24px;gap:32px}
+.pill-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--gray);text-decoration:none;font-size:10px;font-weight:600;cursor:pointer;transition:color .2s}
+.pill-nav a.active,.pill-nav a:hover{color:var(--accent)}
+.pill-nav svg{width:20px;height:20px}
+
+/* PAGES */
+.page{display:none;padding-top:64px;min-height:100vh}
+.page.active{display:block}
+
+/* HOME */
+.hero{padding:80px 32px 60px;text-align:center;background:linear-gradient(180deg,rgba(232,100,28,0.08) 0%,transparent 100%)}
+.hero h1{font-size:clamp(42px,8vw,80px);line-height:1;color:var(--text);margin-bottom:12px}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--gray);font-size:16px;max-width:480px;margin:0 auto 32px}
+.btn-primary{background:var(--accent);color:white;border:none;padding:14px 32px;border-radius:30px;font-weight:700;font-size:16px;cursor:pointer;transition:opacity .2s}
+.btn-primary:hover{opacity:.85}
+.badge{display:inline-block;background:rgba(232,100,28,0.15);border:1px solid rgba(232,100,28,0.3);color:var(--accent);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:20px;letter-spacing:1px}
+
+/* CATEGORIES */
+.cats{display:flex;gap:12px;padding:24px 24px 0;overflow-x:auto;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat-btn{background:var(--card);border:1px solid var(--border);color:var(--gray);padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;font-family:'Manrope',sans-serif}
+.cat-btn.active,.cat-btn:hover{background:var(--accent);color:white;border-color:var(--accent)}
+
+/* PRODUCTS GRID */
+.products-wrap{padding:24px}
+.section-title{font-size:28px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .2s,border-color .2s;cursor:pointer}
+.card:hover{transform:translateY(-4px);border-color:var(--accent)}
+.card-img{width:100%;height:200px;object-fit:cover;background:linear-gradient(135deg,#2a2a2e,#1e1e22)}
+.card-img-placeholder{width:100%;height:200px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#2a2a2e,#1e1e22);font-size:48px}
+.card-body{padding:16px}
+.card-name{font-family:'Anton',sans-serif;font-size:18px;margin-bottom:4px}
+.card-brand{color:var(--gray);font-size:12px;margin-bottom:8px}
+.card-price{color:var(--accent);font-size:22px;font-weight:700;margin-bottom:12px}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.stock-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px}
+.in-stock{background:rgba(34,197,94,0.15);color:#22c55e}
+.out-stock{background:rgba(239,68,68,0.15);color:#ef4444}
+.add-btn{background:var(--accent);color:white;border:none;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;transition:opacity .2s}
+.add-btn:hover{opacity:.8}
+.add-btn:disabled{background:var(--border);color:var(--gray);cursor:not-allowed}
+
+/* CART DRAWER */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200}
+.overlay.open{display:block}
+.drawer{position:fixed;right:0;top:0;bottom:0;width:min(400px,100vw);background:var(--bg);border-left:1px solid var(--border);z-index:201;transform:translateX(100%);transition:transform .3s;display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+.drawer-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.drawer-head h3{font-family:'Anton',sans-serif;font-size:22px}
+.close-btn{background:none;border:none;color:var(--gray);font-size:24px;cursor:pointer}
+.drawer-body{flex:1;overflow-y:auto;padding:20px 24px}
+.cart-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.cart-item-info{flex:1}
+.cart-item-name{font-weight:700;font-size:14px;margin-bottom:2px}
+.cart-item-price{color:var(--accent);font-weight:700}
+.qty-ctrl{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty-btn{background:var(--border);border:none;color:var(--text);width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.qty-num{font-weight:700;min-width:20px;text-align:center}
+.remove-btn{background:none;border:none;color:#ef4444;cursor:pointer;font-size:12px;margin-top:4px}
+.drawer-foot{padding:20px 24px;border-top:1px solid var(--border)}
+.total-row{display:flex;justify-content:space-between;font-size:18px;font-weight:700;margin-bottom:16px}
+.empty-cart{text-align:center;color:var(--gray);padding:60px 0}
+.empty-cart svg{margin-bottom:12px;opacity:.3}
+
+/* CHECKOUT */
+.checkout-wrap{max-width:600px;margin:0 auto;padding:40px 24px}
+.checkout-wrap h2{font-size:32px;margin-bottom:8px}
+.checkout-wrap .sub{color:var(--gray);margin-bottom:32px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--gray);margin-bottom:6px}
+.form-group input,.form-group textarea,.form-group select{width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:10px;font-size:15px;font-family:'Manrope',sans-serif;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--accent)}
+.order-summary{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:24px}
+.order-summary h4{font-family:'Anton',sans-serif;font-size:18px;margin-bottom:12px}
+.summary-item{display:flex;justify-content:space-between;font-size:14px;padding:6px 0;border-bottom:1px solid var(--border)}
+.summary-total{display:flex;justify-content:space-between;font-weight:700;font-size:16px;padding-top:12px;color:var(--accent)}
+
+/* UPI PAYMENT */
+.upi-box{background:var(--card);border:2px solid var(--accent);border-radius:16px;padding:28px;text-align:center;margin-bottom:24px}
+.upi-box h3{font-family:'Anton',sans-serif;font-size:22px;margin-bottom:8px}
+.upi-id{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 20px;font-size:18px;font-weight:700;color:var(--accent);margin:16px 0;letter-spacing:1px}
+.upi-amount{font-size:32px;font-weight:700;color:var(--text);margin:8px 0}
+.upi-steps{text-align:left;margin-top:16px}
+.upi-steps li{color:var(--gray);font-size:13px;padding:4px 0;padding-left:16px;position:relative}
+.upi-steps li::before{content:"→";position:absolute;left:0;color:var(--accent)}
+
+/* ABOUT / CONTACT */
+.static-wrap{max-width:700px;margin:0 auto;padding:60px 24px}
+.static-wrap h2{font-size:48px;margin-bottom:8px}
+.static-wrap .accent{color:var(--accent)}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px}
+.info-card h4{font-family:'Anton',sans-serif;font-size:18px;margin-bottom:8px;color:var(--accent)}
+.info-card p,.info-card a{color:var(--gray);font-size:14px;line-height:1.7;text-decoration:none}
+.info-card a:hover{color:var(--accent)}
+
+/* ADMIN */
+.admin-wrap{max-width:900px;margin:0 auto;padding:40px 24px}
+.admin-tabs{display:flex;gap:8px;margin-bottom:28px;border-bottom:1px solid var(--border);padding-bottom:16px}
+.tab-btn{background:none;border:none;color:var(--gray);font-size:14px;font-weight:700;cursor:pointer;padding:8px 16px;border-radius:8px;font-family:'Manrope',sans-serif}
+.tab-btn.active{background:var(--accent);color:white}
+.admin-section{display:none}
+.admin-section.active{display:block}
+.product-form{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px}
+.product-form h3{font-family:'Anton',sans-serif;font-size:22px;margin-bottom:20px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn-secondary{background:var(--card);border:1px solid var(--accent);color:var(--accent);padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px;font-family:'Manrope',sans-serif}
+.admin-table{width:100%;border-collapse:collapse}
+.admin-table th{text-align:left;font-size:12px;color:var(--gray);padding:8px 12px;border-bottom:1px solid var(--border)}
+.admin-table td{padding:12px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}
+.toggle-stock{padding:4px 12px;border-radius:20px;border:none;font-size:11px;font-weight:700;cursor:pointer}
+.order-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.order-card h4{font-family:'Anton',sans-serif;margin-bottom:8px}
+.order-meta{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.order-meta span{font-size:13px;color:var(--gray)}
+.status-sel{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:8px;font-family:'Manrope',sans-serif;font-size:13px}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px;width:100%;max-width:380px;text-align:center}
+.login-box h2{font-size:32px;margin-bottom:8px}
+.login-box p{color:var(--gray);margin-bottom:28px;font-size:14px}
+
+/* TOAST */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--accent);color:var(--text);padding:12px 24px;border-radius:30px;font-size:14px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+
+/* SUCCESS */
+.success-wrap{text-align:center;padding:80px 24px}
+.success-wrap h2{font-size:48px;color:var(--accent);margin-bottom:12px}
+.success-wrap p{color:var(--gray);margin-bottom:32px}
+
+@media(max-width:768px){
+  nav .nav-links,.nav-links{display:none}
+  .cart-btn span{display:none}
+  .pill-nav{display:flex}
+  .page{padding-top:64px;padding-bottom:100px}
+  .hero{padding:48px 20px 40px}
+  .grid{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .products-wrap{padding:16px}
+  .hero h1{font-size:clamp(36px,10vw,60px)}
+}
+@media(max-width:400px){
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- DESKTOP NAV -->
+<nav>
+  <div class="logo" onclick="showPage('home')">NIKATE<span style="color:var(--text)"> NUTRITION</span></div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" class="active" id="nl-home">Home</a></li>
+    <li><a onclick="showPage('shop')" id="nl-shop">Shop</a></li>
+    <li><a onclick="showPage('about')" id="nl-about">About</a></li>
+    <li><a onclick="showPage('contact')" id="nl-contact">Contact</a></li>
+    <li><a onclick="showPage('admin')" id="nl-admin">Admin</a></li>
+  </ul>
+  <button class="cart-btn" onclick="openCart()">
+    🛒 <span>Cart</span> <span id="cart-count-nav">0</span>
+  </button>
+</nav>
+
+<!-- MOBILE PILL NAV -->
+<nav class="pill-nav">
+  <a onclick="showPage('home')" id="pn-home" class="active">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+    Home
+  </a>
+  <a onclick="showPage('shop')" id="pn-shop">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    Shop
+  </a>
+  <a onclick="openCart()" id="pn-cart">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+    Cart (<span id="cart-count-pill">0</span>)
+  </a>
+  <a onclick="showPage('about')" id="pn-about">
+    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    About
+  </a>
+</nav>
+
+<!-- CART OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="drawer" id="cart-drawer">
+  <div class="drawer-head">
+    <h3>YOUR CART</h3>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-body" id="cart-body"></div>
+  <div class="drawer-foot" id="cart-foot"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="badge">100% GENUINE • PANDHARPUR</div>
+    <h1>FUEL YOUR<br><span>GRIND</span></h1>
+    <p>Premium supplements at wholesale pricing — whey protein, creatine, pre-workout & more.</p>
+    <button class="btn-primary" onclick="showPage('shop')">SHOP NOW →</button>
+  </div>
+  <div class="cats" id="home-cats"></div>
+  <div class="products-wrap">
+    <div class="section-title">FEATURED PRODUCTS</div>
+    <div class="grid" id="home-grid"></div>
+  </div>
+</div>
+
+<!-- SHOP PAGE -->
+<div class="page" id="page-shop">
+  <div class="products-wrap" style="padding-top:32px">
+    <div class="section-title">ALL PRODUCTS</div>
+    <div class="cats" id="shop-cats" style="padding:0 0 20px"></div>
+    <div class="grid" id="shop-grid"></div>
+  </div>
+</div>
+
+<!-- CHECKOUT PAGE -->
+<div class="page" id="page-checkout">
+  <div class="checkout-wrap">
+    <h2>CHECKOUT</h2>
+    <p class="sub">Fill your details to place order</p>
+    <div class="order-summary" id="checkout-summary"></div>
+    <div class="form-group"><label>Full Name *</label><input id="c-name" placeholder="Your full name"></div>
+    <div class="form-group"><label>Mobile Number *</label><input id="c-mobile" placeholder="10-digit mobile" maxlength="10" type="tel"></div>
+    <div class="form-group"><label>Full Address *</label><textarea id="c-address" rows="3" placeholder="House no, street, area"></textarea></div>
+    <div class="form-group"><label>Pincode *</label><input id="c-pin" placeholder="6-digit pincode" maxlength="6" type="tel"></div>
+    <div class="form-group"><label>Notes (optional)</label><input id="c-notes" placeholder="Any special instructions"></div>
+    <button class="btn-primary" style="width:100%" onclick="proceedToPayment()">PROCEED TO PAYMENT →</button>
+  </div>
+</div>
+
+<!-- PAYMENT PAGE -->
+<div class="page" id="page-payment">
+  <div class="checkout-wrap">
+    <h2>PAYMENT</h2>
+    <p class="sub">Pay via UPI to complete your order</p>
+    <div class="upi-box">
+      <h3>🟠 PAY VIA UPI</h3>
+      <div class="upi-amount" id="pay-amount">₹0</div>
+      <div class="upi-id" id="pay-upi-id">your-upi@bank</div>
+      <p style="color:var(--gray);font-size:13px">Open any UPI app and pay to the above ID</p>
+      <ul class="upi-steps">
+        <li>Open PhonePe / GPay / Paytm</li>
+        <li>Send exact amount to UPI ID above</li>
+        <li>Take a screenshot of payment</li>
+        <li>Click "I've Paid" below</li>
+      </ul>
+    </div>
+    <button class="btn-primary" style="width:100%;margin-bottom:12px" onclick="confirmPayment()">✅ I'VE PAID — PLACE ORDER</button>
+    <button class="btn-secondary" style="width:100%" onclick="showPage('checkout')">← Back</button>
+  </div>
+</div>
+
+<!-- SUCCESS PAGE -->
+<div class="page" id="page-success">
+  <div class="success-wrap">
+    <h2>🎉 ORDER PLACED!</h2>
+    <p>Your order has been received. We'll contact you on your mobile to confirm delivery.</p>
+    <p style="color:var(--gray);font-size:13px;margin-bottom:32px">Payment will be verified manually by the shop.</p>
+    <button class="btn-primary" onclick="showPage('home')">CONTINUE SHOPPING</button>
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div class="page" id="page-about">
+  <div class="static-wrap">
+    <h2>ABOUT <span class="accent">NIKATE</span></h2>
+    <p style="color:var(--gray);margin-bottom:32px;line-height:1.7">Nikate Nutrition & Supplements is Pandharpur's trusted source for 100% genuine, branded workout and health supplements at wholesale pricing.</p>
+    <div class="info-card">
+      <h4>📍 Location</h4>
+      <p>Juni Peth, Dombe Galli, Near Waghule Building<br>Pandharpur, Dist. Solapur, Maharashtra 413304</p>
+    </div>
+    <div class="info-card">
+      <h4>📞 Contact</h4>
+      <a href="tel:8698343237">8698343237</a>
+    </div>
+    <div class="info-card">
+      <h4>📸 Instagram</h4>
+      <a href="https://instagram.com/nikate_nutritions" target="_blank">@nikate_nutritions</a>
+    </div>
+    <div class="info-card">
+      <h4>✅ Our Promise</h4>
+      <p>100% genuine products • Wholesale pricing • Local delivery available • No fakes, ever.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT PAGE -->
+<div class="page" id="page-contact">
+  <div class="static-wrap">
+    <h2>GET IN <span class="accent">TOUCH</span></h2>
+    <p style="color:var(--gray);margin-bottom:32px">Have questions? Reach out directly.</p>
+    <div class="info-card">
+      <h4>📞 Call / WhatsApp</h4>
+      <a href="tel:8698343237" style="font-size:20px;font-weight:700">8698343237</a>
+    </div>
+    <div class="info-card">
+      <h4>📸 Instagram DM</h4>
+      <a href="https://instagram.com/nikate_nutritions" target="_blank">@nikate_nutritions</a>
+    </div>
+    <div class="info-card">
+      <h4>🕐 Hours</h4>
+      <p>Mon–Sat: 9am – 8pm<br>Sunday: 10am – 5pm</p>
+    </div>
+    <div class="info-card">
+      <h4>📦 Shipping</h4>
+      <p>Local delivery in Pandharpur. Courier available for other areas — contact us for details.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="page" id="page-admin">
+  <div id="admin-login-view" class="login-wrap">
+    <div class="login-box">
+      <h2>🔐 ADMIN</h2>
+      <p>Login to manage products & orders</p>
+      <div class="form-group"><label>Email</label><input id="a-email" type="email" placeholder="admin@email.com"></div>
+      <div class="form-group"><label>Password</label><input id="a-pass" type="password" placeholder="Password"></div>
+      <button class="btn-primary" style="width:100%" onclick="adminLogin()">LOGIN</button>
+      <p id="login-err" style="color:#ef4444;font-size:13px;margin-top:12px"></p>
+    </div>
+  </div>
+  <div id="admin-panel-view" style="display:none">
+    <div class="admin-wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <h2 style="font-size:32px">ADMIN PANEL</h2>
+        <button class="btn-secondary" onclick="adminLogout()">Logout</button>
+      </div>
+      <div class="admin-tabs">
+        <button class="tab-btn active" onclick="switchTab('products')">Products</button>
+        <button class="tab-btn" onclick="switchTab('orders')">Orders</button>
+        <button class="tab-btn" onclick="switchTab('settings')">Settings</button>
+      </div>
+
+      <!-- PRODUCTS TAB -->
+      <div class="admin-section active" id="tab-products">
+        <div class="product-form">
+          <h3 id="form-title">ADD PRODUCT</h3>
+          <div class="form-row">
+            <div class="form-group"><label>Product Name *</label><input id="p-name" placeholder="e.g. Whey Protein Gold"></div>
+            <div class="form-group"><label>Brand</label><input id="p-brand" placeholder="e.g. MuscleBlaze"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Price (₹) *</label><input id="p-price" type="number" placeholder="1500"></div>
+            <div class="form-group"><label>Category</label>
+              <select id="p-cat" style="width:100%;background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:10px;font-family:'Manrope',sans-serif;font-size:15px">
+                <option>Whey Protein</option>
+                <option>Creatine</option>
+                <option>Pre-Workout</option>
+                <option>Peanut Butter</option>
+                <option>Vitamins</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label>Flavors (comma separated)</label><input id="p-flavors" placeholder="Chocolate, Vanilla, Strawberry"></div>
+          <div class="form-group"><label>Image URL (optional)</label><input id="p-img" placeholder="https://... or leave blank for emoji"></div>
+          <div class="form-group"><label>Description</label><textarea id="p-desc" rows="2" placeholder="Short product description"></textarea></div>
+          <div style="display:flex;gap:12px">
+            <button class="btn-primary" onclick="saveProduct()">SAVE PRODUCT</button>
+            <button class="btn-secondary" onclick="clearForm()" id="clear-btn" style="display:none">Cancel Edit</button>
+          </div>
+        </div>
+        <div class="section-title" style="margin-bottom:16px">ALL PRODUCTS</div>
+        <div style="overflow-x:auto">
+          <table class="admin-table">
+            <thead><tr><th>Name</th><th>Brand</th><th>Price</th><th>Category</th><th>Stock</th><th>Actions</th></tr></thead>
+            <tbody id="products-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ORDERS TAB -->
+      <div class="admin-section" id="tab-orders">
+        <div class="section-title" style="margin-bottom:16px">ALL ORDERS</div>
+        <div id="orders-list"></div>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div class="admin-section" id="tab-settings">
+        <div class="product-form">
+          <h3>SHOP SETTINGS</h3>
+          <div class="form-group"><label>UPI ID</label><input id="s-upi" placeholder="yourname@upi"></div>
+          <div class="form-group"><label>Shop Name</label><input id="s-shopname" placeholder="Nikate Nutrition"></div>
+          <div class="form-group"><label>Phone Number</label><input id="s-phone" placeholder="8698343237"></div>
+          <button class="btn-primary" onclick="saveSettings()">SAVE SETTINGS</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ FIREBASE CONFIG ============
+// REPLACE with your Firebase project config
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+// ============ STATE ============
+let cart = JSON.parse(localStorage.getItem('nn-cart') || '[]');
+let products = [];
+let settings = { upi: 'nikate@upi', shopName: 'Nikate Nutrition', phone: '8698343237' };
+let editingId = null;
+let currentOrder = null;
+let activeCategory = 'All';
+
+// ============ NAVIGATION ============
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  // desktop nav
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const nl = document.getElementById('nl-' + page);
+  if(nl) nl.classList.add('active');
+  // pill nav
+  document.querySelectorAll('.pill-nav a').forEach(a => a.classList.remove('active'));
+  const pn = document.getElementById('pn-' + page);
+  if(pn) pn.classList.add('active');
+  
+  if(page === 'shop') renderShop();
+  if(page === 'admin') checkAdmin();
+  if(page === 'home') renderHome();
+  window.scrollTo(0,0);
+}
+
+// ============ TOAST ============
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ============ PRODUCTS from Firestore ============
+function loadProducts() {
+  db.collection('products').onSnapshot(snap => {
+    products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderHome();
+    if(document.getElementById('page-shop').classList.contains('active')) renderShop();
+    if(document.getElementById('admin-panel-view').style.display !== 'none') renderProductsTable();
+  });
+}
+
+function loadSettings() {
+  db.collection('settings').doc('shop').get().then(doc => {
+    if(doc.exists) {
+      settings = { ...settings, ...doc.data() };
+      document.getElementById('s-upi').value = settings.upi || '';
+      document.getElementById('s-shopname').value = settings.shopName || '';
+      document.getElementById('s-phone').value = settings.phone || '';
+    }
+  });
+}
+
+// ============ RENDER PRODUCTS ============
+function productCard(p) {
+  const flavors = p.flavors ? p.flavors.split(',').map(f=>f.trim()) : [];
+  const flavorHtml = flavors.length ? `<div style="font-size:11px;color:var(--gray);margin-bottom:8px">${flavors.join(' • ')}</div>` : '';
+  const imgHtml = p.imageUrl
+    ? `<img class="card-img" src="${p.imageUrl}" alt="${p.name}" onerror="this.style.display='none'">`
+    : `<div class="card-img-placeholder">💪</div>`;
+  return `
+    <div class="card">
+      ${imgHtml}
+      <div class="card-body">
+        <div class="card-name">${p.name}</div>
+        <div class="card-brand">${p.brand || ''}</div>
+        ${flavorHtml}
+        <div class="card-price">₹${p.price}</div>
+        <div class="card-footer">
+          <span class="stock-badge ${p.inStock !== false ? 'in-stock':'out-stock'}">${p.inStock !== false ? 'In Stock':'Out of Stock'}</span>
+          <button class="add-btn" onclick="addToCart('${p.id}')" ${p.inStock === false ? 'disabled':''}>Add to Cart</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderHome() {
+  const grid = document.getElementById('home-grid');
+  if(!grid) return;
+  const cats = ['All', ...new Set(products.map(p => p.category).filter(Boolean))];
+  document.getElementById('home-cats').innerHTML = cats.map(c =>
+    `<button class="cat-btn ${c===activeCategory?'active':''}" onclick="filterHome('${c}')">${c}</button>`
+  ).join('');
+  const filtered = activeCategory === 'All' ? products : products.filter(p => p.category === activeCategory);
+  grid.innerHTML = filtered.length ? filtered.map(productCard).join('') : '<p style="color:var(--gray)">No products yet. Add some in Admin panel.</p>';
+}
+
+function filterHome(cat) {
+  activeCategory = cat;
+  renderHome();
+}
+
+let shopCategory = 'All';
+function renderShop() {
+  const cats = ['All', ...new Set(products.map(p => p.category).filter(Boolean))];
+  document.getElementById('shop-cats').innerHTML = cats.map(c =>
+    `<button class="cat-btn ${c===shopCategory?'active':''}" onclick="filterShop('${c}')">${c}</button>`
+  ).join('');
+  const filtered = shopCategory === 'All' ? products : products.filter(p => p.category === shopCategory);
+  document.getElementById('shop-grid').innerHTML = filtered.length ? filtered.map(productCard).join('') : '<p style="color:var(--gray)">No products yet.</p>';
+}
+
+function filterShop(cat) {
+  shopCategory = cat;
+  renderShop();
+}
+
+// ============ CART ============
+function saveCart() { localStorage.setItem('nn-cart', JSON.stringify(cart)); updateCartCount(); }
+
+function updateCartCount() {
+  const count = cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cart-count-nav').textContent = count;
+  document.getElementById('cart-count-pill').textContent = count;
+}
+
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  if(!p) return;
+  const ex = cart.find(x => x.id === id);
+  if(ex) ex.qty++; else cart.push({ id, name: p.name, price: p.price, qty: 1 });
+  saveCart();
+  toast(`${p.name} added to cart! 🛒`);
+}
+
+function openCart() {
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('cart-drawer').classList.add('open');
+  renderCart();
+}
+
+function closeCart() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('cart-drawer').classList.remove('open');
+}
+
+function renderCart() {
+  const body = document.getElementById('cart-body');
+  const foot = document.getElementById('cart-foot');
+  if(!cart.length) {
+    body.innerHTML = `<div class="empty-cart"><svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg><p>Your cart is empty</p></div>`;
+    foot.innerHTML = '';
+    return;
+  }
+  body.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">₹${item.price * item.qty}</div>
+        <div class="qty-ctrl">
+          <button class="qty-btn" onclick="changeQty('${item.id}',-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${item.id}',1)">+</button>
+        </div>
+        <button class="remove-btn" onclick="removeFromCart('${item.id}')">Remove</button>
+      </div>
+    </div>`).join('');
+  const total = cart.reduce((s,i) => s + i.price*i.qty, 0);
+  foot.innerHTML = `
+    <div class="total-row"><span>Total</span><span>₹${total}</span></div>
+    <button class="btn-primary" style="width:100%" onclick="closeCart();showPage('checkout');renderCheckoutSummary()">CHECKOUT →</button>`;
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(x => x.id === id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) cart = cart.filter(x => x.id !== id);
+  saveCart();
+  renderCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(x => x.id !== id);
+  saveCart();
+  renderCart();
+}
+
+// ============ CHECKOUT ============
+function renderCheckoutSummary() {
+  const total = cart.reduce((s,i) => s + i.price*i.qty, 0);
+  document.getElementById('checkout-summary').innerHTML = `
+    <h4>ORDER SUMMARY</h4>
+    ${cart.map(i => `<div class="summary-item"><span>${i.name} x${i.qty}</span><span>₹${i.price*i.qty}</span></div>`).join('')}
+    <div class="summary-total"><span>Total</span><span>₹${total}</span></div>`;
+}
+
+function proceedToPayment() {
+  const name = document.getElementById('c-name').value.trim();
+  const mobile = document.getElementById('c-mobile').value.trim();
+  const address = document.getElementById('c-address').value.trim();
+  const pin = document.getElementById('c-pin').value.trim();
+  if(!name || !mobile || !address || !pin) { toast('Please fill all required fields'); return; }
+  if(mobile.length !== 10) { toast('Enter valid 10-digit mobile'); return; }
+  if(pin.length !== 6) { toast('Enter valid 6-digit pincode'); return; }
+  const total = cart.reduce((s,i) => s + i.price*i.qty, 0);
+  currentOrder = { name, mobile, address, pincode: pin, notes: document.getElementById('c-notes').value, items: [...cart], total, status: 'Payment Pending', createdAt: new Date().toISOString() };
+  document.getElementById('pay-amount').textContent = '₹' + total;
+  document.getElementById('pay-upi-id').textContent = settings.upi || 'nikate@upi';
+  showPage('payment');
+}
+
+function confirmPayment() {
+  if(!currentOrder) return;
+  db.collection('orders').add(currentOrder).then(() => {
+    cart = [];
+    saveCart();
+    currentOrder = null;
+    showPage('success');
+  }).catch(() => toast('Error placing order. Please try again.'));
+}
+
+// ============ ADMIN AUTH ============
+function checkAdmin() {
+  auth.onAuthStateChanged(user => {
+    if(user) {
+      document.getElementById('admin-login-view').style.display = 'none';
+      document.getElementById('admin-panel-view').style.display = 'block';
+      loadSettings();
+      renderProductsTable();
+      loadOrders();
+    } else {
+      document.getElementById('admin-login-view').style.display = 'flex';
+      document.getElementById('admin-panel-view').style.display = 'none';
+    }
+  });
+}
+
+function adminLogin() {
+  const email = document.getElementById('a-email').value;
+  const pass = document.getElementById('a-pass').value;
+  auth.signInWithEmailAndPassword(email, pass)
+    .then(() => checkAdmin())
+    .catch(e => { document.getElementById('login-err').textContent = 'Invalid email or password'; });
+}
+
+function adminLogout() {
+  auth.signOut().then(() => checkAdmin());
+}
+
+// ============ ADMIN PRODUCTS ============
+function renderProductsTable() {
+  const tbody = document.getElementById('products-table');
+  if(!products.length) { tbody.innerHTML = '<tr><td colspan="6" style="color:var(--gray);padding:20px">No products yet. Add one above.</td></tr>'; return; }
+  tbody.innerHTML = products.map(p => `
+    <tr>
+      <td><strong>${p.name}</strong></td>
+      <td style="color:var(--gray)">${p.brand||'-'}</td>
+      <td>₹${p.price}</td>
+      <td style="color:var(--gray)">${p.category||'-'}</td>
+      <td><button class="toggle-stock ${p.inStock!==false?'in-stock':'out-stock'}" onclick="toggleStock('${p.id}',${p.inStock!==false})">${p.inStock!==false?'In Stock':'Out of Stock'}</button></td>
+      <td style="display:flex;gap:8px">
+        <button class="btn-secondary" style="padding:4px 10px;font-size:12px" onclick="editProduct('${p.id}')">Edit</button>
+        <button style="background:#ef444420;border:1px solid #ef4444;color:#ef4444;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-family:Manrope,sans-serif" onclick="deleteProduct('${p.id}')">Delete</button>
+      </td>
+    </tr>`).join('');
+}
+
+function saveProduct() {
+  const name = document.getElementById('p-name').value.trim();
+  const price = parseFloat(document.getElementById('p-price').value);
+  if(!name || !price) { toast('Name and price required'); return; }
+  const data = {
+    name,
+    brand: document.getElementById('p-brand').value.trim(),
+    price,
+    category: document.getElementById('p-cat').value,
+    flavors: document.getElementById('p-flavors').value.trim(),
+    imageUrl: document.getElementById('p-img').value.trim(),
+    description: document.getElementById('p-desc').value.trim(),
+    inStock: true
+  };
+  if(editingId) {
+    db.collection('products').doc(editingId).update(data).then(() => { toast('Product updated!'); clearForm(); });
+  } else {
+    db.collection('products').add(data).then(() => { toast('Product added!'); clearForm(); });
+  }
+}
+
+function editProduct(id) {
+  const p = products.find(x => x.id === id);
+  if(!p) return;
+  editingId = id;
+  document.getElementById('p-name').value = p.name || '';
+  document.getElementById('p-brand').value = p.brand || '';
+  document.getElementById('p-price').value = p.price || '';
+  document.getElementById('p-cat').value = p.category || 'Whey Protein';
+  document.getElementById('p-flavors').value = p.flavors || '';
+  document.getElementById('p-img').value = p.imageUrl || '';
+  document.getElementById('p-desc').value = p.description || '';
+  document.getElementById('form-title').textContent = 'EDIT PRODUCT';
+  document.getElementById('clear-btn').style.display = 'inline-block';
+  window.scrollTo(0,0);
+}
+
+function clearForm() {
+  editingId = null;
+  ['p-name','p-brand','p-price','p-flavors','p-img','p-desc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('p-cat').value = 'Whey Protein';
+  document.getElementById('form-title').textContent = 'ADD PRODUCT';
+  document.getElementById('clear-btn').style.display = 'none';
+}
+
+function deleteProduct(id) {
+  if(!confirm('Delete this product?')) return;
+  db.collection('products').doc(id).delete().then(() => toast('Product deleted'));
+}
+
+function toggleStock(id, currentlyIn) {
+  db.collection('products').doc(id).update({ inStock: !currentlyIn }).then(() => toast('Stock updated'));
+}
+
+// ============ ADMIN ORDERS ============
+function loadOrders() {
+  db.collection('orders').orderBy('createdAt','desc').onSnapshot(snap => {
+    const orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const list = document.getElementById('orders-list');
+    if(!orders.length) { list.innerHTML = '<p style="color:var(--gray)">No orders yet.</p>'; return; }
+    list.innerHTML = orders.map(o => `
+      <div class="order-card">
+        <h4>Order #${o.id.slice(-6).toUpperCase()}</h4>
+        <div class="order-meta">
+          <span>👤 ${o.name}</span>
+          <span>📞 ${o.mobile}</span>
+          <span>📍 ${o.pincode}</span>
+          <span>💰 ₹${o.total}</span>
+          <span>🕐 ${new Date(o.createdAt).toLocaleDateString('en-IN')}</span>
+        </div>
+        <p style="color:var(--gray);font-size:13px;margin-bottom:8px">📦 ${o.address}</p>
+        <p style="font-size:13px;margin-bottom:12px">${o.items.map(i=>`${i.name} x${i.qty}`).join(', ')}</p>
+        <div style="display:flex;align-items:center;gap:12px">
+          <select class="status-sel" onchange="updateOrderStatus('${o.id}',this.value)">
+            ${['Payment Pending','Paid','Processing','Shipped','Delivered','Cancelled'].map(s=>`<option ${o.status===s?'selected':''}>${s}</option>`).join('')}
+          </select>
+          <span style="font-size:12px;color:var(--gray)">${o.status}</span>
+        </div>
+      </div>`).join('');
+  });
+}
+
+function updateOrderStatus(id, status) {
+  db.collection('orders').doc(id).update({ status }).then(() => toast('Order status updated'));
+}
+
+// ============ SETTINGS ============
+function saveSettings() {
+  const data = {
+    upi: document.getElementById('s-upi').value.trim(),
+    shopName: document.getElementById('s-shopname').value.trim(),
+    phone: document.getElementById('s-phone').value.trim()
+  };
+  db.collection('settings').doc('shop').set(data).then(() => {
+    settings = { ...settings, ...data };
+    toast('Settings saved!');
+  });
+}
+
+// ============ ADMIN TABS ============
+function switchTab(tab) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  event.target.classList.add('active');
+  if(tab === 'orders') loadOrders();
+}
+
+// ============ INIT ============
+loadProducts();
+updateCartCount();
+</script>
+</body>
+</html>
