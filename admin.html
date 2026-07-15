@@ -16,14 +16,14 @@
     }
     .apple-card {
       background: #f5f5f7;
-      border-radius: 16px;
+      border-radius: 20px;
       border: 1px solid rgba(0, 0, 0, 0.02);
       transition: all 0.2s ease;
     }
     .apple-input {
       background: #f5f5f7;
       border: 1px solid transparent;
-      border-radius: 12px;
+      border-radius: 14px;
       transition: all 0.2s ease;
     }
     .apple-input:focus {
@@ -31,19 +31,19 @@
       border-color: #000000;
       box-shadow: 0 0 0 1px #000000;
     }
+    .pill-nav { 
+      background: rgba(255, 255, 255, 0.9); 
+      backdrop-filter: blur(20px); 
+      -webkit-backdrop-filter: blur(20px); 
+      border: 1px solid rgba(0, 0, 0, 0.06); 
+    }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    
-    /* Login overlay matching premium theme */
-    #login-screen {
-      background-color: #ffffff;
-    }
   </style>
 </head>
-<body class="antialiased">
+<body class="pb-32 antialiased selection:bg-black selection:text-white">
 
-  <!-- ================= SECURE AUTHENTICATION SCREEN ================= -->
-  <div id="login-screen" class="fixed inset-0 z-[999] flex items-center justify-center p-6">
+  <div id="login-screen" class="fixed inset-0 z-[999] flex items-center justify-center p-6 bg-white">
     <div class="w-full max-w-sm space-y-8">
       <div class="text-center">
         <div class="inline-flex w-14 h-14 bg-black text-white text-xl rounded-2xl items-center justify-center mb-4">💊</div>
@@ -67,123 +67,122 @@
     </div>
   </div>
 
-  <!-- ================= MASTER DASHBOARD TERMINAL ================= -->
-  <div id="dashboard-screen" class="hidden min-height: 100vh;">
+  <div id="dashboard-screen" class="hidden">
     
-    <!-- SYSTEM SIDEBAR NAV -->
-    <aside class="w-64 bg-white border-r border-gray-100 h-screen fixed left-0 top-0 p-6 flex flex-col justify-between z-40">
-      <div class="space-y-8">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 bg-black text-white rounded-xl flex items-center justify-center text-sm">💊</div>
-          <span class="text-lg font-black tracking-tight text-black">Nikate Admin</span>
-        </div>
-        
-        <nav class="space-y-1">
-          <button onclick="switchTab('orders')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wide transition-colors group text-black bg-gray-100" data-tab="orders">
-            <i class="fa-solid fa-box text-sm"></i> Operational Pipeline
-          </button>
-          <button onclick="switchTab('catalog')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wide transition-colors group text-gray-400 hover:text-black hover:bg-gray-50" data-tab="catalog">
-            <i class="fa-solid fa-list text-sm"></i> Product Asset Catalog
-          </button>
-          <button onclick="switchTab('coupons')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wide transition-colors group text-gray-400 hover:text-black hover:bg-gray-50" data-tab="coupons">
-            <i class="fa-solid fa-tags text-sm"></i> Promo Engine
-          </button>
-          <button onclick="switchTab('chats')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wide transition-colors group text-gray-400 hover:text-black hover:bg-gray-50 relative" data-tab="chats">
-            <i class="fa-solid fa-comments text-sm"></i> Client Inbox
-            <span id="chat-alert-dot" class="w-2 h-2 rounded-full bg-black absolute top-1/2 -translate-y-1/2 right-4 hidden animate-pulse"></span>
-          </button>
-        </nav>
+    <header class="max-w-md mx-auto px-6 pt-6 flex justify-between items-center border-b border-gray-100 pb-5">
+      <div>
+        <h1 class="text-2xl font-black tracking-tight text-black">Console</h1>
+        <p id="page-subtitle" class="text-[9px] text-gray-400 font-black uppercase tracking-widest mt-0.5">Operational Pipeline</p>
       </div>
-      
-      <div class="border-t border-gray-100 pt-4 space-y-2">
-        <button id="shop-toggle-btn" onclick="toggleStoreStatus()" class="w-full py-3.5 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider transition-opacity hover:opacity-90">Checking Systems...</button>
-        <button id="logoutBtn" class="w-full text-red-500 font-bold text-xs uppercase tracking-wide flex items-center justify-center gap-2 p-3 rounded-xl hover:bg-red-50 transition-colors"><i class="fa-solid fa-right-from-bracket text-xs"></i> Sign Out</button>
+      <div class="flex items-center gap-2">
+        <button id="shop-toggle-btn" onclick="toggleStoreStatus()" class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5">Checking...</button>
       </div>
-    </aside>
+    </header>
 
-    <!-- CONTENT FRAMEWORK -->
-    <main class="ml-64 p-8 max-w-5xl">
+    <main class="max-w-md mx-auto px-6 mt-6">
       
-      <!-- EXECUTIVE CONSOLE HEADER -->
-      <header class="flex justify-between items-end border-b border-gray-100 pb-6 mb-8">
-        <div>
-          <p class="text-[10px] text-gray-400 font-black uppercase tracking-widest">Global Overview</p>
-          <h1 id="page-title" class="text-3xl font-black tracking-tight text-black mt-1">Operational Pipeline</h1>
-        </div>
-        <div class="flex gap-8 text-right">
-          <div>
-            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Live Orders</p>
-            <p id="stat-orders" class="font-black text-2xl text-black mt-0.5">0</p>
-          </div>
-          <div class="border-l border-gray-100 pl-8">
-            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Total Products</p>
-            <p id="stat-products" class="font-black text-2xl text-black mt-0.5">0</p>
-          </div>
-        </div>
-      </header>
-
-      <!-- TAB 1: OPERATIONAL PIPELINE -->
       <section id="view-orders" class="dash-view space-y-4">
-        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2"><i class="fa-solid fa-bolt mr-1.5 text-black"></i>Active Customer Request Queues</h3>
+        <div class="flex justify-between items-center">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-bolt mr-1.5 text-black"></i>Customer Queues</h3>
+          <span class="text-xs font-black text-black">Active: <span id="stat-orders">0</span></span>
+        </div>
         <div id="orders-list" class="space-y-4"></div>
       </section>
 
-      <!-- TAB 2: CATALOG INVENTORY -->
       <section id="view-catalog" class="dash-view hidden space-y-4">
         <div class="flex justify-between items-center mb-2">
-          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-boxes-stacked mr-1.5 text-black"></i>Product Assets Inventory</h3>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-boxes-stacked mr-1.5 text-black"></i>Product Assets</h3>
           <button onclick="openProductModal()" class="px-4 py-2 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider hover:opacity-90 transition-opacity"><i class="fa-solid fa-plus mr-1"></i> Add Asset</button>
         </div>
-        <div id="products-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        <div id="products-list" class="space-y-3"></div>
       </section>
 
-      <!-- TAB 3: PROMO ENGINE -->
-      <section id="view-coupons" class="dash-view hidden grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section id="view-coupons" class="dash-view hidden space-y-6">
         <div class="space-y-4">
-          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-tag mr-1.5 text-black"></i>Create Engine Rule</h3>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-tag mr-1.5 text-black"></i>Create Promo Rule</h3>
           <div class="space-y-3">
-            <input type="text" id="new-coupon-code" placeholder="PROMO CODE (E.G. FIT20)" class="w-full px-4 py-3.5 apple-input text-sm outline-none font-bold uppercase tracking-wide text-black">
-            <input type="number" id="new-coupon-val" placeholder="Discount Percentage (%)" class="w-full px-4 py-3.5 apple-input text-sm outline-none font-bold text-black">
+            <input type="text" id="new-coupon-code" placeholder="PROMO CODE (E.G. FIT20)" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-bold uppercase tracking-wide text-black">
+            <input type="number" id="new-coupon-val" placeholder="Discount Percentage (%)" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-bold text-black">
             <button onclick="createCouponCode()" class="w-full py-3.5 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-opacity hover:opacity-90">Activate Promo</button>
           </div>
         </div>
-        <div class="md:col-span-2 space-y-4">
+        <div class="space-y-4">
           <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Promo Configurations</h3>
           <div id="coupons-list" class="space-y-2"></div>
         </div>
       </section>
 
-      <!-- TAB 4: CLIENT INBOX -->
-      <section id="view-chats" class="dash-view hidden grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section id="view-chats" class="dash-view hidden space-y-4">
         <div class="space-y-4">
-          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-users mr-1.5 text-black"></i>Active Users Rooms</h3>
-          <div id="chats-queue" class="space-y-2 h-[480px] overflow-y-auto hide-scrollbar"></div>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-users mr-1.5 text-black"></i>Active User Rooms</h3>
+          <div id="chats-queue" class="space-y-2 max-h-[360px] overflow-y-auto hide-scrollbar"></div>
         </div>
-        <div class="md:col-span-2">
-          <div id="admin-chat-box" class="hidden apple-card border border-gray-100 overflow-hidden flex flex-col h-[520px]">
-            <div class="bg-black text-white p-4 flex justify-between items-center">
-              <div>
-                <h4 id="active-chat-title" class="font-bold text-sm">Active Thread</h4>
-                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Secure Customer Support Link</p>
-              </div>
-              <button onclick="closeAdminChat()" class="text-white/70 hover:text-white"><i class="fa-solid fa-xmark text-sm"></i></button>
+
+        <div id="admin-chat-box" class="hidden fixed inset-0 bg-white z-[150] flex flex-col">
+          <div class="bg-black text-white p-4 flex justify-between items-center">
+            <div>
+              <h4 id="active-chat-title" class="font-bold text-sm">Active Thread</h4>
+              <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Secure Customer Support Link</p>
             </div>
-            <div id="admin-messages-box" class="p-4 flex-1 overflow-y-auto space-y-3 text-xs bg-white hide-scrollbar"></div>
-            <div class="p-3 bg-gray-50 border-t border-gray-100 flex gap-2 items-center">
-              <input type="text" id="admin-chat-input" placeholder="Type administrative transmission response..." class="flex-1 px-4 py-3 bg-white border border-gray-100 rounded-xl text-xs outline-none font-semibold text-black">
-              <button onclick="sendAdminReply()" class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity"><i class="fa-solid fa-paper-plane text-xs"></i></button>
-            </div>
+            <button onclick="closeAdminChat()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20"><i class="fa-solid fa-xmark text-sm"></i></button>
+          </div>
+          <div id="admin-messages-box" class="p-4 flex-1 overflow-y-auto space-y-3 text-xs bg-gray-50 hide-scrollbar"></div>
+          <div class="p-3 bg-white border-t border-gray-100 flex gap-2 items-center pb-8">
+            <input type="text" id="admin-chat-input" placeholder="Type transmission response..." class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs outline-none font-semibold text-black">
+            <button onclick="sendAdminReply()" class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity"><i class="fa-solid fa-paper-plane text-xs"></i></button>
           </div>
         </div>
       </section>
+
+      <section id="view-system" class="dash-view hidden space-y-6">
+        <div>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3"><i class="fa-solid fa-gears mr-1.5 text-black"></i>System Parameters</h3>
+          <div class="apple-card p-5 space-y-4 border border-gray-100">
+            <div>
+              <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Active Database Node</p>
+              <p class="font-bold text-xs text-black mt-1">nikte-nutritions-default-rtdb</p>
+            </div>
+            <div class="border-t border-gray-100 pt-4">
+              <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-2">Platform Power State</p>
+              <button id="system-toggle-wide" onclick="toggleStoreStatus()" class="w-full py-3 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider">Toggle Operational Power</button>
+            </div>
+          </div>
+        </div>
+        <button id="logoutBtn" class="w-full py-4 bg-red-50 text-red-600 border border-red-100 font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 hover:bg-red-100/50 transition-colors"><i class="fa-solid fa-right-from-bracket text-xs"></i> Shut Down Session</button>
+      </section>
+
     </main>
+
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm pill-nav rounded-2xl px-1 py-2.5 shadow-xl z-50 flex justify-between items-center">
+      <button onclick="switchTab('orders')" class="nav-btn text-black flex flex-col items-center flex-1 py-1" data-tab="orders">
+        <i class="fa-solid fa-box text-base"></i>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Pipeline</span>
+      </button>
+      <button onclick="switchTab('catalog')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="catalog">
+        <i class="fa-solid fa-list text-base"></i>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Catalog</span>
+      </button>
+      <button onclick="switchTab('coupons')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="coupons">
+        <i class="fa-solid fa-tags text-base"></i>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Promo</span>
+      </button>
+      <button onclick="switchTab('chats')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1 relative" data-tab="chats">
+        <i class="fa-solid fa-comments text-base"></i>
+        <span id="chat-alert-dot" class="w-1.5 h-1.5 rounded-full bg-black absolute top-1 right-6 hidden animate-pulse"></span>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Inbox</span>
+      </button>
+      <button onclick="switchTab('system')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="system">
+        <i class="fa-solid fa-sliders text-base"></i>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">System</span>
+      </button>
+    </nav>
+
   </div>
 
-  <!-- ================= ASSET MANIFEST INTERFACE CONSOLE MODAL ================= -->
   <div id="prod-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-md z-[200] flex items-center justify-center p-4">
-    <div class="bg-white p-6 rounded-3xl w-full max-w-md space-y-4 border border-gray-100">
+    <div class="bg-white p-6 rounded-3xl w-full max-w-sm space-y-4 border border-gray-100">
       <div class="flex justify-between items-center border-b border-gray-100 pb-3">
-        <h3 id="modal-title" class="text-xs font-bold uppercase tracking-widest text-gray-400">Database Entry Setup</h3>
+        <h3 id="modal-title" class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Database Entry Setup</h3>
         <button onclick="closeProductModal()" class="text-gray-400 hover:text-black"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <input type="hidden" id="prod-id" value="">
@@ -195,7 +194,7 @@
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Price Asset Value (INR)</label>
+            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Price Value (INR)</label>
             <input type="number" id="prod-price" class="w-full px-4 py-3 apple-input text-xs font-bold text-black outline-none">
           </div>
           <div>
@@ -213,8 +212,8 @@
           <input type="text" id="prod-img" class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none">
         </div>
         <div>
-          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Full Client Description Specifications</label>
-          <textarea id="prod-desc" rows="4" placeholder="Detail supplement formula parameters, verified purity components, nutritional yields, and explicit cycle profiles..." class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none resize-none hide-scrollbar"></textarea>
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Full Client Specifications</label>
+          <textarea id="prod-desc" rows="4" placeholder="Detail supplement formula parameters, verified purity components..." class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none resize-none hide-scrollbar"></textarea>
         </div>
       </div>
 
@@ -222,7 +221,6 @@
     </div>
   </div>
 
-  <!-- ================= CORE FRAMEWORK EXECUTION MODULE ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -282,27 +280,28 @@
 
     document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
-    // ================= INTERFACE SWITCH SYSTEM =================
+    // ================= INTERFACE PILL SWITCH SYSTEM =================
     window.switchTab = (tabId) => {
       document.querySelectorAll('.dash-view').forEach(v => v.classList.add('hidden'));
       document.getElementById(`view-${tabId}`).classList.remove('hidden');
       
       document.querySelectorAll('nav button').forEach(btn => {
         if(btn.dataset.tab === tabId) {
-          btn.classList.add('text-black', 'bg-gray-100');
-          btn.classList.remove('text-gray-400', 'hover:text-black', 'hover:bg-gray-50');
+          btn.classList.add('text-black');
+          btn.classList.remove('text-gray-400');
         } else {
-          btn.classList.remove('text-black', 'bg-gray-100');
-          btn.classList.add('text-gray-400', 'hover:text-black', 'hover:bg-gray-50');
+          btn.classList.remove('text-black');
+          btn.classList.add('text-gray-400');
         }
       });
       const titles = { 
         orders: 'Operational Pipeline', 
         catalog: 'Product Asset Catalog', 
         coupons: 'Promo Engine Room', 
-        chats: 'Client Communications Inbox' 
+        chats: 'Communications Inbox',
+        system: 'System Configuration'
       };
-      document.getElementById('page-title').textContent = titles[tabId];
+      document.getElementById('page-subtitle').textContent = titles[tabId];
     };
 
     window.toggleStoreStatus = () => update(ref(db, 'shopStatus'), { isOpen: !storeOpen });
@@ -315,10 +314,17 @@
         if(data) {
           storeOpen = data.isOpen;
           const btn = document.getElementById('shop-toggle-btn');
-          btn.textContent = storeOpen ? 'STORE FRONT: ACTIVE' : 'STORE FRONT: PAUSED';
+          const wideBtn = document.getElementById('system-toggle-wide');
+          
+          btn.textContent = storeOpen ? 'STORE: ACTIVE' : 'STORE: PAUSED';
           btn.className = storeOpen 
-            ? "w-full py-3.5 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider text-center"
-            : "w-full py-3.5 bg-red-50 text-red-600 border border-red-100 text-[10px] font-bold rounded-xl uppercase tracking-wider text-center";
+            ? "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5"
+            : "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5";
+            
+          wideBtn.textContent = storeOpen ? 'DEACTIVATE STORE FRONT' : 'ACTIVATE STORE FRONT';
+          wideBtn.className = storeOpen
+            ? "w-full py-3 bg-red-50 border border-red-100 text-red-600 text-[10px] font-bold rounded-xl uppercase tracking-wider"
+            : "w-full py-3 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider";
         }
       });
 
@@ -329,7 +335,7 @@
         list.innerHTML = '';
         if(!data) { 
           document.getElementById('stat-orders').textContent = '0';
-          list.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50">Operational active pipeline empty.</p>`; 
+          list.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50 border border-gray-100">Operational active pipeline empty.</p>`; 
           return; 
         }
         
@@ -344,29 +350,30 @@
           if(order.status === 'declined') color = "text-red-600 bg-red-50";
 
           list.innerHTML += `
-            <div class="p-6 border border-gray-100 rounded-2xl bg-white hover:border-gray-200 transition-colors">
+            <div class="p-5 border border-gray-100 rounded-2xl bg-white">
               <div class="flex justify-between items-start">
                 <div>
-                  <h4 class="font-black text-sm text-black">${order.customerName} — ${order.customerPhone}</h4>
-                  <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1">UID: #${id.slice(-6).toUpperCase()}</p>
+                  <h4 class="font-black text-xs text-black">${order.customerName}</h4>
+                  <p class="text-[9px] text-gray-400 font-semibold mt-0.5">${order.customerPhone}</p>
+                  <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-1">UID: #${id.slice(-6).toUpperCase()}</p>
                 </div>
-                <span class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider ${color}">${order.status}</span>
+                <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${color}">${order.status}</span>
               </div>
-              <div class="mt-4 space-y-1.5 border-t border-b border-gray-50 py-3 my-3">
-                <p class="text-xs text-gray-600 font-medium"><strong>Manifest:</strong> ${items}</p>
-                <p class="text-xs text-gray-600 font-medium"><strong>Logistics Target:</strong> ${order.address}</p>
+              <div class="mt-3 space-y-1.5 border-t border-b border-gray-50 py-2.5 my-2.5">
+                <p class="text-[11px] text-gray-600 font-medium"><strong>Manifest:</strong> ${items}</p>
+                <p class="text-[11px] text-gray-600 font-medium"><strong>Logistics Target:</strong> ${order.address}</p>
               </div>
               <div class="flex justify-between items-center">
-                <span class="font-black text-base text-black">₹${order.totalAmount}</span>
-                <div class="flex gap-2">
+                <span class="font-black text-sm text-black">₹${order.totalAmount}</span>
+                <div class="flex gap-1.5">
                   ${order.status === 'pending' ? `
-                    <button onclick="updateStatus('${id}', 'preparing')" class="px-3.5 py-2 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Accept</button>
-                    <button onclick="updateStatus('${id}', 'declined')" class="px-3.5 py-2 bg-gray-100 text-black text-[9px] font-bold rounded-lg uppercase tracking-wider">Decline</button>
+                    <button onclick="updateStatus('${id}', 'preparing')" class="px-3 py-1.5 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Accept</button>
+                    <button onclick="updateStatus('${id}', 'declined')" class="px-3 py-1.5 bg-gray-150 text-black text-[9px] font-bold rounded-lg uppercase tracking-wider">Decline</button>
                   ` : order.status === 'preparing' ? `
-                    <button onclick="updateStatus('${id}', 'shipping')" class="px-3.5 py-2 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Deploy Shipment</button>
+                    <button onclick="updateStatus('${id}', 'shipping')" class="px-3 py-1.5 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Deploy</button>
                   ` : order.status === 'shipping' ? `
-                    <button onclick="updateStatus('${id}', 'shipped')" class="px-3.5 py-2 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Mark Complete</button>
-                  ` : `<span class="text-[9px] text-gray-400 font-black uppercase tracking-wide"><i class="fa-solid fa-check text-black mr-1"></i>Handled Archive</span>`}
+                    <button onclick="updateStatus('${id}', 'shipped')" class="px-3 py-1.5 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Mark Done</button>
+                  ` : `<span class="text-[8px] text-gray-400 font-black uppercase tracking-wide"><i class="fa-solid fa-check text-black mr-1"></i>Handled Archive</span>`}
                 </div>
               </div>
             </div>
@@ -379,26 +386,25 @@
         const data = snap.val();
         const list = document.getElementById('products-list');
         list.innerHTML = '';
-        if(!data) { document.getElementById('stat-products').textContent = '0'; return; }
+        if(!data) return;
 
-        document.getElementById('stat-products').textContent = Object.keys(data).length;
         Object.entries(data).forEach(([id, prod]) => {
           const safeName = prod.name.replace(/'/g, "\\'");
           const safeDesc = (prod.description || '').replace(/'/g, "\\'").replace(/\n/g, "\\n");
 
           list.innerHTML += `
-            <div class="p-4 apple-card flex justify-between items-center">
-              <div class="flex items-center gap-4">
-                <img src="${prod.image}" class="w-14 h-14 object-contain rounded-xl bg-white border border-gray-100 p-1">
+            <div class="p-4 apple-card flex justify-between items-center bg-gray-50/50">
+              <div class="flex items-center gap-3">
+                <img src="${prod.image}" class="w-12 h-12 object-contain rounded-xl bg-white border border-gray-100 p-1">
                 <div>
-                  <h4 class="font-black text-xs text-black leading-tight">${prod.name}</h4>
-                  <p class="text-[9px] text-gray-400 font-black mt-1">VAL: ₹${prod.price} <span class="mx-1 text-gray-300">•</span> CAT: ${prod.categoryId || 'NONE'}</p>
+                  <h4 class="font-black text-[11px] text-black leading-tight">${prod.name}</h4>
+                  <p class="text-[9px] text-gray-400 font-bold mt-1">₹${prod.price} <span class="mx-1 text-gray-200">•</span> ${prod.categoryId || 'NONE'}</p>
                 </div>
               </div>
-              <div class="flex items-center gap-2">
-                <button onclick="toggleStock('${id}', ${!prod.inStock})" class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wide ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'}">${prod.inStock ? 'Active' : 'Stock Void'}</button>
-                <button onclick="editProduct('${id}', '${safeName}', ${prod.price}, '${prod.image}', '${prod.categoryId || ''}', '${safeDesc}')" class="w-8 h-8 bg-white border border-gray-100 text-black rounded-lg flex justify-center items-center hover:bg-gray-50"><i class="fa-solid fa-pen text-[10px]"></i></button>
-                <button onclick="deleteProduct('${id}')" class="w-8 h-8 bg-white border border-gray-100 text-red-500 rounded-lg flex justify-center items-center hover:bg-red-50"><i class="fa-solid fa-trash text-[10px]"></i></button>
+              <div class="flex items-center gap-1.5">
+                <button onclick="toggleStock('${id}', ${!prod.inStock})" class="px-2 py-1 rounded text-[8px] font-black uppercase tracking-wide ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'}">${prod.inStock ? 'In Stock' : 'Void'}</button>
+                <button onclick="editProduct('${id}', '${safeName}', ${prod.price}, '${prod.image}', '${prod.categoryId || ''}', '${safeDesc}')" class="w-7 h-7 bg-white border border-gray-150 text-black rounded-lg flex justify-center items-center"><i class="fa-solid fa-pen text-[9px]"></i></button>
+                <button onclick="deleteProduct('${id}')" class="w-7 h-7 bg-white border border-gray-150 text-red-500 rounded-lg flex justify-center items-center"><i class="fa-solid fa-trash text-[9px]"></i></button>
               </div>
             </div>
           `;
@@ -411,13 +417,13 @@
         const box = document.getElementById('coupons-list');
         box.innerHTML = '';
         if(!data) {
-          box.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card">No promo metrics deployed.</p>`;
+          box.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50">No active promo rules deployed.</p>`;
           return;
         }
         Object.entries(data).forEach(([code, c]) => {
           box.innerHTML += `
-            <div class="flex justify-between items-center bg-gray-50 border border-gray-100 p-4 rounded-xl text-xs font-bold">
-              <span class="text-black uppercase tracking-wide">${code} <span class="text-gray-400 font-semibold ml-2">(${c.value}% OFF APPLIED)</span></span>
+            <div class="flex justify-between items-center bg-gray-50 border border-gray-100 p-3.5 rounded-xl text-xs font-bold">
+              <span class="text-black uppercase tracking-wide">${code} <span class="text-gray-400 font-semibold ml-2">(${c.value}% OFF)</span></span>
               <button onclick="remove(ref(db, 'coupons/${code}'))" class="text-red-500 hover:text-red-600 p-1"><i class="fa-solid fa-trash-can"></i></button>
             </div>
           `;
@@ -453,9 +459,9 @@
     // ================= DATA LOGIC HOOK OPERATIONS =================
     window.updateStatus = (id, status) => update(ref(db, `orders/${id}`), { status });
     window.toggleStock = (id, val) => update(ref(db, `products/${id}`), { inStock: val });
-    window.deleteProduct = (id) => { if(confirm('Delete product data node permanently?')) remove(ref(db, `products/${id}`)); };
+    window.deleteProduct = (id) => { if(confirm('Delete product node permanently?')) remove(ref(db, `products/${id}`)); };
 
-    // Manifest Asset Control System Windows
+    // Manifest Asset Control Modal Mechanics
     window.openProductModal = () => {
       document.getElementById('prod-id').value = '';
       document.getElementById('prod-name').value = '';
@@ -488,12 +494,12 @@
         inStock: true
       };
       
-      if(!payload.name || isNaN(payload.price)) return alert("Requires primary name designation and valid asset value validation parameters.");
+      if(!payload.name || isNaN(payload.price)) return alert("Requires primary designation and valid value parameters.");
       if(id) update(ref(db, `products/${id}`), payload).then(closeProductModal);
       else set(push(ref(db, 'products')), payload).then(closeProductModal);
     };
 
-    // Promotion Matrix Generation Engine
+    // Promotion Rules Deletion/Creation Matrix
     window.createCouponCode = () => {
       const code = document.getElementById('new-coupon-code').value.toUpperCase().trim();
       const val = parseFloat(document.getElementById('new-coupon-val').value);
@@ -504,10 +510,10 @@
       });
     };
 
-    // Client Synchronized Chat Channels
+    // Customer Communications Channels
     window.openAdminChat = (chatId, name) => {
       selectedChatId = chatId;
-      document.getElementById('active-chat-title').textContent = `Room Terminal: ${name}`;
+      document.getElementById('active-chat-title').textContent = `Room: ${name}`;
       document.getElementById('admin-chat-box').classList.remove('hidden');
       
       onValue(ref(db, `chats/${chatId}/messages`), (snap) => {
@@ -518,7 +524,7 @@
           const isCustomer = msg.sender === 'customer';
           box.innerHTML += `
             <div class="flex ${isCustomer ? 'justify-start' : 'justify-end'}">
-              <div class="max-w-[80%] p-3 rounded-2xl ${isCustomer ? 'bg-gray-100 text-black rounded-bl-none' : 'bg-black text-white rounded-br-none'}">
+              <div class="max-w-[80%] p-3 rounded-2xl ${isCustomer ? 'bg-gray-250 text-black rounded-bl-none' : 'bg-black text-white rounded-br-none'}">
                 <p class="font-medium leading-relaxed">${msg.text}</p>
               </div>
             </div>
