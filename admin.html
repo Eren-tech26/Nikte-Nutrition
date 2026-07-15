@@ -8,42 +8,18 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { 
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-      background-color: #ffffff; 
-      color: #000000; 
-      min-height: 100vh;
-    }
-    .apple-card {
-      background: #f5f5f7;
-      border-radius: 20px;
-      border: 1px solid rgba(0, 0, 0, 0.02);
-      transition: all 0.2s ease;
-    }
-    .apple-input {
-      background: #f5f5f7;
-      border: 1px solid transparent;
-      border-radius: 14px;
-      transition: all 0.2s ease;
-    }
-    .apple-input:focus {
-      background: #ffffff;
-      border-color: #000000;
-      box-shadow: 0 0 0 1px #000000;
-    }
-    .pill-nav { 
-      background: rgba(255, 255, 255, 0.9); 
-      backdrop-filter: blur(20px); 
-      -webkit-backdrop-filter: blur(20px); 
-      border: 1px solid rgba(0, 0, 0, 0.06); 
-    }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #ffffff; color: #000000; min-height: 100vh; }
+    .apple-card { background: #f5f5f7; border-radius: 20px; border: 1px solid rgba(0,0,0,0.02); transition: all 0.2s ease; }
+    .apple-input { background: #f5f5f7; border: 1px solid transparent; border-radius: 14px; transition: all 0.2s ease; }
+    .apple-input:focus { background: #ffffff; border-color: #000000; box-shadow: 0 0 0 1px #000000; }
+    .pill-nav { background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(0,0,0,0.06); }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="pb-32 antialiased selection:bg-black selection:text-white">
 
-  <!-- ================= LOGIN SCREEN ================= -->
+  <!-- LOGIN SCREEN -->
   <div id="login-screen" class="fixed inset-0 z-[999] flex items-center justify-center p-6 bg-white">
     <div class="w-full max-w-sm space-y-8">
       <div class="text-center">
@@ -51,9 +27,7 @@
         <h2 class="text-3xl font-black tracking-tight text-black">Nikate Admin</h2>
         <p class="text-xs text-gray-400 font-medium mt-1">Store Login</p>
       </div>
-
       <div class="bg-red-50 text-red-600 text-xs font-bold p-3.5 rounded-xl text-center hidden" id="errorMsg"></div>
-      
       <div class="space-y-4 pt-2">
         <div>
           <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Email</label>
@@ -68,9 +42,9 @@
     </div>
   </div>
 
-  <!-- ================= DASHBOARD ================= -->
+  <!-- DASHBOARD -->
   <div id="dashboard-screen" class="hidden">
-    
+
     <!-- TOP BAR -->
     <header class="max-w-md mx-auto px-6 pt-6 flex justify-between items-center border-b border-gray-100 pb-5">
       <div>
@@ -84,7 +58,7 @@
 
     <!-- CONTENT -->
     <main class="max-w-md mx-auto px-6 mt-6">
-      
+
       <!-- TAB 1: ORDERS -->
       <section id="view-orders" class="dash-view space-y-4">
         <div class="flex gap-2 bg-gray-100 p-1 rounded-xl">
@@ -105,7 +79,13 @@
           <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-boxes-stacked mr-1.5 text-black"></i>Products</h3>
           <button onclick="openProductModal()" class="px-4 py-2 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider hover:opacity-90 transition-opacity"><i class="fa-solid fa-plus mr-1"></i> Add Product</button>
         </div>
+        <!-- SEARCH BAR -->
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+          <input type="text" id="product-search" placeholder="Search products..." oninput="filterProducts()" class="w-full pl-10 pr-4 py-3 apple-input text-xs font-semibold text-black outline-none">
+        </div>
         <div id="products-list" class="space-y-3"></div>
+        <p id="no-results" class="hidden text-xs text-gray-400 font-bold py-8 text-center apple-card bg-gray-50">No products match your search.</p>
       </section>
 
       <!-- TAB 3: COUPONS -->
@@ -130,8 +110,6 @@
           <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-users mr-1.5 text-black"></i>Customer Chats</h3>
           <div id="chats-queue" class="space-y-2 max-h-[360px] overflow-y-auto hide-scrollbar"></div>
         </div>
-
-        <!-- Chat popup window -->
         <div id="admin-chat-box" class="hidden fixed inset-0 bg-white z-[150] flex flex-col">
           <div class="bg-black text-white p-4 flex justify-between items-center">
             <div>
@@ -168,7 +146,7 @@
 
     </main>
 
-    <!-- ================= BOTTOM NAV ================= -->
+    <!-- BOTTOM NAV -->
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm pill-nav rounded-2xl px-1 py-2.5 shadow-xl z-50 flex justify-between items-center">
       <button onclick="switchTab('orders')" class="nav-btn text-black flex flex-col items-center flex-1 py-1" data-tab="orders">
         <i class="fa-solid fa-box text-base"></i>
@@ -192,10 +170,9 @@
         <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Settings</span>
       </button>
     </nav>
-
   </div>
 
-  <!-- ================= PRODUCT ADD/EDIT POPUP ================= -->
+  <!-- PRODUCT ADD/EDIT MODAL -->
   <div id="prod-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-md z-[200] flex items-center justify-center p-4">
     <div class="bg-white p-6 rounded-3xl w-full max-w-sm space-y-4 border border-gray-100 max-h-[90vh] overflow-y-auto hide-scrollbar">
       <div class="flex justify-between items-center border-b border-gray-100 pb-3">
@@ -203,7 +180,6 @@
         <button onclick="closeProductModal()" class="text-gray-400 hover:text-black"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <input type="hidden" id="prod-id" value="">
-      
       <div class="space-y-3">
         <div>
           <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Product Name</label>
@@ -224,8 +200,6 @@
             </select>
           </div>
         </div>
-
-        <!-- IMAGE UPLOAD -->
         <div>
           <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Product Image</label>
           <div class="flex items-center gap-3">
@@ -243,18 +217,16 @@
           </div>
           <input type="text" id="prod-img" placeholder="Or paste an image URL" class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none mt-2" oninput="previewImageUrl()">
         </div>
-
         <div>
           <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Description</label>
           <textarea id="prod-desc" rows="4" placeholder="Product details, ingredients, etc..." class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none resize-none hide-scrollbar"></textarea>
         </div>
       </div>
-
       <button onclick="saveProduct()" class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider mt-2 hover:opacity-90 transition-opacity">Save Product</button>
     </div>
   </div>
 
-  <!-- ================= APP LOGIC ================= -->
+  <!-- APP LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -278,7 +250,10 @@
     let selectedChatId = null;
     let currentOrderSubTab = 'active';
 
-    // ================= LOGIN CHECK =================
+    // ---- Store all products in memory for search ----
+    let allProducts = {};
+
+    // ================= AUTH =================
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('login-screen').style.display = 'none';
@@ -295,18 +270,13 @@
       const password = document.getElementById('password').value;
       const errorMsg = document.getElementById('errorMsg');
       const btn = document.getElementById('loginBtn');
-      
-      if(!email || !password) { 
-        errorMsg.textContent = 'Please fill in all fields.'; 
-        errorMsg.classList.remove('hidden'); 
-        return; 
-      }
+      if (!email || !password) { errorMsg.textContent = 'Please fill in all fields.'; errorMsg.classList.remove('hidden'); return; }
       btn.textContent = "Logging in..."; btn.disabled = true;
       try {
         await signInWithEmailAndPassword(auth, email, password);
         btn.textContent = "Log In"; btn.disabled = false;
         errorMsg.classList.add('hidden');
-      } catch(error) {
+      } catch (e) {
         errorMsg.textContent = 'Wrong email or password.';
         errorMsg.classList.remove('hidden');
         btn.textContent = "Log In"; btn.disabled = false;
@@ -319,52 +289,22 @@
     window.switchTab = (tabId) => {
       document.querySelectorAll('.dash-view').forEach(v => v.classList.add('hidden'));
       document.getElementById(`view-${tabId}`).classList.remove('hidden');
-      
       document.querySelectorAll('nav button').forEach(btn => {
-        if(btn.dataset.tab === tabId) {
-          btn.classList.add('text-black');
-          btn.classList.remove('text-gray-400');
-        } else {
-          btn.classList.remove('text-black');
-          btn.classList.add('text-gray-400');
-        }
+        btn.classList.toggle('text-black', btn.dataset.tab === tabId);
+        btn.classList.toggle('text-gray-400', btn.dataset.tab !== tabId);
       });
-      const titles = { 
-        orders: 'Orders', 
-        catalog: 'Products', 
-        coupons: 'Coupons', 
-        chats: 'Chats',
-        system: 'Settings'
-      };
+      const titles = { orders: 'Orders', catalog: 'Products', coupons: 'Coupons', chats: 'Chats', system: 'Settings' };
       document.getElementById('page-subtitle').textContent = titles[tabId];
     };
 
-    // Orders sub-tab (Active / History)
     window.switchOrderSubTab = (sub) => {
       currentOrderSubTab = sub;
-      const activeList = document.getElementById('orders-active-list');
-      const historyList = document.getElementById('orders-history-list');
-      const activeBtn = document.getElementById('ordersubtab-active');
-      const historyBtn = document.getElementById('ordersubtab-history');
-      const heading = document.getElementById('orders-heading');
-
-      if(sub === 'active') {
-        activeList.classList.remove('hidden');
-        historyList.classList.add('hidden');
-        activeBtn.classList.add('bg-black', 'text-white');
-        activeBtn.classList.remove('text-gray-500');
-        historyBtn.classList.remove('bg-black', 'text-white');
-        historyBtn.classList.add('text-gray-500');
-        heading.textContent = 'Active Orders';
-      } else {
-        historyList.classList.remove('hidden');
-        activeList.classList.add('hidden');
-        historyBtn.classList.add('bg-black', 'text-white');
-        historyBtn.classList.remove('text-gray-500');
-        activeBtn.classList.remove('bg-black', 'text-white');
-        activeBtn.classList.add('text-gray-500');
-        heading.textContent = 'Order History';
-      }
+      const isActive = sub === 'active';
+      document.getElementById('orders-active-list').classList.toggle('hidden', !isActive);
+      document.getElementById('orders-history-list').classList.toggle('hidden', isActive);
+      document.getElementById('ordersubtab-active').className = `flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${isActive ? 'bg-black text-white' : 'text-gray-500'}`;
+      document.getElementById('ordersubtab-history').className = `flex-1 py-2 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all ${!isActive ? 'bg-black text-white' : 'text-gray-500'}`;
+      document.getElementById('orders-heading').textContent = isActive ? 'Active Orders' : 'Order History';
       renderOrderCounts();
     };
 
@@ -374,19 +314,17 @@
     let latestOrdersData = null;
 
     function loadDashboardData() {
-      // 1. Store Open/Closed Status
+      // Store status
       onValue(ref(db, 'shopStatus'), (snap) => {
         const data = snap.val();
-        if(data) {
+        if (data) {
           storeOpen = data.isOpen;
           const btn = document.getElementById('shop-toggle-btn');
           const wideBtn = document.getElementById('system-toggle-wide');
-          
           btn.textContent = storeOpen ? 'STORE: OPEN' : 'STORE: CLOSED';
-          btn.className = storeOpen 
+          btn.className = storeOpen
             ? "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5"
             : "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5";
-            
           wideBtn.textContent = storeOpen ? 'CLOSE STORE' : 'OPEN STORE';
           wideBtn.className = storeOpen
             ? "w-full py-3 bg-red-50 border border-red-100 text-red-600 text-[10px] font-bold rounded-xl uppercase tracking-wider"
@@ -394,49 +332,24 @@
         }
       });
 
-      // 2. Orders
+      // Orders
       onValue(ref(db, 'orders'), (snap) => {
         latestOrdersData = snap.val();
         renderOrders();
       });
 
-      // 3. Products
+      // Products — store in memory, then render
       onValue(ref(db, 'products'), (snap) => {
-        const data = snap.val();
-        const list = document.getElementById('products-list');
-        list.innerHTML = '';
-        if(!data) return;
-
-        Object.entries(data).forEach(([id, prod]) => {
-          const safeName = prod.name.replace(/'/g, "\\'");
-          const safeDesc = (prod.description || '').replace(/'/g, "\\'").replace(/\n/g, "\\n");
-          const safeImg = (prod.image || '').replace(/'/g, "\\'");
-
-          list.innerHTML += `
-            <div class="p-4 apple-card flex justify-between items-center bg-gray-50/50">
-              <div class="flex items-center gap-3">
-                <img src="${prod.image}" class="w-12 h-12 object-contain rounded-xl bg-white border border-gray-100 p-1">
-                <div>
-                  <h4 class="font-black text-[11px] text-black leading-tight">${prod.name}</h4>
-                  <p class="text-[9px] text-gray-400 font-bold mt-1">₹${prod.price} <span class="mx-1 text-gray-200">•</span> ${prod.categoryId || 'NONE'}</p>
-                </div>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <button onclick="toggleStock('${id}', ${!prod.inStock})" class="px-2 py-1 rounded text-[8px] font-black uppercase tracking-wide ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'}">${prod.inStock ? 'In Stock' : 'Out of Stock'}</button>
-                <button onclick='editProduct("${id}")' data-name="${safeName}" data-price="${prod.price}" data-img="${safeImg}" data-cat="${prod.categoryId || ''}" data-desc="${safeDesc}" class="prod-edit-btn w-7 h-7 bg-white border border-gray-150 text-black rounded-lg flex justify-center items-center"><i class="fa-solid fa-pen text-[9px]"></i></button>
-                <button onclick="deleteProduct('${id}')" class="w-7 h-7 bg-white border border-gray-150 text-red-500 rounded-lg flex justify-center items-center"><i class="fa-solid fa-trash text-[9px]"></i></button>
-              </div>
-            </div>
-          `;
-        });
+        allProducts = snap.val() || {};
+        renderProducts();
       });
 
-      // 4. Coupons
+      // Coupons
       onValue(ref(db, 'coupons'), (snap) => {
         const data = snap.val();
         const box = document.getElementById('coupons-list');
         box.innerHTML = '';
-        if(!data) {
+        if (!data) {
           box.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50">No coupons yet.</p>`;
           return;
         }
@@ -445,24 +358,21 @@
             <div class="flex justify-between items-center bg-gray-50 border border-gray-100 p-3.5 rounded-xl text-xs font-bold">
               <span class="text-black uppercase tracking-wide">${code} <span class="text-gray-400 font-semibold ml-2">(${c.value}% OFF)</span></span>
               <button onclick="deleteCoupon('${code}')" class="text-red-500 hover:text-red-600 p-1"><i class="fa-solid fa-trash-can"></i></button>
-            </div>
-          `;
+            </div>`;
         });
       });
 
-      // 5. Chats
+      // Chats
       onValue(ref(db, 'chats'), (snap) => {
         const data = snap.val();
         const list = document.getElementById('chats-queue');
         const dot = document.getElementById('chat-alert-dot');
         list.innerHTML = '';
-        
-        if(!data) { dot.classList.add('hidden'); return; }
+        if (!data) { dot.classList.add('hidden'); return; }
         dot.classList.remove('hidden');
-
         Object.entries(data).forEach(([key, val]) => {
           const info = val.customerInfo;
-          if(!info) return;
+          if (!info) return;
           list.innerHTML += `
             <button onclick="openAdminChat('${key}', '${info.name}')" class="w-full text-left p-4 bg-gray-50 border border-gray-100 hover:bg-gray-100 rounded-xl flex items-center justify-between transition-colors">
               <div>
@@ -470,16 +380,62 @@
                 <p class="text-[9px] text-gray-400 font-bold tracking-wide mt-0.5">${info.phone}</p>
               </div>
               <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-            </button>
-          `;
+            </button>`;
         });
       });
     }
 
-    // ================= ORDERS RENDERING (NEW FLOW) =================
-    // Status flow: pending -> accepted (Order Placed) -> shipping (Out for Delivery) -> delivered
-    // OR: pending -> rejected
-    // "delivered" and "rejected" orders go to History ONLY once admin explicitly taps "Mark Delivered" / stays as Rejected immediately.
+    // ================= PRODUCTS RENDER + SEARCH =================
+    function renderProducts(query = '') {
+      const list = document.getElementById('products-list');
+      const noResults = document.getElementById('no-results');
+      list.innerHTML = '';
+
+      const entries = Object.entries(allProducts);
+      const filtered = query
+        ? entries.filter(([id, p]) => p.name.toLowerCase().includes(query.toLowerCase()) || (p.description || '').toLowerCase().includes(query.toLowerCase()))
+        : entries;
+
+      if (filtered.length === 0) {
+        noResults.classList.remove('hidden');
+        return;
+      }
+      noResults.classList.add('hidden');
+
+      filtered.forEach(([id, prod]) => {
+        const div = document.createElement('div');
+        div.className = 'p-4 apple-card flex justify-between items-center bg-gray-50/50';
+        div.innerHTML = `
+          <div class="flex items-center gap-3">
+            <img src="${prod.image || ''}" class="w-12 h-12 object-contain rounded-xl bg-white border border-gray-100 p-1" onerror="this.src='https://images.unsplash.com/photo-1579758629938-03607ccdbaba?w=120'">
+            <div>
+              <h4 class="font-black text-[11px] text-black leading-tight">${prod.name}</h4>
+              <p class="text-[9px] text-gray-400 font-bold mt-1">₹${prod.price} <span class="mx-1 text-gray-200">•</span> ${prod.categoryId || 'NONE'}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button class="stock-btn px-2 py-1 rounded text-[8px] font-black uppercase tracking-wide ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'}">${prod.inStock ? 'In Stock' : 'Out of Stock'}</button>
+            <button class="edit-btn w-7 h-7 bg-white border border-gray-200 text-black rounded-lg flex justify-center items-center"><i class="fa-solid fa-pen text-[9px]"></i></button>
+            <button class="delete-btn w-7 h-7 bg-white border border-gray-200 text-red-500 rounded-lg flex justify-center items-center"><i class="fa-solid fa-trash text-[9px]"></i></button>
+          </div>
+        `;
+
+        // Attach events safely via JS — no inline onclick strings with data
+        div.querySelector('.stock-btn').addEventListener('click', () => toggleStock(id, !prod.inStock));
+        div.querySelector('.edit-btn').addEventListener('click', () => openEditModal(id, prod));
+        div.querySelector('.delete-btn').addEventListener('click', () => deleteProduct(id));
+
+        list.appendChild(div);
+      });
+    }
+
+    // Search filter
+    window.filterProducts = () => {
+      const query = document.getElementById('product-search').value.trim();
+      renderProducts(query);
+    };
+
+    // ================= ORDERS =================
     const HISTORY_STATUSES = ['delivered', 'rejected'];
 
     function renderOrders() {
@@ -488,7 +444,7 @@
       activeList.innerHTML = '';
       historyList.innerHTML = '';
 
-      if(!latestOrdersData) {
+      if (!latestOrdersData) {
         activeList.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50 border border-gray-100">No orders yet.</p>`;
         historyList.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50 border border-gray-100">No history yet.</p>`;
         renderOrderCounts();
@@ -499,66 +455,53 @@
       const activeEntries = entries.filter(([id, o]) => !HISTORY_STATUSES.includes(o.status));
       const historyEntries = entries.filter(([id, o]) => HISTORY_STATUSES.includes(o.status));
 
-      if(activeEntries.length === 0) {
-        activeList.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50 border border-gray-100">No active orders.</p>`;
-      } else {
-        activeEntries.forEach(([id, order]) => activeList.innerHTML += renderOrderCard(id, order, false));
-      }
+      if (activeEntries.length === 0) activeList.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50 border border-gray-100">No active orders.</p>`;
+      else activeEntries.forEach(([id, order]) => activeList.innerHTML += renderOrderCard(id, order));
 
-      if(historyEntries.length === 0) {
-        historyList.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50 border border-gray-100">No completed orders yet.</p>`;
-      } else {
-        historyEntries.forEach(([id, order]) => historyList.innerHTML += renderOrderCard(id, order, true));
-      }
+      if (historyEntries.length === 0) historyList.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50 border border-gray-100">No completed orders yet.</p>`;
+      else historyEntries.forEach(([id, order]) => historyList.innerHTML += renderOrderCard(id, order));
 
       renderOrderCounts();
     }
 
     function renderOrderCounts() {
-      if(!latestOrdersData) { document.getElementById('stat-orders').textContent = '0'; return; }
+      if (!latestOrdersData) { document.getElementById('stat-orders').textContent = '0'; return; }
       const entries = Object.entries(latestOrdersData);
-      if(currentOrderSubTab === 'active') {
-        document.getElementById('stat-orders').textContent = entries.filter(([id, o]) => !HISTORY_STATUSES.includes(o.status)).length;
-      } else {
-        document.getElementById('stat-orders').textContent = entries.filter(([id, o]) => HISTORY_STATUSES.includes(o.status)).length;
-      }
+      const count = currentOrderSubTab === 'active'
+        ? entries.filter(([, o]) => !HISTORY_STATUSES.includes(o.status)).length
+        : entries.filter(([, o]) => HISTORY_STATUSES.includes(o.status)).length;
+      document.getElementById('stat-orders').textContent = count;
     }
 
     function statusBadge(status) {
       const map = {
-        pending:   { text: '🟡 Pending',          cls: 'text-yellow-600 bg-yellow-50' },
-        accepted:  { text: '✅ Order Placed',      cls: 'text-blue-600 bg-blue-50' },
-        shipping:  { text: '🚴 Out for Delivery',  cls: 'text-purple-600 bg-purple-50' },
-        delivered: { text: '✅ Delivered',         cls: 'text-green-600 bg-green-50' },
-        rejected:  { text: '❌ Rejected',          cls: 'text-red-600 bg-red-50' }
+        pending:   { text: '🟡 Pending',         cls: 'text-yellow-600 bg-yellow-50' },
+        accepted:  { text: '✅ Order Placed',     cls: 'text-blue-600 bg-blue-50' },
+        shipping:  { text: '🚴 Out for Delivery', cls: 'text-purple-600 bg-purple-50' },
+        delivered: { text: '✅ Delivered',        cls: 'text-green-600 bg-green-50' },
+        rejected:  { text: '❌ Rejected',         cls: 'text-red-600 bg-red-50' }
       };
       return map[status] || map.pending;
     }
 
-    function renderOrderCard(id, order, isHistory) {
-      let items = order.items.map(i => `${i.name} (x${i.qty})`).join(', ');
+    function renderOrderCard(id, order) {
+      const items = order.items.map(i => `${i.name} (x${i.qty})`).join(', ');
       const badge = statusBadge(order.status);
-
       let actionsHtml = '';
-      if(order.status === 'pending') {
-        actionsHtml = `
-          <div class="flex gap-2 mt-3">
-            <button onclick="acceptOrder('${id}')" class="flex-1 py-2.5 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-wider hover:opacity-90 transition-opacity"><i class="fa-solid fa-check mr-1"></i> Accept</button>
-            <button onclick="rejectOrder('${id}')" class="flex-1 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl text-[10px] font-black uppercase tracking-wider hover:bg-red-100/50 transition-colors"><i class="fa-solid fa-xmark mr-1"></i> Reject</button>
-          </div>`;
-      } else if(order.status === 'accepted') {
-        actionsHtml = `
-          <div class="mt-3">
-            <button onclick="markOutForDelivery('${id}')" class="w-full py-2.5 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-wider hover:opacity-90 transition-opacity"><i class="fa-solid fa-motorcycle mr-1"></i> Mark Out for Delivery</button>
-          </div>`;
-      } else if(order.status === 'shipping') {
-        actionsHtml = `
-          <div class="mt-3">
-            <button onclick="markDelivered('${id}')" class="w-full py-2.5 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-wider hover:opacity-90 transition-opacity"><i class="fa-solid fa-check-double mr-1"></i> Mark Delivered</button>
-          </div>`;
+      if (order.status === 'pending') {
+        actionsHtml = `<div class="flex gap-2 mt-3">
+          <button onclick="acceptOrder('${id}')" class="flex-1 py-2.5 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-wider hover:opacity-90"><i class="fa-solid fa-check mr-1"></i> Accept</button>
+          <button onclick="rejectOrder('${id}')" class="flex-1 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl text-[10px] font-black uppercase tracking-wider"><i class="fa-solid fa-xmark mr-1"></i> Reject</button>
+        </div>`;
+      } else if (order.status === 'accepted') {
+        actionsHtml = `<div class="mt-3">
+          <button onclick="markOutForDelivery('${id}')" class="w-full py-2.5 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-wider hover:opacity-90"><i class="fa-solid fa-motorcycle mr-1"></i> Mark Out for Delivery</button>
+        </div>`;
+      } else if (order.status === 'shipping') {
+        actionsHtml = `<div class="mt-3">
+          <button onclick="markDelivered('${id}')" class="w-full py-2.5 bg-black text-white rounded-xl text-[10px] font-black uppercase tracking-wider hover:opacity-90"><i class="fa-solid fa-check-double mr-1"></i> Mark Delivered</button>
+        </div>`;
       }
-      // delivered & rejected: no actions, just shown in history
-
       return `
         <div class="p-5 border border-gray-100 rounded-2xl bg-white shadow-sm">
           <div class="flex justify-between items-start">
@@ -577,22 +520,20 @@
             <span class="font-black text-sm text-black">₹${order.totalAmount}</span>
           </div>
           ${actionsHtml}
-        </div>
-      `;
+        </div>`;
     }
 
-    // ================= ACTIONS =================
+    // ================= ORDER ACTIONS =================
     window.acceptOrder = (id) => update(ref(db, `orders/${id}`), { status: 'accepted' });
-    window.rejectOrder = (id) => { if(confirm('Reject this order?')) update(ref(db, `orders/${id}`), { status: 'rejected' }); };
+    window.rejectOrder = (id) => { if (confirm('Reject this order?')) update(ref(db, `orders/${id}`), { status: 'rejected' }); };
     window.markOutForDelivery = (id) => update(ref(db, `orders/${id}`), { status: 'shipping' });
-    // Delivered: only NOW does it disappear from Active and appear in History
-    window.markDelivered = (id) => { if(confirm('Mark this order as delivered? It will move to History.')) update(ref(db, `orders/${id}`), { status: 'delivered' }); };
+    window.markDelivered = (id) => { if (confirm('Mark as delivered? It will move to History.')) update(ref(db, `orders/${id}`), { status: 'delivered' }); };
 
+    // ================= PRODUCT ACTIONS =================
     window.toggleStock = (id, val) => update(ref(db, `products/${id}`), { inStock: val });
-    window.deleteProduct = (id) => { if(confirm('Delete this product for good?')) remove(ref(db, `products/${id}`)); };
-    window.deleteCoupon = (code) => { if(confirm('Delete this coupon?')) remove(ref(db, `coupons/${code}`)); };
+    window.deleteProduct = (id) => { if (confirm('Delete this product?')) remove(ref(db, `products/${id}`)); };
 
-    // ================= PRODUCT MODAL + IMAGE UPLOAD =================
+    // ================= PRODUCT MODAL =================
     window.openProductModal = () => {
       document.getElementById('modal-title').textContent = 'Add Product';
       document.getElementById('prod-id').value = '';
@@ -605,31 +546,24 @@
       document.getElementById('prod-modal').classList.remove('hidden');
     };
 
-    // Delegate edit clicks (reads data attributes, avoids inline-string escaping bugs)
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('.prod-edit-btn');
-      if(!btn) return;
-      const id = btn.getAttribute('onclick').match(/editProduct\('([^']+)'\)/)[1];
-      openEditModal(id, btn.dataset.name, btn.dataset.price, btn.dataset.img, btn.dataset.cat, btn.dataset.desc);
-    }, true);
-
-    window.editProduct = () => {}; // placeholder so inline onclick doesn't error; real logic in listener above
-
-    function openEditModal(id, name, price, image, cat, desc) {
+    // ---- FIXED: openEditModal reads directly from the allProducts object ----
+    function openEditModal(id, prod) {
       document.getElementById('modal-title').textContent = 'Edit Product';
       document.getElementById('prod-id').value = id;
-      document.getElementById('prod-name').value = name;
-      document.getElementById('prod-price').value = price;
-      document.getElementById('prod-img').value = image;
-      document.getElementById('prod-cat').value = cat;
-      document.getElementById('prod-desc').value = desc;
-      if(image) {
-        document.getElementById('prod-img-preview').src = image;
-        document.getElementById('prod-img-preview').classList.remove('hidden');
+      document.getElementById('prod-name').value = prod.name || '';
+      document.getElementById('prod-price').value = prod.price || '';
+      document.getElementById('prod-img').value = prod.image || '';
+      document.getElementById('prod-cat').value = prod.categoryId || 'cat_01';
+      document.getElementById('prod-desc').value = prod.description || '';
+      const preview = document.getElementById('prod-img-preview');
+      if (prod.image) {
+        preview.src = prod.image;
+        preview.classList.remove('hidden');
         document.getElementById('prod-img-placeholder').classList.add('hidden');
       } else {
         resetImagePreview();
       }
+      document.getElementById('upload-status').textContent = '';
       document.getElementById('prod-modal').classList.remove('hidden');
     }
 
@@ -647,7 +581,7 @@
     window.previewImageUrl = () => {
       const url = document.getElementById('prod-img').value.trim();
       const preview = document.getElementById('prod-img-preview');
-      if(url) {
+      if (url) {
         preview.src = url;
         preview.classList.remove('hidden');
         document.getElementById('prod-img-placeholder').classList.add('hidden');
@@ -656,45 +590,31 @@
       }
     };
 
-    // Handles file selection -> compress -> convert to Base64 -> put into prod-img field
     window.handleImageUpload = (event) => {
       const file = event.target.files[0];
-      if(!file) return;
+      if (!file) return;
       const status = document.getElementById('upload-status');
       status.textContent = 'Processing image...';
-
       const reader = new FileReader();
       reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-          // Resize/compress so it stays small enough for Realtime Database
           const MAX_DIM = 500;
           let { width, height } = img;
-          if(width > height && width > MAX_DIM) { height *= MAX_DIM / width; width = MAX_DIM; }
-          else if(height > MAX_DIM) { width *= MAX_DIM / height; height = MAX_DIM; }
-
+          if (width > height && width > MAX_DIM) { height *= MAX_DIM / width; width = MAX_DIM; }
+          else if (height > MAX_DIM) { width *= MAX_DIM / height; height = MAX_DIM; }
           const canvas = document.createElement('canvas');
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-
+          canvas.width = width; canvas.height = height;
+          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
           const base64 = canvas.toDataURL('image/jpeg', 0.7);
           document.getElementById('prod-img').value = base64;
-
           const preview = document.getElementById('prod-img-preview');
           preview.src = base64;
           preview.classList.remove('hidden');
           document.getElementById('prod-img-placeholder').classList.add('hidden');
-
           const sizeKB = Math.round((base64.length * 0.75) / 1024);
           status.textContent = `Image ready (${sizeKB} KB)`;
-          if(sizeKB > 700) {
-            status.textContent += ' — large, consider a smaller photo.';
-            status.className = 'text-[9px] text-red-500 font-semibold';
-          } else {
-            status.className = 'text-[9px] text-green-600 font-semibold';
-          }
+          status.className = sizeKB > 700 ? 'text-[9px] text-red-500 font-semibold' : 'text-[9px] text-green-600 font-semibold';
         };
         img.src = e.target.result;
       };
@@ -711,54 +631,53 @@
         description: document.getElementById('prod-desc').value.trim(),
         inStock: true
       };
-      
-      if(!payload.name || isNaN(payload.price)) return alert("Please enter a name and a valid price.");
-      if(id) update(ref(db, `products/${id}`), payload).then(closeProductModal);
-      else set(push(ref(db, 'products')), payload).then(closeProductModal);
+      if (!payload.name || isNaN(payload.price)) { alert("Please enter a name and a valid price."); return; }
+      if (id) {
+        update(ref(db, `products/${id}`), payload).then(closeProductModal);
+      } else {
+        set(push(ref(db, 'products')), payload).then(closeProductModal);
+      }
     };
 
-    // Coupons
+    // ================= COUPONS =================
     window.createCouponCode = () => {
       const code = document.getElementById('new-coupon-code').value.toUpperCase().trim();
       const val = parseFloat(document.getElementById('new-coupon-val').value);
-      if(!code || isNaN(val)) return;
+      if (!code || isNaN(val)) return;
       set(ref(db, `coupons/${code}`), { discountType: "percentage", value: val, isActive: true }).then(() => {
         document.getElementById('new-coupon-code').value = '';
         document.getElementById('new-coupon-val').value = '';
       });
     };
+    window.deleteCoupon = (code) => { if (confirm('Delete this coupon?')) remove(ref(db, `coupons/${code}`)); };
 
-    // Chats
+    // ================= CHATS =================
     window.openAdminChat = (chatId, name) => {
       selectedChatId = chatId;
       document.getElementById('active-chat-title').textContent = `Chat: ${name}`;
       document.getElementById('admin-chat-box').classList.remove('hidden');
-      
       onValue(ref(db, `chats/${chatId}/messages`), (snap) => {
         const box = document.getElementById('admin-messages-box');
         box.innerHTML = '';
-        if(!snap.val()) return;
+        if (!snap.val()) return;
         Object.values(snap.val()).forEach(msg => {
           const isCustomer = msg.sender === 'customer';
           box.innerHTML += `
             <div class="flex ${isCustomer ? 'justify-start' : 'justify-end'}">
-              <div class="max-w-[80%] p-3 rounded-2xl ${isCustomer ? 'bg-gray-250 text-black rounded-bl-none' : 'bg-black text-white rounded-br-none'}">
+              <div class="max-w-[80%] p-3 rounded-2xl ${isCustomer ? 'bg-gray-200 text-black rounded-bl-none' : 'bg-black text-white rounded-br-none'}">
                 <p class="font-medium leading-relaxed">${msg.text}</p>
               </div>
-            </div>
-          `;
+            </div>`;
         });
         box.scrollTop = box.scrollHeight;
       });
     };
-    
     window.closeAdminChat = () => { document.getElementById('admin-chat-box').classList.add('hidden'); selectedChatId = null; };
-    
     window.sendAdminReply = () => {
       const inp = document.getElementById('admin-chat-input');
       const text = inp.value.trim();
-      if(!text || !selectedChatId) return;
-      set(push(ref(db, `chats/${selectedChatId}/messages`)), { sender: 'admin', text: text, timestamp: Date.now() });
+      if (!text || !selectedChatId) return;
+      set(push(ref(db, `chats/${selectedChatId}/messages`)), { sender: 'admin', text, timestamp: Date.now() });
       inp.value = '';
     };
   </script>
