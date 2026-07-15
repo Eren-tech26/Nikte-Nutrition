@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nikate Nutritions</title>
+  <title>Nikate Nutritions & Supplements</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,146 +13,270 @@
       background-color: #ffffff; 
       color: #000000; 
     }
-    .apple-card {
+    .apple-card { 
+      background: #f5f5f7; 
+      border-radius: 20px; 
+      transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    }
+    .apple-card:hover { 
+      transform: translateY(-1px);
+    }
+    .pill-nav { 
+      background: rgba(255, 255, 255, 0.85); 
+      backdrop-filter: blur(20px); 
+      -webkit-backdrop-filter: blur(20px); 
+      border: 1px solid rgba(0, 0, 0, 0.04); 
+    }
+    .apple-input {
       background: #f5f5f7;
-      border-radius: 24px;
-      border: 1px solid rgba(0, 0, 0, 0.01);
+      border: 1px solid transparent;
+      border-radius: 14px;
+      transition: all 0.2s ease;
+    }
+    .apple-input:focus {
+      background: #ffffff;
+      border-color: #000000;
+      box-shadow: 0 0 0 1px #000000;
     }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    
-    /* Smooth slide-up transition for the details drawer */
-    .detail-drawer {
-      transform: translateY(100%);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .detail-drawer.active {
-      transform: translateY(0);
-    }
   </style>
 </head>
-<body class="pb-24 antialiased">
+<body class="pb-32 antialiased selection:bg-black selection:text-white">
 
-  <!-- ================= TOP ACTION NAVIGATION ================= -->
-  <header class="sticky top-0 bg-white/80 backdrop-blur-md z-40 max-w-md mx-auto px-6 py-4 flex justify-between items-center border-b border-gray-100">
+  <!-- ================= EXECUTIVE HEADER ================= -->
+  <header class="max-w-md mx-auto px-6 pt-6 flex justify-between items-center">
     <div>
-      <h1 class="text-xl font-black tracking-tight">Nikate</h1>
-      <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Premium Supplements</p>
+      <h1 onclick="switchTab('home')" class="text-2xl font-black tracking-tight text-black cursor-pointer">Nikate Nutritions</h1>
+      <p class="text-[9px] text-gray-400 mt-0.5 uppercase tracking-widest font-bold">
+        <i class="fa-solid fa-location-dot mr-1 text-black"></i> Cottage Rd, Pandharpur
+      </p>
     </div>
-    <div class="flex items-center gap-4">
-      <button onclick="toggleCart()" class="relative p-2 text-black">
-        <i class="fa-solid fa-bag-shopping text-xl"></i>
-        <span id="cart-count" class="absolute -top-1 -right-1 bg-black text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
-      </button>
+    <div id="shop-status-badge" class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5">
+      <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Open
     </div>
   </header>
 
-  <!-- ================= MAIN FRONT STOREFRONT ================= -->
-  <main class="max-w-md mx-auto px-6 mt-6 space-y-6">
+  <!-- ================= CORE FRAMEWORK MAIN RENDER CONTAINER ================= -->
+  <main class="max-w-md mx-auto px-6 mt-6">
     
-    <!-- CATEGORY HORIZONTAL FILTER TRACK -->
-    <div class="flex gap-2 overflow-x-auto hide-scrollbar py-1">
-      <button onclick="filterCategory('all')" class="cat-chip px-4 py-2 bg-black text-white text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap" data-cat="all">All Items</button>
-      <button onclick="filterCategory('cat_01')" class="cat-chip px-4 py-2 bg-gray-100 text-gray-500 text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap" data-cat="cat_01">Whey Protein</button>
-      <button onclick="filterCategory('cat_02')" class="cat-chip px-4 py-2 bg-gray-100 text-gray-500 text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap" data-cat="cat_02">Creatine & Pre</button>
-      <button onclick="filterCategory('cat_03')" class="cat-chip px-4 py-2 bg-gray-100 text-gray-500 text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap" data-cat="cat_03">Vitamins</button>
+    <!-- ================= VIEW 1: PREMIUM HOME DASHBOARD ================= -->
+    <div id="view-home" class="view-tab space-y-6">
+      <div class="apple-card p-6 flex flex-col justify-between h-56 bg-cover bg-center relative overflow-hidden bg-gray-50 border border-gray-100">
+        <div class="z-10">
+          <span class="text-[9px] font-black tracking-widest uppercase text-gray-400">Pure Certified Quality</span>
+          <h2 class="text-3xl font-black tracking-tight mt-1 leading-none text-black">BUILD YOUR<br>LEGACY.</h2>
+          <p class="text-xs text-gray-500 mt-3 font-medium">100% Authorized Products & Verified Global Brands.</p>
+        </div>
+        <button onclick="switchTab('shop')" class="w-fit px-4 py-2 bg-black text-white rounded-xl text-[10px] font-bold uppercase tracking-wider z-10 hover:opacity-90 transition-opacity">Explore Catalog</button>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-black uppercase tracking-widest text-gray-400 mb-3">Premium Categories</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+            <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-prescription-bottle-medical text-base"></i></div>
+            <span class="text-xs font-bold text-black uppercase tracking-wide">Whey Protein</span>
+          </div>
+          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+            <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-bolt text-base"></i></div>
+            <span class="text-xs font-bold text-black uppercase tracking-wide">Creatine & Pre</span>
+          </div>
+          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+            <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-capsules text-base"></i></div>
+            <span class="text-xs font-bold text-black uppercase tracking-wide">Vitamins</span>
+          </div>
+          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+            <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-dumbbell text-base"></i></div>
+            <span class="text-xs font-bold text-black uppercase tracking-wide">Gainers</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- MAIN PRODUCT SYSTEM GRID -->
-    <div id="store-grid" class="grid grid-cols-2 gap-4">
-      <!-- Generated dynamically by script framework -->
+    <!-- ================= VIEW 2: PRODUCT ASSET CATALOG ================= -->
+    <div id="view-shop" class="view-tab hidden space-y-4">
+      <div class="pb-1">
+        <h3 class="text-2xl font-black tracking-tight text-black">The Catalog</h3>
+        <p class="text-xs text-gray-400 font-medium">Select a supplement asset formulation to review parameters.</p>
+      </div>
+      <div id="products-list" class="space-y-3"></div>
     </div>
+
+    <!-- ================= VIEW 3: CART CONSOLE & SECURE CHECKOUT ================= -->
+    <div id="view-buy" class="view-tab hidden space-y-6">
+      <h3 class="text-2xl font-black tracking-tight text-black">Your Cart</h3>
+      <div id="cart-items" class="space-y-3"><p class="text-xs text-gray-400 font-bold py-4 text-center">Your pipeline cart is currently empty.</p></div>
+      
+      <div class="pt-2">
+        <div class="flex gap-2">
+          <input type="text" id="coupon-input" placeholder="PROMO ENGINE CODE" class="flex-1 px-4 py-3.5 apple-input outline-none text-xs font-bold uppercase tracking-wider text-black">
+          <button onclick="applyCoupon()" class="px-5 py-3.5 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-opacity hover:opacity-90">Apply</button>
+        </div>
+        <p id="coupon-message" class="text-[10px] mt-2 font-black uppercase tracking-widest"></p>
+      </div>
+
+      <div class="apple-card p-5 space-y-3 bg-gray-50 border border-gray-100">
+        <div class="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wide"><span>Subtotal</span><span id="cart-subtotal" class="text-black font-black">₹0</span></div>
+        <div class="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wide"><span>Engine Discount</span><span id="cart-discount" class="text-black font-black">- ₹0</span></div>
+        <div class="flex justify-between text-xs font-black text-black border-t border-gray-200 pt-3 uppercase tracking-wide"><span>Total Summary Value</span><span id="cart-total" class="text-lg font-black">₹0</span></div>
+      </div>
+
+      <div class="space-y-3">
+        <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Logistics Secure Delivery Details</h4>
+        <input type="text" id="cust-name" placeholder="Full Core Name" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black">
+        <input type="text" id="cust-phone" placeholder="Active Contact Mobile" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black">
+        <textarea id="cust-address" placeholder="Complete Logistics Destination Address & Landmark" rows="2" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black resize-none h-20"></textarea>
+        <button onclick="submitOrder()" class="w-full py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity mt-2">Place Secure Request Order</button>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 4: ANCILLARY SYSTEM SUPPORT ================= -->
+    <div id="view-contact" class="view-tab hidden space-y-4">
+      <h3 class="text-2xl font-black tracking-tight text-black">Support Interface</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">State System Issue Matrix Parameters</label>
+          <textarea id="issue-desc" rows="4" placeholder="Detail any account, transaction, logistics, or physical asset discrepancies here..." class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black resize-none"></textarea>
+        </div>
+        <button onclick="sendIssueReport()" class="w-full py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"><i class="fa-brands fa-whatsapp text-sm"></i>Transmit Report Via WhatsApp</button>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 5: ACCOUNT HISTORY SPECIFICATIONS ================= -->
+    <div id="view-history" class="view-tab hidden space-y-4">
+      <h3 class="text-2xl font-black tracking-tight text-black">Request History</h3>
+      <div id="history-list" class="space-y-3"><p class="text-xs text-gray-400 font-bold py-4 text-center">No cached history nodes detected.</p></div>
+    </div>
+
   </main>
 
-  <!-- ================= FIXED SLIDE-UP PRODUCT DETAIL DRAWER ================= -->
-  <div id="detail-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 z-50" onclick="closeProductDetail()"></div>
-  
-  <div id="detail-drawer" class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-[32px] z-50 max-h-[85vh] overflow-y-auto hide-scrollbar detail-drawer border-t border-gray-100 shadow-2xl flex flex-col">
-    <div class="sticky top-0 bg-white px-6 py-4 flex justify-between items-center border-b border-gray-50">
-      <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Product Details</span>
-      <button onclick="closeProductDetail()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-black font-bold"><i class="fa-solid fa-xmark text-xs"></i></button>
+  <!-- ================= HIGH-END HIGH-CONTRAST AMAZON / APPLE PRODUCT DETAIL OVERLAY ================= -->
+  <div id="product-detail-view" class="fixed inset-0 bg-white z-[100] hidden flex-col transform translate-y-full transition-transform duration-300">
+    <!-- Header Banner Navigation Bar -->
+    <div class="px-6 py-4 flex justify-between items-center bg-white border-b border-gray-100 sticky top-0 z-10">
+      <button onclick="closeProductView()" class="w-9 h-9 flex items-center justify-center bg-gray-50 rounded-xl text-black hover:bg-gray-100"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+      <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Specification Manifest</span>
+      <button onclick="switchTab('buy'); closeProductView();" class="w-9 h-9 flex items-center justify-center bg-gray-50 rounded-xl text-black hover:bg-gray-100"><i class="fa-solid fa-bag-shopping text-xs"></i></button>
     </div>
-    
-    <div class="p-6 space-y-6 flex-1">
-      <div class="apple-card bg-gray-50 p-6 flex justify-center items-center h-56">
-        <img id="modal-img" src="" class="max-h-48 object-contain">
+
+    <!-- Full Aspect Scroll Frame -->
+    <div class="flex-1 overflow-y-auto hide-scrollbar pb-32">
+      <!-- High-Fidelity Central Image Core Showcase -->
+      <div class="w-full h-80 bg-white flex items-center justify-center p-8 border-b border-gray-50 relative">
+        <img id="pd-image" src="" class="max-h-full object-contain drop-shadow-md">
       </div>
-      <div>
-        <h2 id="modal-name" class="text-2xl font-black tracking-tight leading-tight">Product Title</h2>
-        <p id="modal-price" class="text-xl font-bold text-black mt-2">₹0</p>
-      </div>
-      <div class="border-t border-gray-100 pt-4">
-        <h4 class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Formula Profile & Specs</h4>
-        <p id="modal-desc" class="text-xs text-gray-600 leading-relaxed font-medium whitespace-pre-line">Description details live here.</p>
+      
+      <!-- Primary Core Specifications Metadata Grid -->
+      <div class="p-6 space-y-6">
+        <div>
+          <span id="pd-cat-badge" class="text-[9px] font-black text-gray-400 uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded">AUTHENTIC SUPPLEMENT</span>
+          <h2 id="pd-name" class="text-2xl font-black text-black tracking-tight mt-2.5 leading-tight">Product Formulation Asset</h2>
+          
+          <div class="flex items-center gap-4 mt-3.5">
+            <span id="pd-price" class="text-3xl font-black text-black tracking-tight">₹0</span>
+            <div class="flex items-center gap-1 bg-black text-white px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wide">
+              4.9 <i class="fa-solid fa-star text-[8px] mb-0.5"></i>
+            </div>
+            <span class="text-[10px] text-gray-400 font-bold tracking-wide">(Verified Consumer Matrix)</span>
+          </div>
+        </div>
+
+        <!-- Trust Matrix System Layout Pillars -->
+        <div class="grid grid-cols-3 gap-3 border-y border-gray-100 py-4">
+          <div class="text-center p-2"><i class="fa-solid fa-shield-halved text-black text-base mb-1 block"></i><p class="text-[9px] text-black font-black uppercase tracking-wider">100% Genuine</p></div>
+          <div class="text-center p-2"><i class="fa-solid fa-truck-fast text-black text-base mb-1 block"></i><p class="text-[9px] text-black font-black uppercase tracking-wider">Local Delivery</p></div>
+          <div class="text-center p-2"><i class="fa-solid fa-cube text-black text-base mb-1 block"></i><p class="text-[9px] text-black font-black uppercase tracking-wider">Factory Sealed</p></div>
+        </div>
+
+        <!-- Descriptive Yield Frame -->
+        <div>
+          <h3 class="text-xs font-black text-black uppercase tracking-widest mb-2">Formula Profile Breakdown</h3>
+          <p id="pd-desc" class="text-xs text-gray-600 leading-relaxed font-medium whitespace-pre-line bg-gray-50 p-4 rounded-2xl border border-gray-100/50"></p>
+        </div>
+        
+        <!-- Premium Amazon-Grade Customer Reviews Ledger Block -->
+        <div class="space-y-3">
+          <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+            <h3 class="text-xs font-black text-black uppercase tracking-widest">Verified Customer Reviews</h3>
+            <span class="text-[10px] text-gray-400 font-bold uppercase">Showing Top Entries</span>
+          </div>
+          
+          <div class="space-y-2.5">
+            <div class="bg-gray-50 border border-gray-100 p-4 rounded-2xl space-y-1.5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-black text-black">Aditya P.</span>
+                <div class="flex items-center gap-1.5 text-black font-bold text-[10px]">
+                  <span class="text-[9px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-circle-check text-black mr-0.5"></i> Verified Buyer</span>
+                  <span>•</span> 5.0 <i class="fa-solid fa-star text-[8px]"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-600 font-medium leading-relaxed">Genuine factory-sealed box matrix parameters check out perfectly. Official importer verification code cleared without issue. Extremely prompt handling speed inside Pandharpur region.</p>
+            </div>
+
+            <div class="bg-gray-50 border border-gray-100 p-4 rounded-2xl space-y-1.5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-black text-black">Rohan M.</span>
+                <div class="flex items-center gap-1.5 text-black font-bold text-[10px]">
+                  <span class="text-[9px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-circle-check text-black mr-0.5"></i> Verified Buyer</span>
+                  <span>•</span> 4.8 <i class="fa-solid fa-star text-[8px]"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-600 font-medium leading-relaxed">Purity mix profiles perform outstandingly. Solubility yields match the high benchmark criteria perfectly. Will definitely acquire remaining operational nutrition assets from here.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="p-6 bg-white border-t border-gray-100 pb-8">
-      <button id="modal-action-btn" class="w-full py-4 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:opacity-90 transition-opacity"></button>
+    <!-- Fixed Action Console Footer Controls -->
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 p-4 pb-8 flex gap-3 shadow-[0_-12px_30px_rgba(0,0,0,0.03)]">
+      <button id="pd-add-btn" class="flex-1 py-4 bg-gray-50 text-black rounded-xl font-bold text-xs uppercase tracking-wider border border-gray-100 transition-colors hover:bg-gray-100">Add Component</button>
+      <button id="pd-buy-btn" class="flex-1 py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider transition-opacity hover:opacity-90">Instant Purchase</button>
     </div>
   </div>
 
-  <!-- ================= FLEXIBLE CHECKOUT SHOPPING BAG DRAWER ================= -->
-  <div id="cart-drawer" class="hidden fixed inset-0 bg-white z-50 flex flex-col">
-    <div class="p-6 flex justify-between items-center border-b border-gray-100">
-      <div>
-        <h3 class="font-black text-lg">Your Bag</h3>
-        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Secure Checkout Pipeline</p>
-      </div>
-      <button onclick="toggleCart()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-black"><i class="fa-solid fa-xmark text-xs"></i></button>
-    </div>
-    
-    <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4 hide-scrollbar"></div>
+  <!-- ================= MINIMALIST NAVIGATION CONTROLLER PILL ================= -->
+  <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm pill-nav rounded-2xl px-2 py-2.5 shadow-xl z-50 flex justify-between items-center">
+    <button onclick="switchTab('home')" class="nav-btn text-black flex flex-col items-center flex-1 py-1" data-tab="home"><i class="fa-solid fa-house text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Home</span></button>
+    <button onclick="switchTab('shop')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="shop"><i class="fa-solid fa-magnifying-glass text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Shop</span></button>
+    <button onclick="switchTab('buy')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1 relative" data-tab="buy">
+      <i class="fa-solid fa-bag-shopping text-base"></i>
+      <span id="cart-count-badge" class="absolute -top-1.5 right-6 bg-black text-white text-[8px] w-4 h-4 rounded-md flex items-center justify-center font-black hidden">0</span>
+      <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Cart</span>
+    </button>
+    <button onclick="switchTab('contact')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="contact"><i class="fa-solid fa-circle-info text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Support</span></button>
+    <button onclick="switchTab('history')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="history"><i class="fa-solid fa-clock-rotate-left text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">History</span></button>
+  </nav>
 
-    <div class="p-6 bg-white border-t border-gray-100 space-y-4 pb-8">
-      <div class="flex gap-2">
-        <input type="text" id="coupon-input" placeholder="PROMO CODE" class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold tracking-wider text-black uppercase outline-none">
-        <button onclick="applyPromoCode()" class="px-4 py-3 bg-black text-white text-xs font-bold rounded-xl uppercase tracking-wider">Apply</button>
+  <!-- ================= SYNCHRONIZED SUPPORT LIVE CHAT INTERFACE ================= -->
+  <div id="chat-widget" class="fixed bottom-24 right-6 z-40">
+    <button onclick="toggleChatWindow()" class="w-12 h-12 bg-black text-white rounded-2xl shadow-xl flex items-center justify-center hover:scale-105 transition-transform">
+      <i class="fa-solid fa-comment-dots text-base"></i>
+    </button>
+    <div id="chat-window" class="hidden absolute bottom-16 right-0 w-80 bg-white border border-gray-100 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-96">
+      <div class="bg-black text-white p-4 flex justify-between items-center">
+        <div><h4 class="font-black text-xs tracking-wide">Nikate Terminal Support</h4><span class="text-[8px] opacity-60 uppercase tracking-widest font-bold">Encrypted Live Link</span></div>
+        <button onclick="toggleChatWindow()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-sm"></i></button>
       </div>
-      <div class="space-y-1 text-xs font-bold border-b border-gray-100 pb-3">
-        <div class="flex justify-between text-gray-400"><span>Bag Subtotal</span><span id="cart-subtotal">₹0</span></div>
-        <div class="flex justify-between text-red-500 hidden" id="promo-row"><span>Promo Discount</span><span id="cart-discount">-₹0</span></div>
-        <div class="flex justify-between text-black text-sm font-black pt-1"><span>Order Total</span><span id="cart-total">₹0</span></div>
+      <div id="chat-setup" class="p-5 flex-1 flex flex-col justify-center space-y-3 bg-gray-50">
+        <p class="text-[10px] text-gray-400 text-center font-bold uppercase tracking-wider">Identify Client Node Link</p>
+        <input type="text" id="chat-user-name" placeholder="Client Name Designation" class="w-full px-4 py-3 apple-input text-xs font-semibold text-black outline-none">
+        <input type="text" id="chat-user-phone" placeholder="Active Mobile Parameter" class="w-full px-4 py-3 apple-input text-xs font-semibold text-black outline-none">
+        <button onclick="startChat()" class="w-full py-3.5 bg-black text-white rounded-xl text-xs font-black uppercase tracking-wider">Initialize Chat Session</button>
       </div>
-      <div class="space-y-2">
-        <input type="text" id="cust-name" placeholder="Full Name" class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold text-black outline-none">
-        <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold text-black outline-none">
-        <input type="text" id="cust-addr" placeholder="Shipping Logistics Target Address" class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold text-black outline-none">
+      <div id="chat-messages" class="hidden p-4 flex-1 overflow-y-auto space-y-3 text-xs bg-gray-50 hide-scrollbar"></div>
+      <div id="chat-input-area" class="hidden p-3 border-t border-gray-100 flex gap-2 bg-white items-center">
+        <input type="text" id="chat-msg-input" placeholder="Type administrative transmission..." class="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-150 rounded-xl text-xs outline-none font-semibold text-black">
+        <button onclick="sendChatMessage()" class="w-9 h-9 bg-black text-white rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity"><i class="fa-solid fa-paper-plane text-xs"></i></button>
       </div>
-      <button onclick="submitOrder()" class="w-full py-4 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl">Transmit Secure Order</button>
-    </div>
-  </div>
-
-  <!-- ================= LIVE CHAT EMBED SYSTEM ================= -->
-  <button onclick="toggleChat()" class="fixed bottom-6 right-6 w-12 h-12 bg-black text-white rounded-full shadow-2xl z-40 flex items-center justify-center"><i class="fa-solid fa-comment text-lg"></i></button>
-
-  <div id="chat-window" class="hidden fixed inset-0 bg-white z-50 flex flex-col">
-    <div class="bg-black text-white p-5 flex justify-between items-center">
-      <div>
-        <h4 class="font-bold text-sm">Nikate Concierge Support</h4>
-        <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Secure Matrix Encryption Routing</p>
-      </div>
-      <button onclick="toggleChat()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white"><i class="fa-solid fa-xmark text-sm"></i></button>
-    </div>
-    
-    <div id="chat-setup" class="p-6 space-y-4 my-auto max-w-sm mx-auto w-full">
-      <h3 class="text-center font-black text-base">Initialize Support Tunnel</h3>
-      <input type="text" id="chat-name" placeholder="Enter Full Name" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold text-black outline-none">
-      <input type="tel" id="chat-phone" placeholder="Enter Contact Number" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold text-black outline-none">
-      <button onclick="connectSupport()" class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider">Establish Link</button>
-    </div>
-
-    <div id="chat-messages" class="hidden flex-1 p-4 bg-gray-50 overflow-y-auto space-y-3 text-xs hide-scrollbar"></div>
-    <div id="chat-input-bar" class="hidden p-3 bg-white border-t border-gray-100 flex gap-2 pb-8">
-      <input type="text" id="user-msg-input" placeholder="Type query details..." class="flex-1 px-4 py-3 bg-gray-50 rounded-xl text-xs font-medium outline-none text-black">
-      <button onclick="sendChatMessage()" class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center"><i class="fa-solid fa-paper-plane text-xs"></i></button>
     </div>
   </div>
 
-  <!-- ================= CORE DATABASE ENGINE ARCHITECTURE ================= -->
+  <!-- ================= CENTRAL APPLICATION ARCHITECTURE COMPONENT ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getDatabase, ref, onValue, set, push } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+    import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDF6_9adRR6L_OFlqEVxXWhD1vzu5s-rdQ",
@@ -167,268 +291,305 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Dynamic state management caches
-    let productsCache = {};
-    let globalCoupons = {};
     let cart = [];
-    let currentFilter = 'all';
-    let userChatRoomId = localStorage.getItem('chatRoomId') || null;
-    let appliedDiscountPercent = 0;
+    let activeCoupon = null;
+    let chatUser = JSON.parse(localStorage.getItem('chatUser')) || null;
 
-    // ================= DYNAMIC DOM STREAM RECEIVER =================
-    onValue(ref(db, 'products'), (snap) => {
-      productsCache = snap.val() || {};
-      renderGrid();
-    });
-
-    onValue(ref(db, 'coupons'), (snap) => {
-      globalCoupons = snap.val() || {};
-    });
-
-    function renderGrid() {
-      const grid = document.getElementById('store-grid');
-      grid.innerHTML = '';
-      
-      Object.entries(productsCache).forEach(([id, prod]) => {
-        if (currentFilter !== 'all' && prod.categoryId !== currentFilter) return;
-        
-        grid.innerHTML += `
-          <div class="apple-card p-4 flex flex-col bg-gray-50/50 justify-between">
-            <div onclick="openProductDetail('${id}')" class="cursor-pointer">
-              <div class="bg-white rounded-2xl p-4 flex justify-center items-center h-32 border border-gray-100">
-                <img src="${prod.image}" class="max-h-24 object-contain">
-              </div>
-              <h3 class="font-bold text-xs mt-3 text-black leading-tight line-clamp-2">${prod.name}</h3>
-            </div>
-            <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
-              <span class="font-black text-xs">₹${prod.price}</span>
-              ${prod.inStock ? `
-                <button onclick="openProductDetail('${id}')" class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-[10px]"><i class="fa-solid fa-arrow-right"></i></button>
-              ` : `
-                <span class="text-[8px] text-red-500 font-bold uppercase tracking-wider">Void</span>
-              `}
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    // ================= SECURE PRODUCT DETAIL ACTION LOGIC =================
-    window.openProductDetail = (id) => {
-      const prod = productsCache[id];
-      if (!prod) return;
-
-      document.getElementById('modal-img').src = prod.image;
-      document.getElementById('modal-name').textContent = prod.name;
-      document.getElementById('modal-price').textContent = `₹${prod.price}`;
-      document.getElementById('modal-desc').textContent = prod.description || 'No direct active specifications provided.';
-      
-      const btn = document.getElementById('modal-action-btn');
-      if(prod.inStock) {
-        btn.textContent = "Secure to Shopping Bag";
-        btn.className = "w-full py-4 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:opacity-90";
-        btn.onclick = () => { addToCart(id); closeProductDetail(); };
-      } else {
-        btn.textContent = "Out of Stock Allocation";
-        btn.className = "w-full py-4 bg-gray-100 text-gray-400 text-xs font-bold uppercase tracking-wider rounded-xl cursor-not-allowed";
-        btn.onclick = null;
-      }
-
-      document.getElementById('detail-overlay').classList.add('opacity-100', 'pointer-events-auto');
-      document.getElementById('detail-drawer').classList.add('active');
-    };
-
-    window.closeProductDetail = () => {
-      document.getElementById('detail-overlay').classList.remove('opacity-100', 'pointer-events-auto');
-      document.getElementById('detail-drawer').classList.remove('active');
-    };
-
-    // ================= CATEGORY SEGMENT FILTERS =================
-    window.filterCategory = (catId) => {
-      currentFilter = catId;
-      document.querySelectorAll('.cat-chip').forEach(btn => {
-        if(btn.dataset.cat === catId) {
-          btn.className = "cat-chip px-4 py-2 bg-black text-white text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap";
-        } else {
-          btn.className = "cat-chip px-4 py-2 bg-gray-100 text-gray-500 text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap";
+    // ================= GLOBAL SCOPE SCOPING DECLARATIONS =================
+    window.switchTab = (tabId) => {
+      document.querySelectorAll('.view-tab').forEach(v => v.classList.add('hidden'));
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if(btn.dataset.tab === tabId) { 
+          btn.classList.add('text-black'); 
+          btn.classList.remove('text-gray-400'); 
+        } else { 
+          btn.classList.remove('text-black'); 
+          btn.classList.add('text-gray-400'); 
         }
       });
-      renderGrid();
     };
 
-    // ================= SHOPPING CART LOGIC MATRIX =================
-    function addToCart(id) {
-      const exist = cart.find(i => i.id === id);
-      if(exist) exist.qty += 1;
-      else cart.push({ id, name: productsCache[id].name, price: productsCache[id].price, qty: 1 });
-      updateCartBadge();
-    }
+    // Store Hours Validation Listener
+    onValue(ref(db, 'shopStatus'), (snap) => {
+      const data = snap.val();
+      if(data) {
+        const badge = document.getElementById('shop-status-badge');
+        badge.innerHTML = data.isOpen 
+          ? `<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Open`
+          : `<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Closed`;
+        badge.className = data.isOpen 
+          ? "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5"
+          : "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5";
+      }
+    });
 
-    window.updateQty = (id, delta) => {
-      const match = cart.find(i => i.id === id);
-      if(!match) return;
-      match.qty += delta;
-      if(match.qty <= 0) cart = cart.filter(i => i.id !== id);
-      updateCartBadge();
-      renderCartItems();
-    };
-
-    function updateCartBadge() {
-      const count = cart.reduce((acc, i) => acc + i.qty, 0);
-      const badge = document.getElementById('cart-count');
-      if(count > 0) { badge.textContent = count; badge.classList.remove('hidden'); }
-      else badge.classList.add('hidden');
-    }
-
-    window.toggleCart = () => {
-      const drawer = document.getElementById('cart-drawer');
-      drawer.classList.toggle('hidden');
-      if(!drawer.classList.contains('hidden')) renderCartItems();
-    };
-
-    function renderCartItems() {
-      const container = document.getElementById('cart-items');
-      container.innerHTML = '';
-      let subtotal = 0;
-      
-      if(cart.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-400 font-bold text-center pt-24">Your shopping bag allocation is empty.</p>`;
-        calculatePricing(0);
+    // Realtime Catalog Mapping Extraction Engine
+    onValue(ref(db, 'products'), (snap) => {
+      const data = snap.val();
+      const shop = document.getElementById('products-list');
+      shop.innerHTML = '';
+      if(!data) {
+        shop.innerHTML = `<p class="text-xs text-gray-400 font-bold py-8 text-center apple-card bg-gray-50">No products available.</p>`;
         return;
       }
 
-      cart.forEach(item => {
-        subtotal += item.price * item.qty;
-        container.innerHTML += `
-          <div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl">
-            <div class="flex-1 pr-4">
-              <h4 class="font-bold text-xs text-black leading-snug">${item.name}</h4>
-              <p class="text-[10px] text-gray-400 font-bold mt-1">₹${item.price}</p>
+      Object.entries(data).forEach(([id, prod]) => {
+        const safeName = prod.name.replace(/'/g, "\\'");
+        const fallbackDesc = "Premium sports nutrition formulation engineered to maximize muscular recovery rates, athletic endurance thresholds, and pure physiological results.";
+        const safeDesc = (prod.description || fallbackDesc).replace(/'/g, "\\'").replace(/\n/g, "\\n");
+        const categoryMap = { cat_01: 'Whey Protein', cat_02: 'Creatine & Pre', cat_03: 'Vitamins', cat_04: 'Gainers' };
+        const catLabel = categoryMap[prod.categoryId] || 'Premium Asset';
+        
+        shop.innerHTML += `
+          <div onclick="openProductView('${id}', '${safeName}', ${prod.price}, '${prod.image}', ${prod.inStock}, '${safeDesc}', '${catLabel}')" class="apple-card p-4 flex items-center justify-between cursor-pointer border border-gray-50 bg-gray-50/40 hover:bg-gray-50/80 transition-colors">
+            <div class="flex items-center gap-4">
+              <img src="${prod.image}" class="w-16 h-16 object-contain rounded-xl bg-white p-1 border border-gray-100/50 mix-blend-multiply">
+              <div>
+                <span class="text-[8px] font-black text-gray-400 uppercase tracking-widest">${catLabel}</span>
+                <h4 class="font-black text-xs text-black leading-tight mt-0.5">${prod.name}</h4>
+                <p class="text-xs text-black font-black mt-1">₹${prod.price}</p>
+                <span class="text-[8px] mt-1.5 inline-block px-2 py-0.5 font-black rounded ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'} uppercase tracking-wide">
+                  ${prod.inStock ? 'In Stock' : 'Void Stock'}
+                </span>
+              </div>
             </div>
-            <div class="flex items-center gap-3 bg-white px-3 py-1.5 rounded-xl border border-gray-150 text-xs font-bold">
-              <button onclick="updateQty('${item.id}', -1)" class="text-gray-400">-</button>
-              <span class="text-black">${item.qty}</span>
-              <button onclick="updateQty('${item.id}', 1)" class="text-black">+</button>
-            </div>
+            <button class="w-8 h-8 bg-white border border-gray-200 text-black text-xs font-black rounded-lg flex items-center justify-center"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
           </div>
         `;
       });
-      calculatePricing(subtotal);
-    }
+    });
 
-    function calculatePricing(subtotal) {
-      let discount = 0;
-      if (appliedDiscountPercent > 0) {
-        discount = Math.round(subtotal * (appliedDiscountPercent / 100));
-        document.getElementById('promo-row').classList.remove('hidden');
+    // Amazon Interface Modal Presentation Mechanics
+    window.openProductView = (id, name, price, image, inStock, desc, catLabel) => {
+      const modal = document.getElementById('product-detail-view');
+      document.getElementById('pd-image').src = image;
+      document.getElementById('pd-name').textContent = name;
+      document.getElementById('pd-price').textContent = `₹${price}`;
+      document.getElementById('pd-desc').textContent = desc;
+      document.getElementById('pd-cat-badge').textContent = catLabel.toUpperCase();
+
+      const addBtn = document.getElementById('pd-add-btn');
+      const buyBtn = document.getElementById('pd-buy-btn');
+
+      if(inStock) {
+        addBtn.textContent = "Add Component";
+        addBtn.className = "flex-1 py-4 bg-gray-50 text-black rounded-xl font-bold text-xs uppercase tracking-wider border border-gray-100 transition-colors hover:bg-gray-100";
+        addBtn.onclick = () => { 
+          addToCart(id, name, price); 
+          addBtn.textContent = "Added Allocation!"; 
+          setTimeout(() => addBtn.textContent = "Add Component", 1200);
+        };
+        buyBtn.style.display = "block";
+        buyBtn.onclick = () => { addToCart(id, name, price); closeProductView(); switchTab('buy'); };
       } else {
-        document.getElementById('promo-row').classList.add('hidden');
+        addBtn.textContent = "Asset Stock Void";
+        addBtn.className = "w-full py-4 bg-red-50 text-red-500 rounded-xl font-bold text-xs uppercase tracking-wider text-center";
+        addBtn.onclick = null;
+        buyBtn.style.display = "none";
+      }
+
+      modal.classList.remove('hidden');
+      setTimeout(() => modal.classList.remove('translate-y-full'), 10);
+    };
+
+    window.closeProductView = () => {
+      const modal = document.getElementById('product-detail-view');
+      modal.classList.add('translate-y-full');
+      setTimeout(() => modal.classList.add('hidden'), 300);
+    };
+
+    // Pipeline Basket Operational Logic
+    window.addToCart = (id, name, price) => {
+      const existing = cart.find(item => item.id === id);
+      if(existing) existing.qty += 1;
+      else cart.push({ id, name, price, qty: 1 });
+      updateCartUI();
+    };
+
+    function updateCartUI() {
+      const badge = document.getElementById('cart-count-badge');
+      const itemsContainer = document.getElementById('cart-items');
+      const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+
+      if(totalCount > 0) { badge.textContent = totalCount; badge.classList.remove('hidden'); } 
+      else badge.classList.add('hidden');
+
+      if(cart.length === 0) {
+        itemsContainer.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50 border border-gray-150">Your cart pipeline is currently empty.</p>`;
+        document.getElementById('cart-subtotal').textContent = `₹0`;
+        document.getElementById('cart-discount').textContent = `- ₹0`;
+        document.getElementById('cart-total').textContent = `₹0`;
+        return;
       }
       
-      const total = subtotal - discount;
+      itemsContainer.innerHTML = cart.map(item => `
+        <div class="flex justify-between items-center bg-gray-50 border border-gray-100 p-4 rounded-2xl">
+          <div class="flex-1 pr-4">
+            <h5 class="font-black text-xs text-black leading-tight">${item.name}</h5>
+            <span class="text-[10px] text-gray-400 font-bold mt-1 block">₹${item.price} base cost</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <button onclick="changeQty('${item.id}', -1)" class="w-7 h-7 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-xs text-black font-black hover:bg-gray-50">-</button>
+            <span class="text-xs font-black text-black w-3 text-center">${item.qty}</span>
+            <button onclick="changeQty('${item.id}', 1)" class="w-7 h-7 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-xs text-black font-black hover:bg-gray-50">+</button>
+          </div>
+        </div>
+      `).join('');
+
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const discount = activeCoupon ? (activeCoupon.discountType === 'percentage' ? (subtotal * activeCoupon.value / 100) : activeCoupon.value) : 0;
+      const total = Math.max(0, subtotal - discount);
+
       document.getElementById('cart-subtotal').textContent = `₹${subtotal}`;
-      document.getElementById('cart-discount').textContent = `-₹${discount}`;
+      document.getElementById('cart-discount').textContent = `- ₹${discount}`;
       document.getElementById('cart-total').textContent = `₹${total}`;
     }
 
-    window.applyPromoCode = () => {
-      const code = document.getElementById('coupon-input').value.toUpperCase().trim();
-      if(globalCoupons[code] && globalCoupons[code].isActive) {
-        appliedDiscountPercent = globalCoupons[code].value;
-        alert(`Promo verified: ${appliedDiscountPercent}% discount processing active.`);
-        renderCartItems();
-      } else {
-        appliedDiscountPercent = 0;
-        alert("Invalid or expired configuration promo key.");
-        renderCartItems();
+    window.changeQty = (id, change) => {
+      const item = cart.find(i => i.id === id);
+      if(item) {
+        item.qty += change;
+        if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
       }
+      updateCartUI();
     };
 
+    // Coupon Engine Code Matrix Verification Execution Hook
+    window.applyCoupon = () => {
+      const code = document.getElementById('coupon-input').value.toUpperCase().trim();
+      const msg = document.getElementById('coupon-message');
+      if(!code) return;
+      onValue(ref(db, `coupons/${code}`), (snap) => {
+        const val = snap.val();
+        if(val && val.isActive) {
+          activeCoupon = val;
+          msg.textContent = `${val.value}% PROMO METRIC COMPLY RULE ENFORCED!`;
+          msg.className = "text-[10px] mt-2 text-black font-black uppercase tracking-widest";
+          updateCartUI();
+        } else {
+          msg.textContent = "PROMO CONFIGURATION CODE VOID / EXPIRED";
+          msg.className = "text-[10px] mt-2 text-red-500 font-black uppercase tracking-widest";
+        }
+      }, { onlyOnce: true });
+    };
+
+    // Secure Purchase Order Commitment Node Push Engine
     window.submitOrder = () => {
       const name = document.getElementById('cust-name').value.trim();
       const phone = document.getElementById('cust-phone').value.trim();
-      const addr = document.getElementById('cust-addr').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
+      if(!name || !phone || !address || cart.length === 0) { alert("Complete mandatory checkout fields before transmitting request parameters."); return; }
       
-      if(!name || !phone || !addr || cart.length === 0) {
-        return alert("Missing explicit validation profile configurations.");
-      }
-
-      const total = parseInt(document.getElementById('cart-total').textContent.replace('₹', ''));
-      const orderPayload = {
-        customerName: name,
-        customerPhone: phone,
-        address: addr,
-        items: cart,
-        totalAmount: total,
-        status: 'pending',
-        timestamp: Date.now()
-      };
-
-      set(push(ref(db, 'orders')), orderPayload).then(() => {
-        alert("Order data transmitted and locked into deployment console successfully!");
-        cart = [];
-        appliedDiscountPercent = 0;
-        updateCartBadge();
-        toggleCart();
+      const totalAmount = parseFloat(document.getElementById('cart-total').textContent.replace('₹', ''));
+      const newOrder = { customerName: name, customerPhone: phone, address: address, items: cart, totalAmount, status: "pending", timestamp: Date.now() };
+      
+      const pushRef = push(ref(db, 'orders'));
+      set(pushRef, newOrder).then(() => {
+        const history = JSON.parse(localStorage.getItem('orders_history')) || [];
+        history.push({ id: pushRef.key, ...newOrder });
+        localStorage.setItem('orders_history', JSON.stringify(history));
+        alert("Secure transaction node pushed to dashboard operational pipeline successfully.");
+        cart = []; 
+        activeCoupon = null;
+        document.getElementById('coupon-input').value = '';
+        document.getElementById('coupon-message').textContent = '';
+        updateCartUI(); 
+        switchTab('history'); 
+        renderHistory();
       });
     };
 
-    // ================= CLIENT CUSTOMER INBOX SYSTEM =================
-    window.toggleChat = () => document.getElementById('chat-window').classList.toggle('hidden');
-
-    window.connectSupport = () => {
-      const name = document.getElementById('chat-name').value.trim();
-      const phone = document.getElementById('chat-phone').value.trim();
-      if(!name || !phone) return alert("Required parameters missing.");
-
-      const newRoomRef = push(ref(db, 'chats'));
-      userChatRoomId = newRoomRef.key;
-      localStorage.setItem('chatRoomId', userChatRoomId);
-
-      set(ref(db, `chats/${userChatRoomId}/customerInfo`), { name, phone }).then(() => {
-        initializeLiveChat();
-      });
+    window.sendIssueReport = () => {
+      const desc = document.getElementById('issue-desc').value.trim();
+      if(!desc) { alert("Detail technical issue specifications first."); return; }
+      window.open(`https://wa.me/918698343237?text=${encodeURIComponent('Administrative Issue Log: ' + desc)}`, '_blank');
     };
 
-    function initializeLiveChat() {
-      if(!userChatRoomId) return;
-      document.getElementById('chat-setup').classList.add('hidden');
-      document.getElementById('chat-messages').classList.remove('hidden');
-      document.getElementById('chat-input-bar').classList.remove('hidden');
+    function renderHistory() {
+      const list = document.getElementById('history-list');
+      const hist = JSON.parse(localStorage.getItem('orders_history')) || [];
+      if(hist.length === 0) return;
+      list.innerHTML = '';
+      hist.forEach(item => {
+        onValue(ref(db, `orders/${item.id}`), (snap) => {
+          const live = snap.val();
+          const status = live ? live.status : 'pending';
+          let color = "bg-yellow-50 text-yellow-600";
+          if(status === 'shipping' || status === 'preparing') color = "bg-blue-50 text-blue-600";
+          if(status === 'shipped') color = "bg-black text-white";
+          if(status === 'declined') color = "bg-red-50 text-red-500";
 
-      onValue(ref(db, `chats/${userChatRoomId}/messages`), (snap) => {
-        const container = document.getElementById('chat-messages');
-        container.innerHTML = '';
-        if(!snap.val()) return;
-        
-        Object.values(snap.val()).forEach(msg => {
-          const isMe = msg.sender === 'customer';
-          container.innerHTML += `
-            <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
-              <div class="max-w-[80%] p-3 rounded-2xl ${isMe ? 'bg-black text-white rounded-br-none' : 'bg-gray-200 text-black rounded-bl-none'}">
-                <p class="font-medium leading-relaxed">${msg.text}</p>
+          const html = `
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-[8px] text-gray-400 font-black uppercase tracking-widest">TRANSACTION ID: #${item.id.slice(-6).toUpperCase()}</p>
+                <h5 class="font-black text-sm text-black mt-0.5">₹${item.totalAmount}</h5>
               </div>
-            </div>
-          `;
+              <span class="text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider ${color}">${status}</span>
+            </div>`;
+          const cont = document.getElementById(`ord-${item.id}`);
+          if(cont) cont.innerHTML = html;
+          else { 
+            const div = document.createElement('div'); 
+            div.id = `ord-${item.id}`; 
+            div.className = "apple-card p-4 border border-gray-100 bg-gray-50/50"; 
+            div.innerHTML = html; 
+            list.appendChild(div); 
+          }
         });
-        container.scrollTop = container.scrollHeight;
       });
     }
 
-    window.sendChatMessage = () => {
-      const input = document.getElementById('user-msg-input');
-      const text = input.value.trim();
-      if(!text || !userChatRoomId) return;
-
-      set(push(ref(db, `chats/${userChatRoomId}/messages`)), {
-        sender: 'customer',
-        text: text,
-        timestamp: Date.now()
+    // Synchronized Client Customer Chat Matrix Engine Tasks
+    window.toggleChatWindow = () => {
+      const win = document.getElementById('chat-window');
+      win.classList.toggle('hidden');
+      if(!win.classList.contains('hidden') && chatUser) startChatSession();
+    };
+    
+    window.startChat = () => {
+      const n = document.getElementById('chat-user-name').value.trim();
+      const p = document.getElementById('chat-user-phone').value.trim();
+      if(!n || !p) return;
+      chatUser = { name: n, phone: p };
+      localStorage.setItem('chatUser', JSON.stringify(chatUser));
+      startChatSession();
+    };
+    
+    function startChatSession() {
+      document.getElementById('chat-setup').classList.add('hidden');
+      document.getElementById('chat-messages').classList.remove('hidden');
+      document.getElementById('chat-input-area').classList.remove('hidden');
+      onValue(ref(db, `chats/chat_${chatUser.phone}/messages`), (snap) => {
+        const box = document.getElementById('chat-messages');
+        box.innerHTML = '';
+        if(!snap.val()) return;
+        Object.values(snap.val()).forEach(msg => {
+          const isMe = msg.sender === 'customer';
+          box.innerHTML += `
+            <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
+              <div class="max-w-[80%] p-3 rounded-2xl ${isMe ? 'bg-black text-white rounded-br-none' : 'bg-gray-200 text-black rounded-bl-none'}">
+                <p class="font-semibold leading-relaxed">${msg.text}</p>
+              </div>
+            </div>`;
+        });
+        box.scrollTop = box.scrollHeight;
       });
-      input.value = '';
+    }
+    
+    window.sendChatMessage = () => {
+      const inp = document.getElementById('chat-msg-input');
+      const text = inp.value.trim();
+      if(!text || !chatUser) return;
+      set(push(ref(db, `chats/chat_${chatUser.phone}/messages`)), { sender: 'customer', text: text, timestamp: Date.now() });
+      set(ref(db, `chats/chat_${chatUser.phone}/customerInfo`), chatUser);
+      inp.value = '';
     };
 
-    if(userChatRoomId) initializeLiveChat();
+    // Initial Processing Handlers
+    renderHistory();
   </script>
 </body>
 </html>
+
