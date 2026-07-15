@@ -4,215 +4,276 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nikate Nutritions & Supplements</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #ffffff; color: #1d1d1f; }
-    .apple-card { background: #f5f5f7; border-radius: 20px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
-    .apple-card:hover { transform: translateY(-2px); }
-    .pill-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(0, 0, 0, 0.08); }
+    body { 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+      background-color: #ffffff; 
+      color: #000000; 
+    }
+    .apple-card { 
+      background: #f5f5f7; 
+      border-radius: 20px; 
+      transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); 
+    }
+    .apple-card:hover { 
+      transform: translateY(-1px);
+    }
+    .pill-nav { 
+      background: rgba(255, 255, 255, 0.85); 
+      backdrop-filter: blur(20px); 
+      -webkit-backdrop-filter: blur(20px); 
+      border: 1px solid rgba(0, 0, 0, 0.04); 
+    }
+    .apple-input {
+      background: #f5f5f7;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      transition: all 0.2s ease;
+    }
+    .apple-input:focus {
+      background: #ffffff;
+      border-color: #000000;
+      box-shadow: 0 0 0 1px #000000;
+    }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="pb-28">
+<body class="pb-32 antialiased selection:bg-black selection:text-white">
 
-  <!-- ================= HEADER ================= -->
+  <!-- ================= EXECUTIVE HEADER ================= -->
   <header class="max-w-md mx-auto px-6 pt-6 flex justify-between items-center">
     <div>
-      <h1 class="text-2xl font-black tracking-tight text-black cursor-pointer">Nikate Nutritions</h1>
-      <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-wider font-bold">
+      <h1 onclick="switchTab('home')" class="text-2xl font-black tracking-tight text-black cursor-pointer">Nikate Nutritions</h1>
+      <p class="text-[9px] text-gray-400 mt-0.5 uppercase tracking-widest font-bold">
         <i class="fa-solid fa-location-dot mr-1 text-black"></i> Cottage Rd, Pandharpur
       </p>
     </div>
-    <div id="shop-status-badge" class="px-3 py-1.5 rounded-full text-xs font-bold bg-green-50 text-green-600 border border-green-200 flex items-center gap-1.5">
-      <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Open
+    <div id="shop-status-badge" class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5">
+      <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Open
     </div>
   </header>
 
+  <!-- ================= CORE FRAMEWORK MAIN RENDER CONTAINER ================= -->
   <main class="max-w-md mx-auto px-6 mt-6">
     
-    <!-- ================= VIEW 1: HOME ================= -->
+    <!-- ================= VIEW 1: PREMIUM HOME DASHBOARD ================= -->
     <div id="view-home" class="view-tab space-y-6">
-      <div class="apple-card p-6 flex flex-col justify-between h-52 bg-cover bg-center relative overflow-hidden" style="background-image: linear-gradient(to right, rgba(255,255,255,0.95), rgba(255,255,255,0.4))">
+      <div class="apple-card p-6 flex flex-col justify-between h-56 bg-cover bg-center relative overflow-hidden bg-gray-50 border border-gray-100">
         <div class="z-10">
-          <span class="text-[10px] font-bold tracking-widest uppercase text-gray-400">Pure Quality</span>
+          <span class="text-[9px] font-black tracking-widest uppercase text-gray-400">Pure Certified Quality</span>
           <h2 class="text-3xl font-black tracking-tight mt-1 leading-none text-black">BUILD YOUR<br>LEGACY.</h2>
-          <p class="text-xs text-gray-500 mt-2 font-medium">100% Authorized & Certified Brands.</p>
+          <p class="text-xs text-gray-500 mt-3 font-medium">100% Authorized Products & Verified Global Brands.</p>
         </div>
+        <button onclick="switchTab('shop')" class="w-fit px-4 py-2 bg-black text-white rounded-xl text-[10px] font-bold uppercase tracking-wider z-10 hover:opacity-90 transition-opacity">Explore Catalog</button>
       </div>
 
       <div>
-        <h3 class="text-lg font-extrabold tracking-tight text-black mb-4">Premium Categories</h3>
-        <div class="grid grid-cols-2 gap-4">
-          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-100">
-            <div class="w-10 h-10 bg-black/5 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-prescription-bottle-medical text-lg text-black"></i></div>
-            <span class="text-xs font-bold text-black">Whey Protein</span>
+        <h3 class="text-xs font-black uppercase tracking-widest text-gray-400 mb-3">Premium Categories</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+            <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-prescription-bottle-medical text-base"></i></div>
+            <span class="text-xs font-bold text-black uppercase tracking-wide">Whey Protein</span>
           </div>
-          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-100">
-            <div class="w-10 h-10 bg-black/5 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-bolt text-lg text-black"></i></div>
-            <span class="text-xs font-bold text-black">Creatine & Pre</span>
+          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+            <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-bolt text-base"></i></div>
+            <span class="text-xs font-bold text-black uppercase tracking-wide">Creatine & Pre</span>
           </div>
-          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-100">
-            <div class="w-10 h-10 bg-black/5 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-capsules text-lg text-black"></i></div>
-            <span class="text-xs font-bold text-black">Vitamins & Health</span>
+          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+            <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-capsules text-base"></i></div>
+            <span class="text-xs font-bold text-black uppercase tracking-wide">Vitamins</span>
           </div>
-          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-100">
-            <div class="w-10 h-10 bg-black/5 rounded-full flex items-center justify-center mb-2"><i class="fa-solid fa-dumbbell text-lg text-black"></i></div>
-            <span class="text-xs font-bold text-black">Mass Gainers</span>
+          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+            <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-dumbbell text-base"></i></div>
+            <span class="text-xs font-bold text-black uppercase tracking-wide">Gainers</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ================= VIEW 2: SHOP CATALOG ================= -->
-    <div id="view-shop" class="view-tab hidden space-y-6">
-      <h3 class="text-2xl font-black tracking-tight text-black">The Catalog</h3>
-      <div id="products-list" class="space-y-4">
-        <!-- Products injected here -->
+    <!-- ================= VIEW 2: PRODUCT ASSET CATALOG ================= -->
+    <div id="view-shop" class="view-tab hidden space-y-4">
+      <div class="pb-1">
+        <h3 class="text-2xl font-black tracking-tight text-black">The Catalog</h3>
+        <p class="text-xs text-gray-400 font-medium">Select a supplement asset formulation to review parameters.</p>
       </div>
+      <div id="products-list" class="space-y-3"></div>
     </div>
 
-    <!-- ================= VIEW 3: CART & CHECKOUT ================= -->
+    <!-- ================= VIEW 3: CART CONSOLE & SECURE CHECKOUT ================= -->
     <div id="view-buy" class="view-tab hidden space-y-6">
       <h3 class="text-2xl font-black tracking-tight text-black">Your Cart</h3>
-      <div id="cart-items" class="space-y-3"><p class="text-sm text-gray-500 font-medium">Your cart is empty.</p></div>
+      <div id="cart-items" class="space-y-3"><p class="text-xs text-gray-400 font-bold py-4 text-center">Your pipeline cart is currently empty.</p></div>
       
-      <div class="pt-4 border-t border-gray-100">
+      <div class="pt-2">
         <div class="flex gap-2">
-          <input type="text" id="coupon-input" placeholder="Promo / Coupon Code" class="flex-1 px-4 py-3 bg-gray-100 border-none rounded-xl focus:ring-1 focus:ring-black text-sm outline-none font-bold uppercase tracking-wide">
-          <button onclick="applyCoupon()" class="px-5 py-3 bg-black text-white rounded-xl text-sm font-bold">Apply</button>
+          <input type="text" id="coupon-input" placeholder="PROMO ENGINE CODE" class="flex-1 px-4 py-3.5 apple-input outline-none text-xs font-bold uppercase tracking-wider text-black">
+          <button onclick="applyCoupon()" class="px-5 py-3.5 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-opacity hover:opacity-90">Apply</button>
         </div>
-        <p id="coupon-message" class="text-xs mt-2 font-bold uppercase tracking-wider"></p>
+        <p id="coupon-message" class="text-[10px] mt-2 font-black uppercase tracking-widest"></p>
       </div>
 
-      <div class="apple-card p-5 space-y-3">
-        <div class="flex justify-between text-xs font-bold text-gray-400 uppercase"><span class="tracking-wider">Subtotal</span><span id="cart-subtotal" class="text-black">₹0</span></div>
-        <div class="flex justify-between text-xs font-bold text-gray-400 uppercase"><span class="tracking-wider">Discount</span><span id="cart-discount" class="text-green-600">- ₹0</span></div>
-        <div class="flex justify-between text-sm font-black text-black border-t border-gray-200 pt-3"><span class="uppercase tracking-wider">Total Amount</span><span id="cart-total" class="text-lg">₹0</span></div>
+      <div class="apple-card p-5 space-y-3 bg-gray-50 border border-gray-100">
+        <div class="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wide"><span>Subtotal</span><span id="cart-subtotal" class="text-black font-black">₹0</span></div>
+        <div class="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wide"><span>Engine Discount</span><span id="cart-discount" class="text-black font-black">- ₹0</span></div>
+        <div class="flex justify-between text-xs font-black text-black border-t border-gray-200 pt-3 uppercase tracking-wide"><span>Total Summary Value</span><span id="cart-total" class="text-lg font-black">₹0</span></div>
       </div>
 
       <div class="space-y-3">
-        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Delivery Details</h4>
-        <input type="text" id="cust-name" placeholder="Full Name" class="w-full px-4 py-3.5 bg-gray-100 border-none rounded-xl text-sm outline-none focus:ring-1 focus:ring-black font-semibold">
-        <input type="text" id="cust-phone" placeholder="Contact Mobile" class="w-full px-4 py-3.5 bg-gray-100 border-none rounded-xl text-sm outline-none focus:ring-1 focus:ring-black font-semibold">
-        <textarea id="cust-address" placeholder="Delivery Address / Landmark" rows="2" class="w-full px-4 py-3.5 bg-gray-100 border-none rounded-xl text-sm outline-none focus:ring-1 focus:ring-black font-semibold"></textarea>
-        <button onclick="submitOrder()" class="w-full py-4 bg-black text-white rounded-xl font-bold text-sm uppercase tracking-wider hover:opacity-90 transition-opacity">Place Secure Order</button>
+        <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Logistics Secure Delivery Details</h4>
+        <input type="text" id="cust-name" placeholder="Full Core Name" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black">
+        <input type="text" id="cust-phone" placeholder="Active Contact Mobile" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black">
+        <textarea id="cust-address" placeholder="Complete Logistics Destination Address & Landmark" rows="2" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black resize-none h-20"></textarea>
+        <button onclick="submitOrder()" class="w-full py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity mt-2">Place Secure Request Order</button>
       </div>
     </div>
 
-    <!-- ================= VIEW 4: SUPPORT ================= -->
-    <div id="view-contact" class="view-tab hidden space-y-6">
-      <h3 class="text-2xl font-black tracking-tight text-black">Support & Issues</h3>
+    <!-- ================= VIEW 4: ANCILLARY SYSTEM SUPPORT ================= -->
+    <div id="view-contact" class="view-tab hidden space-y-4">
+      <h3 class="text-2xl font-black tracking-tight text-black">Support Interface</h3>
       <div class="space-y-4">
         <div>
-          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Explain the Issue</label>
-          <textarea id="issue-desc" rows="4" placeholder="Describe the issue you encountered..." class="w-full px-4 py-3 bg-gray-100 border-none rounded-xl text-xs outline-none focus:ring-1 focus:ring-black mt-1 font-semibold"></textarea>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1">State System Issue Matrix Parameters</label>
+          <textarea id="issue-desc" rows="4" placeholder="Detail any account, transaction, logistics, or physical asset discrepancies here..." class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black resize-none"></textarea>
         </div>
-        <button onclick="sendIssueReport()" class="w-full py-4 bg-green-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2"><i class="fa-brands fa-whatsapp text-lg"></i>Submit via WhatsApp</button>
+        <button onclick="sendIssueReport()" class="w-full py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"><i class="fa-brands fa-whatsapp text-sm"></i>Transmit Report Via WhatsApp</button>
       </div>
     </div>
 
-    <!-- ================= VIEW 5: HISTORY ================= -->
-    <div id="view-history" class="view-tab hidden space-y-6">
-      <h3 class="text-2xl font-black tracking-tight text-black">Your History</h3>
-      <div id="history-list" class="space-y-4"><p class="text-xs text-gray-500">No past orders found.</p></div>
+    <!-- ================= VIEW 5: ACCOUNT HISTORY SPECIFICATIONS ================= -->
+    <div id="view-history" class="view-tab hidden space-y-4">
+      <h3 class="text-2xl font-black tracking-tight text-black">Request History</h3>
+      <div id="history-list" class="space-y-3"><p class="text-xs text-gray-400 font-bold py-4 text-center">No cached history nodes detected.</p></div>
     </div>
 
   </main>
 
-  <!-- ================= AMAZON-STYLE PRODUCT DETAILS MODAL ================= -->
+  <!-- ================= HIGH-END HIGH-CONTRAST AMAZON / APPLE PRODUCT DETAIL OVERLAY ================= -->
   <div id="product-detail-view" class="fixed inset-0 bg-white z-[100] hidden flex-col transform translate-y-full transition-transform duration-300">
+    <!-- Header Banner Navigation Bar -->
     <div class="px-6 py-4 flex justify-between items-center bg-white border-b border-gray-100 sticky top-0 z-10">
-      <button onclick="closeProductView()" class="w-9 h-9 flex items-center justify-center bg-gray-100 rounded-full text-black"><i class="fa-solid fa-arrow-left text-sm"></i></button>
-      <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Specifications</span>
-      <button onclick="switchTab('buy'); closeProductView();" class="text-black text-lg"><i class="fa-solid fa-bag-shopping"></i></button>
+      <button onclick="closeProductView()" class="w-9 h-9 flex items-center justify-center bg-gray-50 rounded-xl text-black hover:bg-gray-100"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+      <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Specification Manifest</span>
+      <button onclick="switchTab('buy'); closeProductView();" class="w-9 h-9 flex items-center justify-center bg-gray-50 rounded-xl text-black hover:bg-gray-100"><i class="fa-solid fa-bag-shopping text-xs"></i></button>
     </div>
 
-    <div class="flex-1 overflow-y-auto hide-scrollbar pb-28">
-      <div class="w-full h-80 bg-gray-50 flex items-center justify-center p-6">
-        <img id="pd-image" src="" class="max-h-full object-contain mix-blend-multiply drop-shadow-2xl">
+    <!-- Full Aspect Scroll Frame -->
+    <div class="flex-1 overflow-y-auto hide-scrollbar pb-32">
+      <!-- High-Fidelity Central Image Core Showcase -->
+      <div class="w-full h-80 bg-white flex items-center justify-center p-8 border-b border-gray-50 relative">
+        <img id="pd-image" src="" class="max-h-full object-contain drop-shadow-md">
       </div>
       
+      <!-- Primary Core Specifications Metadata Grid -->
       <div class="p-6 space-y-6">
         <div>
-          <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Premium Quality</span>
-          <h2 id="pd-name" class="text-2xl font-black text-black leading-tight mt-1">Product Title</h2>
-          <div class="flex items-center gap-3 mt-3">
-            <span id="pd-price" class="text-2xl font-black text-black">₹0</span>
-            <div class="flex items-center gap-1 bg-green-50 px-2.5 py-1 rounded text-green-700 text-xs font-black">
-              4.9 <i class="fa-solid fa-star text-[9px]"></i>
+          <span id="pd-cat-badge" class="text-[9px] font-black text-gray-400 uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded">AUTHENTIC SUPPLEMENT</span>
+          <h2 id="pd-name" class="text-2xl font-black text-black tracking-tight mt-2.5 leading-tight">Product Formulation Asset</h2>
+          
+          <div class="flex items-center gap-4 mt-3.5">
+            <span id="pd-price" class="text-3xl font-black text-black tracking-tight">₹0</span>
+            <div class="flex items-center gap-1 bg-black text-white px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wide">
+              4.9 <i class="fa-solid fa-star text-[8px] mb-0.5"></i>
             </div>
-            <span class="text-[10px] text-gray-400 font-bold tracking-wide">(Verified Ratings)</span>
+            <span class="text-[10px] text-gray-400 font-bold tracking-wide">(Verified Consumer Matrix)</span>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-4 border-y border-gray-100 py-4">
-          <div class="text-center"><i class="fa-solid fa-shield-halved text-black text-lg mb-1"></i><p class="text-[9px] text-gray-500 font-bold uppercase tracking-wider">100% Genuine</p></div>
-          <div class="text-center"><i class="fa-solid fa-truck-fast text-black text-lg mb-1"></i><p class="text-[9px] text-gray-500 font-bold uppercase tracking-wider">Fast Local</p></div>
-          <div class="text-center"><i class="fa-solid fa-cube text-black text-lg mb-1"></i><p class="text-[9px] text-gray-500 font-bold uppercase tracking-wider">Sealed</p></div>
+        <!-- Trust Matrix System Layout Pillars -->
+        <div class="grid grid-cols-3 gap-3 border-y border-gray-100 py-4">
+          <div class="text-center p-2"><i class="fa-solid fa-shield-halved text-black text-base mb-1 block"></i><p class="text-[9px] text-black font-black uppercase tracking-wider">100% Genuine</p></div>
+          <div class="text-center p-2"><i class="fa-solid fa-truck-fast text-black text-base mb-1 block"></i><p class="text-[9px] text-black font-black uppercase tracking-wider">Local Delivery</p></div>
+          <div class="text-center p-2"><i class="fa-solid fa-cube text-black text-base mb-1 block"></i><p class="text-[9px] text-black font-black uppercase tracking-wider">Factory Sealed</p></div>
         </div>
 
+        <!-- Descriptive Yield Frame -->
         <div>
-          <h3 class="text-xs font-bold text-black uppercase tracking-wider mb-2">Description</h3>
-          <p id="pd-desc" class="text-xs text-gray-600 leading-relaxed font-medium whitespace-pre-line"></p>
+          <h3 class="text-xs font-black text-black uppercase tracking-widest mb-2">Formula Profile Breakdown</h3>
+          <p id="pd-desc" class="text-xs text-gray-600 leading-relaxed font-medium whitespace-pre-line bg-gray-50 p-4 rounded-2xl border border-gray-100/50"></p>
         </div>
         
-        <!-- Fake Review Section -->
-        <div>
-          <h3 class="text-xs font-bold text-black uppercase tracking-wider mb-3">Customer Reviews</h3>
-          <div class="bg-gray-50 p-4 rounded-2xl mb-3">
-            <div class="flex justify-between text-xs mb-1 font-bold"><span>Aditya P.</span><span class="text-green-600"><i class="fa-solid fa-circle-check"></i> Verified</span></div>
-            <p class="text-xs text-gray-600 font-medium mt-1">Genuine sealed box. QR scanner confirmed official importer. Very fast delivery within Pandharpur!</p>
+        <!-- Premium Amazon-Grade Customer Reviews Ledger Block -->
+        <div class="space-y-3">
+          <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+            <h3 class="text-xs font-black text-black uppercase tracking-widest">Verified Customer Reviews</h3>
+            <span class="text-[10px] text-gray-400 font-bold uppercase">Showing Top Entries</span>
+          </div>
+          
+          <div class="space-y-2.5">
+            <div class="bg-gray-50 border border-gray-100 p-4 rounded-2xl space-y-1.5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-black text-black">Aditya P.</span>
+                <div class="flex items-center gap-1.5 text-black font-bold text-[10px]">
+                  <span class="text-[9px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-circle-check text-black mr-0.5"></i> Verified Buyer</span>
+                  <span>•</span> 5.0 <i class="fa-solid fa-star text-[8px]"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-600 font-medium leading-relaxed">Genuine factory-sealed box matrix parameters check out perfectly. Official importer verification code cleared without issue. Extremely prompt handling speed inside Pandharpur region.</p>
+            </div>
+
+            <div class="bg-gray-50 border border-gray-100 p-4 rounded-2xl space-y-1.5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-black text-black">Rohan M.</span>
+                <div class="flex items-center gap-1.5 text-black font-bold text-[10px]">
+                  <span class="text-[9px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-circle-check text-black mr-0.5"></i> Verified Buyer</span>
+                  <span>•</span> 4.8 <i class="fa-solid fa-star text-[8px]"></i>
+                </div>
+              </div>
+              <p class="text-xs text-gray-600 font-medium leading-relaxed">Purity mix profiles perform outstandingly. Solubility yields match the high benchmark criteria perfectly. Will definitely acquire remaining operational nutrition assets from here.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Fixed Bottom Actions -->
-    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 p-4 pb-8 flex gap-3 shadow-[0_-10px_25px_rgba(0,0,0,0.05)]">
-      <button id="pd-add-btn" class="flex-1 py-4 bg-gray-100 text-black rounded-xl font-bold text-xs uppercase tracking-wider">Add to Cart</button>
-      <button id="pd-buy-btn" class="flex-1 py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider">Buy Now</button>
+    <!-- Fixed Action Console Footer Controls -->
+    <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 p-4 pb-8 flex gap-3 shadow-[0_-12px_30px_rgba(0,0,0,0.03)]">
+      <button id="pd-add-btn" class="flex-1 py-4 bg-gray-50 text-black rounded-xl font-bold text-xs uppercase tracking-wider border border-gray-100 transition-colors hover:bg-gray-100">Add Component</button>
+      <button id="pd-buy-btn" class="flex-1 py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider transition-opacity hover:opacity-90">Instant Purchase</button>
     </div>
   </div>
 
-  <!-- ================= FLOATING NAVIGATION PILL ================= -->
-  <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md pill-nav rounded-full px-4 py-3 shadow-lg z-50 flex justify-between items-center">
-    <button onclick="switchTab('home')" class="nav-btn text-black flex flex-col items-center flex-1" data-tab="home"><i class="fa-solid fa-house text-lg"></i><span class="text-[9px] mt-0.5 font-bold uppercase">Home</span></button>
-    <button onclick="switchTab('shop')" class="nav-btn text-gray-400 flex flex-col items-center flex-1" data-tab="shop"><i class="fa-solid fa-magnifying-glass text-lg"></i><span class="text-[9px] mt-0.5 font-bold uppercase">Shop</span></button>
-    <button onclick="switchTab('buy')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 relative" data-tab="buy">
-      <i class="fa-solid fa-bag-shopping text-lg"></i>
-      <span id="cart-count-badge" class="absolute -top-1 right-5 bg-black text-white text-[9px] w-4.5 h-4.5 rounded-full flex items-center justify-center font-bold hidden">0</span>
-      <span class="text-[9px] mt-0.5 font-bold uppercase">Cart</span>
+  <!-- ================= MINIMALIST NAVIGATION CONTROLLER PILL ================= -->
+  <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm pill-nav rounded-2xl px-2 py-2.5 shadow-xl z-50 flex justify-between items-center">
+    <button onclick="switchTab('home')" class="nav-btn text-black flex flex-col items-center flex-1 py-1" data-tab="home"><i class="fa-solid fa-house text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Home</span></button>
+    <button onclick="switchTab('shop')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="shop"><i class="fa-solid fa-magnifying-glass text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Shop</span></button>
+    <button onclick="switchTab('buy')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1 relative" data-tab="buy">
+      <i class="fa-solid fa-bag-shopping text-base"></i>
+      <span id="cart-count-badge" class="absolute -top-1.5 right-6 bg-black text-white text-[8px] w-4 h-4 rounded-md flex items-center justify-center font-black hidden">0</span>
+      <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Cart</span>
     </button>
-    <button onclick="switchTab('contact')" class="nav-btn text-gray-400 flex flex-col items-center flex-1" data-tab="contact"><i class="fa-solid fa-circle-info text-lg"></i><span class="text-[9px] mt-0.5 font-bold uppercase">Support</span></button>
-    <button onclick="switchTab('history')" class="nav-btn text-gray-400 flex flex-col items-center flex-1" data-tab="history"><i class="fa-solid fa-clock-rotate-left text-lg"></i><span class="text-[9px] mt-0.5 font-bold uppercase">History</span></button>
+    <button onclick="switchTab('contact')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="contact"><i class="fa-solid fa-circle-info text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Support</span></button>
+    <button onclick="switchTab('history')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="history"><i class="fa-solid fa-clock-rotate-left text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">History</span></button>
   </nav>
 
-  <!-- ================= FLOATING CHAT WIDGET ================= -->
+  <!-- ================= SYNCHRONIZED SUPPORT LIVE CHAT INTERFACE ================= -->
   <div id="chat-widget" class="fixed bottom-24 right-6 z-40">
-    <button onclick="toggleChatWindow()" class="w-12 h-12 bg-black text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-105 transition-transform">
-      <i class="fa-solid fa-comment-dots text-lg"></i>
+    <button onclick="toggleChatWindow()" class="w-12 h-12 bg-black text-white rounded-2xl shadow-xl flex items-center justify-center hover:scale-105 transition-transform">
+      <i class="fa-solid fa-comment-dots text-base"></i>
     </button>
-    <div id="chat-window" class="hidden absolute bottom-16 right-0 w-80 bg-white border border-gray-100 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-96">
+    <div id="chat-window" class="hidden absolute bottom-16 right-0 w-80 bg-white border border-gray-100 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-96">
       <div class="bg-black text-white p-4 flex justify-between items-center">
-        <div><h4 class="font-bold text-xs tracking-wide">Nikate Support</h4><span class="text-[9px] opacity-75 uppercase tracking-widest font-semibold">Online</span></div>
-        <button onclick="toggleChatWindow()" class="text-white opacity-80 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+        <div><h4 class="font-black text-xs tracking-wide">Nikate Terminal Support</h4><span class="text-[8px] opacity-60 uppercase tracking-widest font-bold">Encrypted Live Link</span></div>
+        <button onclick="toggleChatWindow()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark text-sm"></i></button>
       </div>
       <div id="chat-setup" class="p-5 flex-1 flex flex-col justify-center space-y-3 bg-gray-50">
-        <p class="text-[11px] text-gray-500 text-center font-semibold mb-2">Enter details to connect:</p>
-        <input type="text" id="chat-user-name" placeholder="Full Name" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-xs outline-none font-semibold">
-        <input type="text" id="chat-user-phone" placeholder="Mobile Number" class="px-4 py-3 bg-white border border-gray-200 rounded-xl text-xs outline-none font-semibold">
-        <button onclick="startChat()" class="py-3.5 bg-black text-white rounded-xl text-xs font-black uppercase tracking-wider">Start Chat</button>
+        <p class="text-[10px] text-gray-400 text-center font-bold uppercase tracking-wider">Identify Client Node Link</p>
+        <input type="text" id="chat-user-name" placeholder="Client Name Designation" class="w-full px-4 py-3 apple-input text-xs font-semibold text-black outline-none">
+        <input type="text" id="chat-user-phone" placeholder="Active Mobile Parameter" class="w-full px-4 py-3 apple-input text-xs font-semibold text-black outline-none">
+        <button onclick="startChat()" class="w-full py-3.5 bg-black text-white rounded-xl text-xs font-black uppercase tracking-wider">Initialize Chat Session</button>
       </div>
       <div id="chat-messages" class="hidden p-4 flex-1 overflow-y-auto space-y-3 text-xs bg-gray-50 hide-scrollbar"></div>
-      <div id="chat-input-area" class="hidden p-3 border-t border-gray-100 flex gap-2 bg-white">
-        <input type="text" id="chat-msg-input" placeholder="Type message..." class="flex-1 px-4 py-2.5 bg-gray-100 rounded-xl text-xs outline-none font-semibold">
-        <button onclick="sendChatMessage()" class="w-9 h-9 bg-black text-white rounded-xl flex items-center justify-center"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+      <div id="chat-input-area" class="hidden p-3 border-t border-gray-100 flex gap-2 bg-white items-center">
+        <input type="text" id="chat-msg-input" placeholder="Type administrative transmission..." class="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-150 rounded-xl text-xs outline-none font-semibold text-black">
+        <button onclick="sendChatMessage()" class="w-9 h-9 bg-black text-white rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity"><i class="fa-solid fa-paper-plane text-xs"></i></button>
       </div>
     </div>
   </div>
 
+  <!-- ================= CENTRAL APPLICATION ARCHITECTURE COMPONENT ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
@@ -234,83 +295,96 @@
     let activeCoupon = null;
     let chatUser = JSON.parse(localStorage.getItem('chatUser')) || null;
 
-    // View Routing
+    // ================= GLOBAL SCOPE SCOPING DECLARATIONS =================
     window.switchTab = (tabId) => {
       document.querySelectorAll('.view-tab').forEach(v => v.classList.add('hidden'));
       document.getElementById(`view-${tabId}`).classList.remove('hidden');
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        if(btn.dataset.tab === tabId) { btn.classList.add('text-black'); btn.classList.remove('text-gray-400'); }
-        else { btn.classList.remove('text-black'); btn.classList.add('text-gray-400'); }
+        if(btn.dataset.tab === tabId) { 
+          btn.classList.add('text-black'); 
+          btn.classList.remove('text-gray-400'); 
+        } else { 
+          btn.classList.remove('text-black'); 
+          btn.classList.add('text-gray-400'); 
+        }
       });
     };
 
-    // Store Status
+    // Store Hours Validation Listener
     onValue(ref(db, 'shopStatus'), (snap) => {
       const data = snap.val();
       if(data) {
         const badge = document.getElementById('shop-status-badge');
         badge.innerHTML = data.isOpen 
-          ? `<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Open`
-          : `<span class="w-2 h-2 rounded-full bg-red-500"></span> Closed`;
+          ? `<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Open`
+          : `<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Closed`;
         badge.className = data.isOpen 
-          ? "px-3 py-1.5 rounded-full text-xs font-bold bg-green-50 text-green-600 border border-green-200 flex items-center gap-1.5"
-          : "px-3 py-1.5 rounded-full text-xs font-bold bg-red-50 text-red-600 border border-red-200 flex items-center gap-1.5";
+          ? "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5"
+          : "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5";
       }
     });
 
-    // Load Catalog
+    // Realtime Catalog Mapping Extraction Engine
     onValue(ref(db, 'products'), (snap) => {
       const data = snap.val();
       const shop = document.getElementById('products-list');
       shop.innerHTML = '';
-      if(!data) return;
+      if(!data) {
+        shop.innerHTML = `<p class="text-xs text-gray-400 font-bold py-8 text-center apple-card bg-gray-50">No products available.</p>`;
+        return;
+      }
 
       Object.entries(data).forEach(([id, prod]) => {
         const safeName = prod.name.replace(/'/g, "\\'");
-        const safeDesc = (prod.description || "Premium sports nutrition supplement ensuring maximum recovery and authentic results.").replace(/'/g, "\\'").replace(/\n/g, "\\n");
+        const fallbackDesc = "Premium sports nutrition formulation engineered to maximize muscular recovery rates, athletic endurance thresholds, and pure physiological results.";
+        const safeDesc = (prod.description || fallbackDesc).replace(/'/g, "\\'").replace(/\n/g, "\\n");
+        const categoryMap = { cat_01: 'Whey Protein', cat_02: 'Creatine & Pre', cat_03: 'Vitamins', cat_04: 'Gainers' };
+        const catLabel = categoryMap[prod.categoryId] || 'Premium Asset';
         
         shop.innerHTML += `
-          <div onclick="openProductView('${id}', '${safeName}', ${prod.price}, '${prod.image}', ${prod.inStock}, '${safeDesc}')" class="apple-card p-4 flex items-center justify-between cursor-pointer border border-gray-100 hover:border-black/5">
+          <div onclick="openProductView('${id}', '${safeName}', ${prod.price}, '${prod.image}', ${prod.inStock}, '${safeDesc}', '${catLabel}')" class="apple-card p-4 flex items-center justify-between cursor-pointer border border-gray-50 bg-gray-50/40 hover:bg-gray-50/80 transition-colors">
             <div class="flex items-center gap-4">
-              <img src="${prod.image}" class="w-16 h-16 object-contain rounded-xl bg-white p-1 border border-gray-100/50">
+              <img src="${prod.image}" class="w-16 h-16 object-contain rounded-xl bg-white p-1 border border-gray-100/50 mix-blend-multiply">
               <div>
-                <h4 class="font-bold text-xs text-black leading-tight">${prod.name}</h4>
-                <p class="text-xs text-gray-500 mt-1 font-bold">₹${prod.price}</p>
-                <span class="text-[9px] mt-1.5 inline-block px-2 py-0.5 font-bold rounded ${prod.inStock ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'} uppercase tracking-wide">
-                  ${prod.inStock ? 'In Stock' : 'Out of Stock'}
+                <span class="text-[8px] font-black text-gray-400 uppercase tracking-widest">${catLabel}</span>
+                <h4 class="font-black text-xs text-black leading-tight mt-0.5">${prod.name}</h4>
+                <p class="text-xs text-black font-black mt-1">₹${prod.price}</p>
+                <span class="text-[8px] mt-1.5 inline-block px-2 py-0.5 font-black rounded ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'} uppercase tracking-wide">
+                  ${prod.inStock ? 'In Stock' : 'Void Stock'}
                 </span>
               </div>
             </div>
-            <button class="w-8 h-8 bg-black text-white text-xs font-bold rounded-lg flex items-center justify-center"><i class="fa-solid fa-chevron-right"></i></button>
+            <button class="w-8 h-8 bg-white border border-gray-200 text-black text-xs font-black rounded-lg flex items-center justify-center"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
           </div>
         `;
       });
     });
 
-    // Amazon-Style Product Modal Details
-    window.openProductView = (id, name, price, image, inStock, desc) => {
+    // Amazon Interface Modal Presentation Mechanics
+    window.openProductView = (id, name, price, image, inStock, desc, catLabel) => {
       const modal = document.getElementById('product-detail-view');
       document.getElementById('pd-image').src = image;
       document.getElementById('pd-name').textContent = name;
       document.getElementById('pd-price').textContent = `₹${price}`;
       document.getElementById('pd-desc').textContent = desc;
+      document.getElementById('pd-cat-badge').textContent = catLabel.toUpperCase();
 
       const addBtn = document.getElementById('pd-add-btn');
       const buyBtn = document.getElementById('pd-buy-btn');
 
       if(inStock) {
-        addBtn.textContent = "Add to Cart";
-        addBtn.className = "flex-1 py-4 bg-gray-100 text-black rounded-xl font-bold text-xs uppercase tracking-wider";
+        addBtn.textContent = "Add Component";
+        addBtn.className = "flex-1 py-4 bg-gray-50 text-black rounded-xl font-bold text-xs uppercase tracking-wider border border-gray-100 transition-colors hover:bg-gray-100";
         addBtn.onclick = () => { 
           addToCart(id, name, price); 
-          addBtn.textContent = "Added!"; 
-          setTimeout(() => addBtn.textContent = "Add to Cart", 1500);
+          addBtn.textContent = "Added Allocation!"; 
+          setTimeout(() => addBtn.textContent = "Add Component", 1200);
         };
         buyBtn.style.display = "block";
         buyBtn.onclick = () => { addToCart(id, name, price); closeProductView(); switchTab('buy'); };
       } else {
-        addBtn.textContent = "Out of Stock";
-        addBtn.className = "w-full py-4 bg-red-50 text-red-500 rounded-xl font-bold text-xs uppercase tracking-wider";
+        addBtn.textContent = "Asset Stock Void";
+        addBtn.className = "w-full py-4 bg-red-50 text-red-500 rounded-xl font-bold text-xs uppercase tracking-wider text-center";
         addBtn.onclick = null;
         buyBtn.style.display = "none";
       }
@@ -325,7 +399,7 @@
       setTimeout(() => modal.classList.add('hidden'), 300);
     };
 
-    // Cart System
+    // Pipeline Basket Operational Logic
     window.addToCart = (id, name, price) => {
       const existing = cart.find(item => item.id === id);
       if(existing) existing.qty += 1;
@@ -342,19 +416,23 @@
       else badge.classList.add('hidden');
 
       if(cart.length === 0) {
-        itemsContainer.innerHTML = `<p class="text-xs text-gray-500 font-bold py-4 text-center">Your cart is empty.</p>`;
+        itemsContainer.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50 border border-gray-150">Your cart pipeline is currently empty.</p>`;
+        document.getElementById('cart-subtotal').textContent = `₹0`;
+        document.getElementById('cart-discount').textContent = `- ₹0`;
+        document.getElementById('cart-total').textContent = `₹0`;
         return;
       }
+      
       itemsContainer.innerHTML = cart.map(item => `
-        <div class="flex justify-between items-center bg-gray-50 p-3.5 rounded-2xl">
+        <div class="flex justify-between items-center bg-gray-50 border border-gray-100 p-4 rounded-2xl">
           <div class="flex-1 pr-4">
-            <h5 class="font-bold text-xs text-black">${item.name}</h5>
-            <span class="text-[10px] text-gray-400 font-semibold">₹${item.price} each</span>
+            <h5 class="font-black text-xs text-black leading-tight">${item.name}</h5>
+            <span class="text-[10px] text-gray-400 font-bold mt-1 block">₹${item.price} base cost</span>
           </div>
-          <div class="flex items-center gap-2.5">
-            <button onclick="changeQty('${item.id}', -1)" class="w-7 h-7 bg-white border border-gray-100 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-minus"></i></button>
-            <span class="text-xs font-black">${item.qty}</span>
-            <button onclick="changeQty('${item.id}', 1)" class="w-7 h-7 bg-white border border-gray-100 rounded-lg flex items-center justify-center text-xs"><i class="fa-solid fa-plus"></i></button>
+          <div class="flex items-center gap-3">
+            <button onclick="changeQty('${item.id}', -1)" class="w-7 h-7 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-xs text-black font-black hover:bg-gray-50">-</button>
+            <span class="text-xs font-black text-black w-3 text-center">${item.qty}</span>
+            <button onclick="changeQty('${item.id}', 1)" class="w-7 h-7 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-xs text-black font-black hover:bg-gray-50">+</button>
           </div>
         </div>
       `).join('');
@@ -377,6 +455,7 @@
       updateCartUI();
     };
 
+    // Coupon Engine Code Matrix Verification Execution Hook
     window.applyCoupon = () => {
       const code = document.getElementById('coupon-input').value.toUpperCase().trim();
       const msg = document.getElementById('coupon-message');
@@ -385,21 +464,22 @@
         const val = snap.val();
         if(val && val.isActive) {
           activeCoupon = val;
-          msg.textContent = `${val.value}% OFF APPLIED!`;
-          msg.className = "text-xs mt-2 text-green-600 font-bold uppercase tracking-wider";
+          msg.textContent = `${val.value}% PROMO METRIC COMPLY RULE ENFORCED!`;
+          msg.className = "text-[10px] mt-2 text-black font-black uppercase tracking-widest";
           updateCartUI();
         } else {
-          msg.textContent = "INVALID COUPON";
-          msg.className = "text-xs mt-2 text-red-600 font-bold uppercase tracking-wider";
+          msg.textContent = "PROMO CONFIGURATION CODE VOID / EXPIRED";
+          msg.className = "text-[10px] mt-2 text-red-500 font-black uppercase tracking-widest";
         }
       }, { onlyOnce: true });
     };
 
+    // Secure Purchase Order Commitment Node Push Engine
     window.submitOrder = () => {
       const name = document.getElementById('cust-name').value.trim();
       const phone = document.getElementById('cust-phone').value.trim();
       const address = document.getElementById('cust-address').value.trim();
-      if(!name || !phone || !address || cart.length === 0) { alert("Please complete checkout details."); return; }
+      if(!name || !phone || !address || cart.length === 0) { alert("Complete mandatory checkout fields before transmitting request parameters."); return; }
       
       const totalAmount = parseFloat(document.getElementById('cart-total').textContent.replace('₹', ''));
       const newOrder = { customerName: name, customerPhone: phone, address: address, items: cart, totalAmount, status: "pending", timestamp: Date.now() };
@@ -409,15 +489,21 @@
         const history = JSON.parse(localStorage.getItem('orders_history')) || [];
         history.push({ id: pushRef.key, ...newOrder });
         localStorage.setItem('orders_history', JSON.stringify(history));
-        alert("Order placed securely!");
-        cart = []; updateCartUI(); switchTab('history'); renderHistory();
+        alert("Secure transaction node pushed to dashboard operational pipeline successfully.");
+        cart = []; 
+        activeCoupon = null;
+        document.getElementById('coupon-input').value = '';
+        document.getElementById('coupon-message').textContent = '';
+        updateCartUI(); 
+        switchTab('history'); 
+        renderHistory();
       });
     };
 
     window.sendIssueReport = () => {
       const desc = document.getElementById('issue-desc').value.trim();
-      if(!desc) { alert("Describe the issue first."); return; }
-      window.open(`https://wa.me/918698343237?text=${encodeURIComponent('Issue: ' + desc)}`, '_blank');
+      if(!desc) { alert("Detail technical issue specifications first."); return; }
+      window.open(`https://wa.me/918698343237?text=${encodeURIComponent('Administrative Issue Log: ' + desc)}`, '_blank');
     };
 
     function renderHistory() {
@@ -431,27 +517,37 @@
           const status = live ? live.status : 'pending';
           let color = "bg-yellow-50 text-yellow-600";
           if(status === 'shipping' || status === 'preparing') color = "bg-blue-50 text-blue-600";
-          if(status === 'shipped') color = "bg-green-50 text-green-600";
-          if(status === 'declined') color = "bg-red-50 text-red-600";
+          if(status === 'shipped') color = "bg-black text-white";
+          if(status === 'declined') color = "bg-red-50 text-red-500";
 
           const html = `
-            <div class="flex justify-between items-start">
-              <div><p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">ID: #${item.id.slice(-6).toUpperCase()}</p><h5 class="font-black text-sm text-black mt-1">₹${item.totalAmount}</h5></div>
-              <span class="text-[9px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider ${color}">${status}</span>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-[8px] text-gray-400 font-black uppercase tracking-widest">TRANSACTION ID: #${item.id.slice(-6).toUpperCase()}</p>
+                <h5 class="font-black text-sm text-black mt-0.5">₹${item.totalAmount}</h5>
+              </div>
+              <span class="text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider ${color}">${status}</span>
             </div>`;
           const cont = document.getElementById(`ord-${item.id}`);
           if(cont) cont.innerHTML = html;
-          else { const div = document.createElement('div'); div.id = `ord-${item.id}`; div.className = "apple-card p-4"; div.innerHTML = html; list.appendChild(div); }
+          else { 
+            const div = document.createElement('div'); 
+            div.id = `ord-${item.id}`; 
+            div.className = "apple-card p-4 border border-gray-100 bg-gray-50/50"; 
+            div.innerHTML = html; 
+            list.appendChild(div); 
+          }
         });
       });
     }
 
-    // Chat system
+    // Synchronized Client Customer Chat Matrix Engine Tasks
     window.toggleChatWindow = () => {
       const win = document.getElementById('chat-window');
       win.classList.toggle('hidden');
       if(!win.classList.contains('hidden') && chatUser) startChatSession();
     };
+    
     window.startChat = () => {
       const n = document.getElementById('chat-user-name').value.trim();
       const p = document.getElementById('chat-user-phone').value.trim();
@@ -460,6 +556,7 @@
       localStorage.setItem('chatUser', JSON.stringify(chatUser));
       startChatSession();
     };
+    
     function startChatSession() {
       document.getElementById('chat-setup').classList.add('hidden');
       document.getElementById('chat-messages').classList.remove('hidden');
@@ -470,11 +567,17 @@
         if(!snap.val()) return;
         Object.values(snap.val()).forEach(msg => {
           const isMe = msg.sender === 'customer';
-          box.innerHTML += `<div class="flex ${isMe ? 'justify-end' : 'justify-start'}"><div class="max-w-[75%] p-3 rounded-2xl ${isMe ? 'bg-black text-white rounded-br-none' : 'bg-gray-200 text-black rounded-bl-none'}"><p class="leading-relaxed font-semibold">${msg.text}</p></div></div>`;
+          box.innerHTML += `
+            <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
+              <div class="max-w-[80%] p-3 rounded-2xl ${isMe ? 'bg-black text-white rounded-br-none' : 'bg-gray-200 text-black rounded-bl-none'}">
+                <p class="font-semibold leading-relaxed">${msg.text}</p>
+              </div>
+            </div>`;
         });
         box.scrollTop = box.scrollHeight;
       });
     }
+    
     window.sendChatMessage = () => {
       const inp = document.getElementById('chat-msg-input');
       const text = inp.value.trim();
@@ -484,6 +587,7 @@
       inp.value = '';
     };
 
+    // Initial Processing Handlers
     renderHistory();
   </script>
 </body>
