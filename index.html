@@ -3,504 +3,508 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nikate Nutrition & Supplements</title>
+<title>Nikate Nutrition</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ===== RESET & VARS ===== */
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --bg:#ffffff;
   --surface:#f9f9f9;
   --card:#ffffff;
-  --border:#e0e0e0;
+  --border:#e8e8e8;
   --text:#1a1a1a;
-  --muted:#666666;
-  --accent:#2563eb;
-  --accent-dark:#1d4ed8;
-  --success:#10b981;
-  --warning:#f59e0b;
+  --muted:#777777;
+  --accent:#16a34a;
+  --accent-dark:#15803d;
   --danger:#ef4444;
-  --info:#3b82f6;
+  --success:#16a34a;
 }
-
 html{scroll-behavior:smooth;}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Inter',sans-serif;
-  min-height:100vh;
-  padding-bottom:100px;
-  line-height:1.6;
-}
-
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding-bottom:100px;line-height:1.6;}
 a{text-decoration:none;color:inherit;}
 
-/* ===== HEADER ===== */
+/* HEADER */
 .header{
   position:sticky;top:0;z-index:200;
-  background:var(--bg);
+  background:#fff;
   border-bottom:1px solid var(--border);
-  padding:16px 20px;
+  padding:14px 20px;
   display:flex;align-items:center;justify-content:space-between;
-  box-shadow:0 1px 3px rgba(0,0,0,0.05);
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
 }
-
-.logo{
-  display:flex;flex-direction:column;gap:2px;
-}
-
-.logo-text{
-  font-size:1.1rem;
-  font-weight:800;
-  letter-spacing:-0.5px;
-  color:var(--text);
-}
-
-.logo-sub{
-  font-size:0.6rem;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:1px;
-  font-weight:600;
-}
-
-.header-actions{
-  display:flex;align-items:center;gap:12px;
-}
-
-.header-btn{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:8px 12px;
-  font-size:0.85rem;
-  font-weight:600;
-  cursor:pointer;
-  transition:all 0.2s;
-  display:flex;align-items:center;gap:6px;
-  color:var(--text);
-}
-
-.header-btn:hover{
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{
+  width:36px;height:36px;
   background:var(--accent);
-  border-color:var(--accent);
-  color:#fff;
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;
 }
-
-.badge-count{
-  background:var(--danger);
+.logo-name{
+  font-size:1.15rem;
+  font-weight:900;
+  color:var(--text);
+  letter-spacing:-0.5px;
+}
+.logo-name span{color:var(--accent);}
+.header-cart{
+  position:relative;
+  background:var(--accent);
   color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:9px 16px;
+  font-size:0.85rem;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;align-items:center;gap:7px;
+  font-family:'Inter',sans-serif;
+}
+.cart-badge{
+  background:#fff;
+  color:var(--accent);
   border-radius:50%;
-  width:20px;
-  height:20px;
+  width:20px;height:20px;
   font-size:0.7rem;
-  font-weight:800;
+  font-weight:900;
   display:flex;align-items:center;justify-content:center;
 }
 
-/* ===== BOTTOM NAV ===== */
+/* BOTTOM NAV */
 .bottom-nav{
   position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
   z-index:999;
   background:#fff;
   border:1px solid var(--border);
   border-radius:100px;
-  padding:8px 12px;
-  display:flex;gap:8px;
+  padding:6px 10px;
+  display:flex;gap:4px;
   box-shadow:0 8px 32px rgba(0,0,0,0.12);
 }
-
 .nav-item{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;
-  padding:10px 16px;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:9px 18px;
   border-radius:100px;
-  font-size:0.7rem;
+  font-size:0.68rem;
   font-weight:700;
   color:var(--muted);
   cursor:pointer;
   transition:all 0.2s;
   background:transparent;
   border:none;
+  font-family:'Inter',sans-serif;
 }
+.nav-item svg{width:20px;height:20px;stroke-width:2;}
+.nav-item.active{background:var(--accent);color:#fff;}
+.nav-item.active svg{stroke:#fff;}
 
-.nav-item svg{
-  width:20px;height:20px;stroke-width:2;
-}
-
-.nav-item.active{
-  background:var(--accent);
-  color:#fff;
-}
-
-.nav-item.active svg{
-  stroke:#fff;
-}
-
-/* ===== PAGES ===== */
-.page{display:none;animation:fadeIn 0.3s ease;}
-.page.active{display:block;}
+/* PAGES */
+.page{display:none;}
+.page.active{display:block;animation:fadeIn 0.25s ease;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 
-/* ===== HERO ===== */
-.hero{
-  padding:40px 20px;
-  background:linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+/* =====================
+   HOME — ZOMATO STYLE
+   ===================== */
+
+/* Hero banner */
+.home-hero{
+  background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%);
+  padding:28px 20px 24px;
   border-bottom:1px solid var(--border);
 }
-
 .hero-badge{
   display:inline-flex;align-items:center;gap:6px;
-  background:#e0f2fe;
-  color:var(--accent);
-  border:1px solid #bae6fd;
+  background:#fff;
+  border:1px solid #bbf7d0;
   border-radius:20px;
-  padding:6px 14px;
-  font-size:0.75rem;
+  padding:5px 12px;
+  font-size:0.72rem;
   font-weight:700;
-  letter-spacing:0.5px;
+  color:var(--accent);
   text-transform:uppercase;
-  margin-bottom:16px;
-}
-
-.hero h1{
-  font-size:2.2rem;
-  font-weight:900;
-  line-height:1.1;
+  letter-spacing:0.5px;
   margin-bottom:12px;
+}
+.home-hero h1{
+  font-size:1.9rem;
+  font-weight:900;
+  line-height:1.15;
   letter-spacing:-0.8px;
   color:var(--text);
+  margin-bottom:8px;
 }
+.home-hero h1 span{color:var(--accent);}
+.home-hero p{font-size:0.9rem;color:var(--muted);max-width:420px;}
 
-.hero p{
-  font-size:1rem;
-  color:var(--muted);
-  line-height:1.6;
-  margin-bottom:24px;
-  max-width:500px;
+/* Search bar on home */
+.home-search{
+  padding:16px 20px 0;
 }
-
-.hero-actions{
-  display:flex;gap:12px;flex-wrap:wrap;
+.search-wrap{
+  position:relative;
+  display:flex;align-items:center;
 }
-
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  padding:12px 24px;
-  border-radius:8px;
-  font-weight:700;
+.search-wrap svg{
+  position:absolute;left:13px;
+  width:17px;height:17px;
+  stroke:var(--muted);stroke-width:2;
+  pointer-events:none;
+}
+.search-input{
+  width:100%;
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  padding:11px 12px 11px 40px;
+  font-family:'Inter',sans-serif;
   font-size:0.9rem;
+  color:var(--text);
+  outline:none;
+  transition:border 0.2s;
+}
+.search-input:focus{border-color:var(--accent);}
+.search-input::placeholder{color:var(--muted);}
+
+/* Sticky category pills */
+.cat-pills-wrap{
+  position:sticky;top:65px;z-index:100;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  padding:10px 0;
+}
+.cat-pills{
+  display:flex;gap:8px;
+  overflow-x:auto;
+  padding:0 20px;
+  scrollbar-width:none;
+}
+.cat-pills::-webkit-scrollbar{display:none;}
+.cat-pill{
+  flex-shrink:0;
+  padding:7px 16px;
+  border-radius:20px;
+  font-size:0.78rem;
+  font-weight:700;
   cursor:pointer;
-  border:none;
+  white-space:nowrap;
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  color:var(--muted);
   transition:all 0.2s;
   font-family:'Inter',sans-serif;
 }
-
-.btn-primary{
+.cat-pill.active{
   background:var(--accent);
   color:#fff;
+  border-color:var(--accent);
 }
 
-.btn-primary:hover{
-  background:var(--accent-dark);
-  transform:translateY(-2px);
-  box-shadow:0 4px 12px rgba(37,99,235,0.3);
+/* Category section on home */
+.cat-section{
+  padding:24px 20px 0;
 }
-
-.btn-secondary{
-  background:var(--surface);
-  color:var(--text);
-  border:1px solid var(--border);
-}
-
-.btn-secondary:hover{
-  background:var(--border);
-  border-color:var(--muted);
-}
-
-.btn-sm{
-  padding:8px 14px;
-  font-size:0.8rem;
-}
-
-.btn-full{
-  width:100%;
-}
-
-.btn-danger{
-  background:var(--danger);
-  color:#fff;
-}
-
-.btn-danger:hover{
-  background:#dc2626;
-}
-
-.btn-success{
-  background:var(--success);
-  color:#fff;
-}
-
-/* ===== SECTION ===== */
-.section{
-  padding:28px 20px;
-}
-
-.section-title{
-  font-size:1.3rem;
+.cat-section-title{
+  font-size:1.1rem;
   font-weight:800;
-  margin-bottom:20px;
   color:var(--text);
-  letter-spacing:-0.5px;
+  margin-bottom:4px;
+  letter-spacing:-0.3px;
+  display:flex;align-items:center;gap:8px;
 }
-
-.section-sub{
-  font-size:0.9rem;
+.cat-section-title span{font-size:1.2rem;}
+.cat-count{
+  font-size:0.75rem;
+  font-weight:600;
   color:var(--muted);
-  margin-bottom:20px;
+  margin-bottom:14px;
+}
+.cat-divider{
+  border:none;
+  border-top:1px solid var(--border);
+  margin:28px 0 0;
 }
 
-/* ===== PRODUCT GRID ===== */
+/* Product row — horizontal card (Zomato list style) */
+.product-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:16px 0;
+  border-bottom:1px solid var(--border);
+}
+.product-row:last-child{border-bottom:none;}
+.product-row-info{flex:1;min-width:0;}
+.row-category{
+  font-size:0.65rem;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.8px;
+  font-weight:700;
+  margin-bottom:3px;
+}
+.row-name{
+  font-size:0.95rem;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.3;
+  margin-bottom:4px;
+}
+.row-desc{
+  font-size:0.8rem;
+  color:var(--muted);
+  line-height:1.4;
+  margin-bottom:6px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.row-price{
+  font-size:1rem;
+  font-weight:900;
+  color:var(--text);
+}
+.row-stock{
+  font-size:0.7rem;
+  font-weight:600;
+  padding:2px 7px;
+  border-radius:5px;
+  margin-left:6px;
+  display:inline-block;
+}
+.stock-in{background:#dcfce7;color:var(--success);}
+.stock-out{background:#fee2e2;color:var(--danger);}
+
+.product-row-right{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+.product-thumb{
+  width:90px;height:90px;
+  border-radius:10px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.2rem;
+  overflow:hidden;
+  position:relative;
+}
+.product-thumb img{width:100%;height:100%;object-fit:cover;}
+
+.add-btn{
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  padding:7px 18px;
+  font-size:0.78rem;
+  font-weight:700;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  transition:background 0.2s;
+  width:90px;
+  text-align:center;
+}
+.add-btn:hover{background:var(--accent-dark);}
+.add-btn:disabled{background:#d1d5db;cursor:not-allowed;}
+
+.qty-ctrl{
+  display:flex;align-items:center;gap:0;
+  width:90px;
+  border:1.5px solid var(--accent);
+  border-radius:8px;
+  overflow:hidden;
+}
+.qty-btn{
+  background:#fff;
+  color:var(--accent);
+  border:none;
+  width:28px;height:30px;
+  font-size:1.1rem;
+  font-weight:900;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Inter',sans-serif;
+  flex-shrink:0;
+}
+.qty-num{
+  flex:1;
+  text-align:center;
+  font-size:0.85rem;
+  font-weight:800;
+  color:var(--accent);
+}
+
+/* =====================
+   SHOP PAGE
+   ===================== */
+.shop-search-wrap{padding:16px 20px 0;}
+.shop-pills-wrap{
+  padding:10px 20px;
+  display:flex;gap:8px;overflow-x:auto;
+  scrollbar-width:none;
+}
+.shop-pills-wrap::-webkit-scrollbar{display:none;}
+
 .products-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:14px;
+  padding:0 20px 20px;
 }
-
 .product-card{
   background:var(--card);
   border:1px solid var(--border);
   border-radius:12px;
   overflow:hidden;
-  transition:all 0.3s;
-  display:flex;
-  flex-direction:column;
+  display:flex;flex-direction:column;
   cursor:pointer;
+  transition:all 0.2s;
 }
-
-.product-card:hover{
-  box-shadow:0 8px 24px rgba(0,0,0,0.1);
-  transform:translateY(-4px);
-  border-color:var(--accent);
-}
-
-.product-img{
-  width:100%;
-  aspect-ratio:1;
+.product-card:hover{box-shadow:0 6px 20px rgba(0,0,0,0.09);border-color:var(--accent);}
+.card-img{
+  width:100%;aspect-ratio:1;
   background:var(--surface);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:3rem;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.8rem;
   border-bottom:1px solid var(--border);
   overflow:hidden;
 }
-
-.product-img img{
+.card-img img{width:100%;height:100%;object-fit:cover;}
+.card-body{padding:12px;flex:1;display:flex;flex-direction:column;gap:6px;}
+.card-cat{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-weight:700;}
+.card-name{font-size:0.9rem;font-weight:700;line-height:1.3;color:var(--text);}
+.card-price{font-size:1.1rem;font-weight:900;color:var(--text);}
+.card-footer{margin-top:auto;padding-top:8px;border-top:1px solid var(--border);}
+.card-add-btn{
   width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.product-body{
-  padding:14px;
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.product-category{
-  font-size:0.65rem;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:0.8px;
-  font-weight:600;
-}
-
-.product-name{
-  font-size:0.95rem;
-  font-weight:700;
-  line-height:1.3;
-  color:var(--text);
-}
-
-.product-price{
-  font-size:1.2rem;
-  font-weight:900;
-  color:var(--accent);
-  margin:4px 0;
-}
-
-.product-stock{
-  font-size:0.75rem;
-  font-weight:600;
-  padding:4px 8px;
-  border-radius:6px;
-  width:fit-content;
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-}
-
-.stock-in{
-  background:#d1fae5;
-  color:var(--success);
-}
-
-.stock-out{
-  background:#fee2e2;
-  color:var(--danger);
-}
-
-.product-footer{
-  margin-top:auto;
-  padding-top:8px;
-  border-top:1px solid var(--border);
-}
-
-.product-footer button{
-  width:100%;
-}
-
-/* ===== SEARCH & FILTER ===== */
-.search-section{
-  padding:16px 20px 0;
-  display:flex;gap:12px;flex-direction:column;
-}
-
-.search-bar{
-  position:relative;
-  display:flex;align-items:center;
-}
-
-.search-bar svg{
-  position:absolute;
-  left:12px;
-  width:18px;
-  height:18px;
-  stroke:var(--muted);
-  stroke-width:2;
-  pointer-events:none;
-}
-
-.search-input{
-  width:100%;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:10px 12px 10px 40px;
-  color:var(--text);
-  font-family:'Inter',sans-serif;
-  font-size:0.9rem;
-  outline:none;
-  transition:border 0.2s;
-}
-
-.search-input:focus{
-  border-color:var(--accent);
-  background:var(--card);
-}
-
-.search-input::placeholder{
-  color:var(--muted);
-}
-
-.filter-tabs{
-  display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;
-  scrollbar-width:none;
-}
-
-.filter-tabs::-webkit-scrollbar{display:none;}
-
-.filter-tab{
-  padding:8px 14px;
-  border-radius:20px;
-  font-size:0.8rem;
-  font-weight:600;
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-  cursor:pointer;
-  white-space:nowrap;
-  background:var(--surface);
-  border:1px solid var(--border);
-  color:var(--muted);
-  transition:all 0.2s;
-}
-
-.filter-tab.active{
   background:var(--accent);
   color:#fff;
-  border-color:var(--accent);
+  border:none;
+  border-radius:7px;
+  padding:8px;
+  font-size:0.8rem;
+  font-weight:700;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
 }
+.card-add-btn:disabled{background:#d1d5db;cursor:not-allowed;}
 
-/* ===== ORDER MODAL ===== */
-.modal-overlay{
-  position:fixed;inset:0;z-index:500;
-  background:rgba(0,0,0,0.5);
-  backdrop-filter:blur(4px);
-  display:none;align-items:flex-end;justify-content:center;
-  padding:20px;
-}
-
-.modal-overlay.open{display:flex;animation:slideUp 0.3s ease;}
-
-@keyframes slideUp{
-  from{transform:translateY(100%);}
-  to{transform:translateY(0);}
-}
-
-.modal{
-  background:var(--card);
-  border-radius:16px 16px 0 0;
-  padding:24px 20px;
-  width:100%;
-  max-width:480px;
-  max-height:90vh;
-  overflow-y:auto;
-  box-shadow:0 -8px 32px rgba(0,0,0,0.15);
-}
-
-.modal-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:24px;
-}
-
-.modal-title{
-  font-size:1.2rem;
-  font-weight:800;
-  color:var(--text);
-}
-
-.modal-close{
+/* =====================
+   CART PAGE
+   ===================== */
+.cart-section{padding:24px 20px;}
+.section-title{font-size:1.2rem;font-weight:800;color:var(--text);margin-bottom:18px;letter-spacing:-0.4px;}
+.cart-item{
   background:var(--surface);
   border:1px solid var(--border);
-  border-radius:8px;
-  width:36px;height:36px;
-  cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.2rem;
-  color:var(--text);
+  border-radius:10px;
+  padding:14px;
+  display:flex;gap:12px;align-items:center;
+  margin-bottom:12px;
 }
+.cart-item-icon{font-size:2rem;flex-shrink:0;}
+.cart-item-info{flex:1;min-width:0;}
+.cart-item-name{font-weight:700;font-size:0.95rem;color:var(--text);}
+.cart-item-price{font-size:0.82rem;color:var(--muted);margin-top:2px;}
+.cart-item-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.cart-item-total{font-weight:800;color:var(--accent);font-size:0.95rem;}
+.cart-qty{
+  display:flex;align-items:center;gap:0;
+  border:1.5px solid var(--accent);
+  border-radius:7px;
+  overflow:hidden;
+}
+.cqb{
+  background:#fff;color:var(--accent);border:none;
+  width:26px;height:26px;font-size:1rem;font-weight:900;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+.cqn{width:24px;text-align:center;font-size:0.85rem;font-weight:800;color:var(--accent);}
 
-.form-group{
+.cart-total-box{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
   margin-bottom:16px;
 }
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;}
+.cart-total-label{font-weight:800;font-size:1rem;color:var(--text);}
+.cart-total-val{font-weight:900;font-size:1.2rem;color:var(--accent);}
 
-.form-label{
-  display:block;
-  font-size:0.85rem;
-  font-weight:700;
-  color:var(--text);
-  margin-bottom:6px;
-  text-transform:uppercase;
-  letter-spacing:0.5px;
+/* BUTTONS */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:13px 24px;border-radius:9px;
+  font-weight:700;font-size:0.9rem;
+  cursor:pointer;border:none;
+  transition:all 0.2s;
+  font-family:'Inter',sans-serif;
+  width:100%;
+}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent-dark);}
+.btn-secondary{background:var(--surface);color:var(--text);border:1px solid var(--border);}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;}
+.empty-icon{font-size:3.5rem;margin-bottom:14px;}
+.empty-title{font-size:1.05rem;font-weight:800;color:var(--text);margin-bottom:6px;}
+.empty-sub{font-size:0.88rem;color:var(--muted);margin-bottom:20px;}
+.empty-btn{
+  background:var(--accent);color:#fff;border:none;
+  padding:11px 28px;border-radius:9px;
+  font-size:0.88rem;font-weight:700;cursor:pointer;
+  font-family:'Inter',sans-serif;
 }
 
+/* =====================
+   ORDER MODAL
+   ===================== */
+.modal-overlay{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(3px);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:#fff;
+  border-radius:18px 18px 0 0;
+  width:100%;
+  max-width:480px;
+  max-height:92vh;
+  overflow-y:auto;
+  padding:24px 20px;
+  padding-bottom:32px;
+  box-shadow:0 -8px 32px rgba(0,0,0,0.15);
+  animation:slideUp 0.3s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;
+}
+.modal-title{font-size:1.15rem;font-weight:800;color:var(--text);}
+.modal-close{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;width:34px;height:34px;
+  cursor:pointer;font-size:1.2rem;color:var(--text);
+  display:flex;align-items:center;justify-content:center;
+}
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-size:0.8rem;font-weight:700;color:var(--text);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;}
 .form-input{
   width:100%;
   background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:8px;
+  border:1.5px solid var(--border);
+  border-radius:9px;
   padding:12px;
   font-family:'Inter',sans-serif;
   font-size:0.95rem;
@@ -508,760 +512,466 @@ a{text-decoration:none;color:inherit;}
   outline:none;
   transition:border 0.2s;
 }
+.form-input:focus{border-color:var(--accent);background:#fff;}
+.form-input::placeholder{color:var(--muted);}
 
-.form-input:focus{
-  border-color:var(--accent);
-  background:var(--card);
-}
-
-.form-input::placeholder{
-  color:var(--muted);
-}
-
-/* ===== ADMIN PANEL ===== */
-.admin-screen{
-  display:none;
-}
-
-.admin-screen.active{
-  display:block;
-}
-
-.admin-login{
-  height:100vh;
-  display:flex;align-items:center;justify-content:center;
-  padding:20px;
-}
-
-.admin-login-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:40px 28px;
-  max-width:380px;
-  width:100%;
-}
-
-.admin-login-title{
-  font-size:1.4rem;
-  font-weight:900;
-  margin-bottom:8px;
-  color:var(--text);
-}
-
-.admin-login-sub{
-  font-size:0.9rem;
-  color:var(--muted);
-  margin-bottom:28px;
-}
-
-.admin-tabs{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  margin-bottom:24px;
-  padding-bottom:20px;
-  border-bottom:1px solid var(--border);
-}
-
-.admin-tab{
-  padding:8px;
-  border-radius:8px;
-  font-size:0.8rem;
-  font-weight:700;
-  text-align:center;
-  cursor:pointer;
-  background:var(--surface);
-  color:var(--muted);
-  border:none;
-  transition:all 0.2s;
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-}
-
-.admin-tab.active{
-  background:var(--accent);
-  color:#fff;
-}
-
-.admin-section{
-  display:none;
-  max-height:calc(100vh - 160px);
-  overflow-y:auto;
-}
-
-.admin-section.active{
-  display:block;
-}
-
-.admin-product-row{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:14px;
-  margin-bottom:12px;
-}
-
-.admin-product-header{
-  display:flex;justify-content:space-between;align-items:start;
-  margin-bottom:12px;
-}
-
-.admin-product-info{
-  flex:1;
-}
-
-.admin-product-name{
-  font-weight:700;
-  font-size:0.95rem;
-  color:var(--text);
-  margin-bottom:4px;
-}
-
-.admin-product-details{
-  font-size:0.8rem;
-  color:var(--muted);
-}
-
-.admin-actions{
-  display:flex;gap:8px;flex-wrap:wrap;
-  margin-top:12px;
-}
-
-.order-row{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:14px;
-  margin-bottom:12px;
-  cursor:pointer;
-  transition:all 0.2s;
-}
-
-.order-row:hover{
-  background:var(--card);
-  border-color:var(--accent);
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-}
-
-.order-header{
-  display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:8px;
-}
-
-.order-id{
-  font-weight:800;
-  font-size:0.9rem;
-  color:var(--text);
-}
-
-.order-time{
-  font-size:0.75rem;
-  color:var(--muted);
-}
-
-.order-customer{
-  font-weight:700;
-  font-size:0.95rem;
-  color:var(--text);
-  margin-bottom:8px;
-}
-
-.order-details{
-  font-size:0.8rem;
-  color:var(--muted);
-  margin-bottom:8px;
-  line-height:1.5;
-}
-
-.order-badge{
-  display:inline-block;
-  padding:4px 10px;
-  border-radius:6px;
-  font-size:0.7rem;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-  margin-top:8px;
-}
-
-.badge-new{
-  background:#dbeafe;
-  color:var(--info);
-}
-
-.badge-accepted{
-  background:#d1fae5;
-  color:var(--success);
-}
-
-.badge-preparing{
-  background:#fef3c7;
-  color:#b45309;
-}
-
-.badge-shipped{
-  background:#e0e7ff;
-  color:#4f46e5;
-}
-
-.badge-delivered{
-  background:#d1fae5;
-  color:var(--success);
-}
-
-/* ===== ORDER DETAILS MODAL ===== */
-.order-detail-modal{
-  display:none;
-}
-
-.order-detail-modal.open{
-  display:block;
-}
-
-.detail-header{
-  display:flex;justify-content:space-between;align-items:start;
-  margin-bottom:20px;
-  padding-bottom:16px;
-  border-bottom:2px solid var(--border);
-}
-
-.detail-order-id{
-  font-size:1.1rem;
-  font-weight:900;
-  color:var(--text);
-}
-
-.detail-status-badges{
-  display:flex;gap:8px;flex-wrap:wrap;
-}
-
-.status-btn{
-  padding:6px 12px;
-  border-radius:6px;
-  font-size:0.75rem;
-  font-weight:700;
-  border:2px solid var(--border);
-  background:transparent;
-  cursor:pointer;
-  transition:all 0.2s;
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-}
-
-.status-btn.active{
-  background:var(--accent);
-  color:#fff;
-  border-color:var(--accent);
-}
-
-.detail-section{
-  margin-bottom:20px;
-}
-
-.detail-section-title{
-  font-size:0.85rem;
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:0.8px;
-  color:var(--muted);
-  margin-bottom:12px;
-}
-
-.detail-row{
-  display:flex;justify-content:space-between;
-  padding:8px 0;
-  font-size:0.9rem;
-  border-bottom:1px solid var(--border);
-}
-
-.detail-row:last-child{
-  border-bottom:none;
-}
-
-.detail-label{
-  color:var(--muted);
-  font-weight:600;
-}
-
-.detail-value{
-  color:var(--text);
-  font-weight:700;
-}
-
-/* ===== EMPTY STATE ===== */
-.empty-state{
-  text-align:center;
-  padding:60px 20px;
-}
-
-.empty-icon{
-  font-size:4rem;
-  margin-bottom:16px;
-}
-
-.empty-title{
-  font-size:1.1rem;
-  font-weight:800;
-  color:var(--text);
-  margin-bottom:8px;
-}
-
-.empty-sub{
-  font-size:0.9rem;
-  color:var(--muted);
-  margin-bottom:24px;
-}
-
-/* ===== TOAST ===== */
+/* TOAST */
 .toast{
-  position:fixed;bottom:100px;left:20px;right:20px;z-index:1000;
-  background:var(--text);
-  color:#fff;
-  padding:14px 16px;
-  border-radius:8px;
-  font-size:0.9rem;
-  font-weight:600;
+  position:fixed;bottom:90px;left:16px;right:16px;z-index:1000;
+  background:#1a1a1a;color:#fff;
+  padding:13px 16px;border-radius:9px;
+  font-size:0.88rem;font-weight:600;
   display:none;
-  animation:toastSlide 0.3s ease;
   box-shadow:0 8px 24px rgba(0,0,0,0.2);
+  animation:toastIn 0.3s ease;
+  max-width:480px;margin:0 auto;
 }
-
 .toast.show{display:block;}
+@keyframes toastIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 
-@keyframes toastSlide{
-  from{opacity:0;transform:translateY(20px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
-/* ===== RESPONSIVE ===== */
+/* RESPONSIVE */
 @media(min-width:640px){
   .products-grid{grid-template-columns:repeat(3,1fr);}
-  .hero h1{font-size:2.6rem;}
 }
-
 @media(min-width:1024px){
   .products-grid{grid-template-columns:repeat(4,1fr);}
-  body{max-width:1200px;margin:0 auto;}
+  body{max-width:900px;margin:0 auto;}
+  .cat-pills-wrap{top:65px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
+<!-- HEADER -->
 <div class="header">
   <div class="logo">
-    <div class="logo-text">Nikate</div>
-    <div class="logo-sub">Nutrition</div>
+    <div class="logo-icon">🌿</div>
+    <div class="logo-name">Nikate <span>Nutrition</span></div>
   </div>
-  <div class="header-actions">
-    <button class="header-btn" onclick="showPage('cart')">
-      🛒 Cart
-      <span class="badge-count" id="cartCount">0</span>
-    </button>
-    <button class="header-btn" onclick="showPage('admin')">
-      ⚙️ Admin
-    </button>
-  </div>
+  <button class="header-cart" onclick="showPage('cart')">
+    🛒 Cart
+    <span class="cart-badge" id="cartCount">0</span>
+  </button>
 </div>
 
-<!-- ===== HOME PAGE ===== -->
+<!-- HOME PAGE -->
 <div class="page active" id="page-home">
-  <div class="hero">
-    <div class="hero-badge">✨ Premium Nutrition</div>
-    <h1>Quality Supplements<br>For Your Health</h1>
-    <p>Premium nutrition products designed to help you achieve your wellness goals with trusted quality and expert formulations.</p>
-    <div class="hero-actions">
-      <button class="btn btn-primary" onclick="showPage('shop')">Shop Now</button>
-      <button class="btn btn-secondary">Learn More</button>
+
+  <!-- Hero -->
+  <div class="home-hero">
+    <div class="hero-badge">🌿 Premium Supplements</div>
+    <h1>Fuel Your <span>Best Self</span></h1>
+    <p>Trusted nutrition products for your health & wellness goals.</p>
+  </div>
+
+  <!-- Search -->
+  <div class="home-search" style="padding-top:16px;">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" id="homeSearch" placeholder="Search supplements, vitamins..." oninput="homeSearchFilter()">
     </div>
   </div>
+
+  <!-- Sticky Category Pills -->
+  <div class="cat-pills-wrap" id="catPillsWrap">
+    <div class="cat-pills" id="catPills"></div>
+  </div>
+
+  <!-- Product list by category -->
+  <div id="homeMenuContainer" style="padding:0 20px;"></div>
+
 </div>
 
-<!-- ===== SHOP PAGE ===== -->
+<!-- SHOP PAGE -->
 <div class="page" id="page-shop">
-  <div class="search-section">
-    <div class="search-bar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <circle cx="11" cy="11" r="8"></circle>
-        <path d="m21 21-4.35-4.35"></path>
-      </svg>
-      <input class="search-input" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()">
+  <div class="shop-search-wrap">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="search-input" id="shopSearch" placeholder="Search products..." oninput="renderShop()">
     </div>
-    <div class="filter-tabs" id="filterTabs"></div>
   </div>
-
-  <div class="section">
-    <div id="productsContainer" class="products-grid"></div>
-  </div>
+  <div class="shop-pills-wrap" id="shopPills"></div>
+  <div class="products-grid" id="shopGrid"></div>
 </div>
 
-<!-- ===== CART PAGE ===== -->
+<!-- CART PAGE -->
 <div class="page" id="page-cart">
-  <div class="section">
-    <h2 class="section-title">Shopping Cart</h2>
+  <div class="cart-section">
+    <h2 class="section-title">🛒 Your Cart</h2>
     <div id="cartContainer"></div>
   </div>
 </div>
 
-<!-- ===== ADMIN PAGE ===== -->
-<div class="page" id="page-admin">
-  <div class="admin-screen active" id="admin-login">
-    <div class="admin-login-card">
-      <h2 class="admin-login-title">Admin Panel</h2>
-      <p class="admin-login-sub">Enter password to continue</p>
-      <div class="form-group">
-        <input class="form-input" id="adminPass" type="password" placeholder="Admin password">
-      </div>
-      <button class="btn btn-primary btn-full" onclick="adminLogin()">Login</button>
-    </div>
-  </div>
-
-  <div class="admin-screen" id="admin-dashboard">
-    <div style="padding:20px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-        <h2 class="section-title" style="margin:0;">Dashboard</h2>
-        <button class="btn btn-secondary btn-sm" onclick="adminLogout()">Logout</button>
-      </div>
-
-      <div class="admin-tabs">
-        <button class="admin-tab active" onclick="switchAdminTab('orders', this)">Orders</button>
-        <button class="admin-tab" onclick="switchAdminTab('products', this)">Products</button>
-        <button class="admin-tab" onclick="switchAdminTab('add', this)">+ Add</button>
-      </div>
-
-      <div class="admin-section active" id="admin-orders">
-        <div id="ordersContainer"></div>
-      </div>
-
-      <div class="admin-section" id="admin-products">
-        <div id="productsContainer-admin"></div>
-      </div>
-
-      <div class="admin-section" id="admin-add">
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;">
-          <h3 style="font-weight:800;margin-bottom:16px;">Add New Product</h3>
-          
-          <div class="form-group">
-            <label class="form-label">Product Name</label>
-            <input class="form-input" id="newName" placeholder="e.g., Whey Protein">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Price (₹)</label>
-            <input class="form-input" id="newPrice" type="number" placeholder="999">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Category</label>
-            <input class="form-input" id="newCategory" placeholder="e.g., Protein">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Product Image (Base64 or URL)</label>
-            <input class="form-input" id="newImage" placeholder="Paste image URL or upload">
-            <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload()" style="margin-top:8px;">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Description</label>
-            <input class="form-input" id="newDesc" placeholder="Product details...">
-          </div>
-
-          <button class="btn btn-primary btn-full" onclick="addProduct()">Add Product</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-overlay" id="orderDetailModal">
-      <div class="modal">
-        <div class="modal-header">
-          <div class="modal-title">Order Details</div>
-          <button class="modal-close" onclick="closeOrderDetail()">×</button>
-        </div>
-        <div id="orderDetailContent"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ===== ORDER MODAL ===== -->
+<!-- ORDER MODAL -->
 <div class="modal-overlay" id="orderModal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title">Complete Your Order</div>
-      <button class="modal-close" onclick="closeOrder()">×</button>
+      <div class="modal-title">Complete Order</div>
+      <button class="modal-close" onclick="closeOrderModal()">×</button>
     </div>
     <div id="orderContent"></div>
   </div>
 </div>
 
-<!-- ===== BOTTOM NAV ===== -->
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <button class="nav-item active" id="nav-home" onclick="showPage('home')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-      <polyline points="9 22 9 12 15 12 15 22"></polyline>
-    </svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     Home
   </button>
   <button class="nav-item" id="nav-shop" onclick="showPage('shop')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <circle cx="9" cy="21" r="1"></circle>
-      <circle cx="20" cy="21" r="1"></circle>
-      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-    </svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
     Shop
   </button>
   <button class="nav-item" id="nav-cart" onclick="showPage('cart')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-      <polyline points="9 22 9 12 15 12 15 22"></polyline>
-    </svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
     Cart
-  </button>
-  <button class="nav-item" id="nav-admin" onclick="showPage('admin')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path>
-    </svg>
-    Admin
   </button>
 </div>
 
-<!-- ===== TOAST ===== -->
+<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== CONFIG =====
-const ADMIN_PASSWORD = "1234"; // Change this!
-let adminLoggedIn = false;
-let products = [];
+// ===== DATA =====
+let products = [
+  {id:"1", name:"Whey Protein", price:1299, category:"Protein", image:"💪", inStock:true, desc:"Pure whey protein isolate for muscle recovery"},
+  {id:"2", name:"Mass Gainer", price:1599, category:"Protein", image:"🏋️", inStock:true, desc:"High-calorie formula for muscle mass"},
+  {id:"3", name:"BCAA Complex", price:899, category:"Amino Acids", image:"⚡", inStock:true, desc:"Branched chain amino acids for endurance"},
+  {id:"4", name:"L-Glutamine", price:699, category:"Amino Acids", image:"🔬", inStock:false, desc:"Recovery & gut health support"},
+  {id:"5", name:"Creatine Monohydrate", price:749, category:"Performance", image:"🔥", inStock:true, desc:"Strength & power boost"},
+  {id:"6", name:"Pre-Workout", price:999, category:"Performance", image:"⚡", inStock:true, desc:"Energy & endurance before training"},
+  {id:"7", name:"Multivitamin", price:599, category:"Vitamins", image:"🌿", inStock:true, desc:"Complete daily nutrition in one tablet"},
+  {id:"8", name:"Vitamin D3", price:349, category:"Vitamins", image:"☀️", inStock:true, desc:"Bone & immune support"},
+  {id:"9", name:"Vitamin C 1000mg", price:299, category:"Vitamins", image:"🍋", inStock:true, desc:"Antioxidant & immunity booster"},
+  {id:"10", name:"Omega-3 Fish Oil", price:459, category:"Wellness", image:"🐟", inStock:true, desc:"Heart-healthy omega fatty acids"},
+  {id:"11", name:"Collagen Peptides", price:1199, category:"Wellness", image:"✨", inStock:true, desc:"Skin, hair & joint support"},
+  {id:"12", name:"Ashwagandha KSM-66", price:549, category:"Wellness", image:"🌱", inStock:false, desc:"Stress relief & hormonal balance"},
+];
+
 let cart = {};
-let orders = [];
-let currentOrderProduct = null;
+let currentOrder = null;
+let activeHomeCategory = "all";
+let activeShopCategory = "all";
 
-// ===== DATA INIT =====
-function initData() {
-  // Sample products - REPLACE with Firebase later
-  products = [
-    {id:"1", name:"Whey Protein", price:1299, category:"Protein", image:"💪", inStock:true, desc:"Pure whey protein isolate"},
-    {id:"2", name:"BCAA Complex", price:899, category:"Amino Acids", image:"⚡", inStock:true, desc:"Branched chain amino acids"},
-    {id:"3", name:"Creatine Monohydrate", price:749, category:"Performance", image:"🏋️", inStock:false, desc:"Premium creatine supplement"},
-    {id:"4", name:"Multivitamin", price:599, category:"Vitamins", image:"🌿", inStock:true, desc:"Complete daily nutrition"},
-    {id:"5", name:"Omega-3 Fish Oil", price:459, category:"Oils", image:"🐟", inStock:true, desc:"Heart-healthy omega fatty acids"},
-    {id:"6", name:"Vitamin D3", price:349, category:"Vitamins", image:"☀️", inStock:true, desc:"Sunshine vitamin supplement"},
-    {id:"7", name:"Pre-Workout", price:999, category:"Performance", image:"🔥", inStock:true, desc:"Energy & endurance boost"},
-    {id:"8", name:"Collagen Peptides", price:1199, category:"Wellness", image:"✨", inStock:true, desc:"Skin & joint support"},
-  ];
-
+// ===== INIT =====
+window.addEventListener('load', () => {
+  buildHomePage();
   renderShop();
-  updateCart();
-}
+  updateCartBadge();
+});
 
 // ===== NAVIGATION =====
 window.showPage = function(page) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
   document.getElementById("page-" + page).classList.add("active");
-  document.getElementById("nav-" + page)?.classList.add("active");
+  const navEl = document.getElementById("nav-" + page);
+  if(navEl) navEl.classList.add("active");
   window.scrollTo({top:0, behavior:"smooth"});
-
-  if(page === "shop") renderShop();
   if(page === "cart") renderCart();
-  if(page === "admin" && adminLoggedIn) renderAdmin();
+  if(page === "shop") renderShop();
+}
+
+// ===== HOME PAGE =====
+function getCategories() {
+  return ["all", ...new Set(products.map(p => p.category))];
+}
+
+function buildHomePage() {
+  const cats = getCategories();
+
+  // Build pills
+  const pillsEl = document.getElementById("catPills");
+  pillsEl.innerHTML = cats.map(c => `
+    <button class="cat-pill ${c === activeHomeCategory ? 'active' : ''}"
+      onclick="setHomeCategory('${c}')">${c === 'all' ? '🍽 All' : c}</button>
+  `).join('');
+
+  // Build menu sections
+  renderHomeMenu();
+}
+
+function renderHomeMenu(searchTerm = "") {
+  const container = document.getElementById("homeMenuContainer");
+  const cats = activeHomeCategory === "all"
+    ? [...new Set(products.map(p => p.category))]
+    : [activeHomeCategory];
+
+  let html = "";
+  cats.forEach(cat => {
+    let items = products.filter(p => p.category === cat);
+    if(searchTerm) {
+      items = items.filter(p =>
+        p.name.toLowerCase().includes(searchTerm) ||
+        p.desc.toLowerCase().includes(searchTerm) ||
+        p.category.toLowerCase().includes(searchTerm)
+      );
+    }
+    if(!items.length) return;
+
+    html += `
+      <div class="cat-section" id="section-${cat.replace(/\s/g,'_')}">
+        <div class="cat-section-title">${getCatEmoji(cat)} ${cat}</div>
+        <div class="cat-count">${items.length} item${items.length > 1 ? 's' : ''}</div>
+        <div>
+          ${items.map(p => buildProductRow(p)).join('')}
+        </div>
+      </div>
+      <hr class="cat-divider">
+    `;
+  });
+
+  if(!html) {
+    html = `<div class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-title">No results found</div>
+      <div class="empty-sub">Try a different search term</div>
+    </div>`;
+  }
+
+  container.innerHTML = html;
+  refreshQtyControls();
+}
+
+function buildProductRow(p) {
+  const qty = cart[p.id] || 0;
+  const thumb = p.image && p.image.startsWith('http')
+    ? `<img src="${p.image}" alt="${p.name}">`
+    : p.image || '📦';
+
+  const ctrl = qty > 0
+    ? `<div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('${p.id}',-1)">−</button>
+        <span class="qty-num">${qty}</span>
+        <button class="qty-btn" onclick="changeQty('${p.id}',1)">+</button>
+       </div>`
+    : `<button class="add-btn" onclick="addToCart('${p.id}')" ${!p.inStock ? 'disabled' : ''}>
+        ${p.inStock ? 'ADD' : 'N/A'}
+       </button>`;
+
+  return `
+    <div class="product-row" id="row-${p.id}">
+      <div class="product-row-info">
+        <div class="row-category">${p.category}</div>
+        <div class="row-name">${p.name}</div>
+        <div class="row-desc">${p.desc}</div>
+        <div>
+          <span class="row-price">₹${p.price}</span>
+          <span class="row-stock ${p.inStock ? 'stock-in' : 'stock-out'}">${p.inStock ? 'In Stock' : 'Out'}</span>
+        </div>
+      </div>
+      <div class="product-row-right">
+        <div class="product-thumb">${thumb}</div>
+        ${ctrl}
+      </div>
+    </div>
+  `;
+}
+
+function getCatEmoji(cat) {
+  const map = {
+    "Protein":"💪","Amino Acids":"⚡","Performance":"🔥",
+    "Vitamins":"🌿","Wellness":"✨","Oils":"🐟","General":"📦"
+  };
+  return map[cat] || "🏪";
+}
+
+window.setHomeCategory = function(cat) {
+  activeHomeCategory = cat;
+  // Update pills
+  document.querySelectorAll(".cat-pill").forEach(el => {
+    el.classList.toggle("active", el.textContent.trim().replace('🍽 ','') === (cat === 'all' ? 'All' : cat));
+  });
+  const searchTerm = document.getElementById("homeSearch").value.toLowerCase();
+  renderHomeMenu(searchTerm);
+
+  // Scroll to section if specific cat
+  if(cat !== "all") {
+    setTimeout(() => {
+      const el = document.getElementById("section-" + cat.replace(/\s/g,'_'));
+      if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+    }, 50);
+  } else {
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+}
+
+window.homeSearchFilter = function() {
+  const term = document.getElementById("homeSearch").value.toLowerCase();
+  renderHomeMenu(term);
 }
 
 // ===== SHOP PAGE =====
 function renderShop() {
-  const container = document.getElementById("productsContainer");
-  const categories = [...new Set(products.map(p => p.category))];
-  
-  // Render filter tabs
-  const filterTabsHTML = `
-    <button class="filter-tab active" onclick="filterProducts('all')">All</button>
-    ${categories.map(cat => `<button class="filter-tab" onclick="filterProducts('${cat}')">${cat}</button>`).join('')}
-  `;
-  document.getElementById("filterTabs").innerHTML = filterTabsHTML;
+  const searchTerm = (document.getElementById("shopSearch")?.value || "").toLowerCase();
+  const cats = getCategories();
 
-  // Render products
-  const searchTerm = document.getElementById("searchInput")?.value.toLowerCase() || "";
-  const filtered = products.filter(p => 
-    p.name.toLowerCase().includes(searchTerm) || 
-    p.category.toLowerCase().includes(searchTerm)
+  // Pills
+  document.getElementById("shopPills").innerHTML = cats.map(c => `
+    <button class="cat-pill ${c === activeShopCategory ? 'active' : ''}"
+      onclick="setShopCategory('${c}')">${c === 'all' ? 'All' : c}</button>
+  `).join('');
+
+  // Grid
+  let items = products;
+  if(activeShopCategory !== "all") items = items.filter(p => p.category === activeShopCategory);
+  if(searchTerm) items = items.filter(p =>
+    p.name.toLowerCase().includes(searchTerm) || p.category.toLowerCase().includes(searchTerm)
   );
 
-  container.innerHTML = filtered.map(p => `
-    <div class="product-card">
-      <div class="product-img">
-        ${p.image ? `<img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">` : p.image || '📦'}
-      </div>
-      <div class="product-body">
-        <div class="product-category">${p.category}</div>
-        <div class="product-name">${p.name}</div>
-        <div class="product-price">₹${p.price}</div>
-        <div class="product-stock ${p.inStock ? 'stock-in' : 'stock-out'}">
-          ${p.inStock ? '✓ In Stock' : '✗ Out of Stock'}
-        </div>
-        <div class="product-footer">
-          <button class="btn btn-primary btn-sm btn-full" onclick="addToCart('${p.id}')" ${!p.inStock ? 'disabled' : ''}>
-            Add to Cart
-          </button>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-window.filterProducts = function(category) {
-  if(category && category !== 'all') {
-    const filtered = products.filter(p => p.category === category);
-    const container = document.getElementById("productsContainer");
-    container.innerHTML = filtered.map(p => `
+  document.getElementById("shopGrid").innerHTML = items.length ? items.map(p => {
+    const thumb = p.image && p.image.startsWith('http')
+      ? `<img src="${p.image}" alt="${p.name}">`
+      : p.image || '📦';
+    return `
       <div class="product-card">
-        <div class="product-img">
-          ${p.image ? `<img src="${p.image}" alt="${p.name}">` : p.image || '📦'}
-        </div>
-        <div class="product-body">
-          <div class="product-category">${p.category}</div>
-          <div class="product-name">${p.name}</div>
-          <div class="product-price">₹${p.price}</div>
-          <div class="product-stock ${p.inStock ? 'stock-in' : 'stock-out'}">
-            ${p.inStock ? '✓ In Stock' : '✗ Out of Stock'}
-          </div>
-          <div class="product-footer">
-            <button class="btn btn-primary btn-sm btn-full" onclick="addToCart('${p.id}')" ${!p.inStock ? 'disabled' : ''}>
-              Add to Cart
+        <div class="card-img">${thumb}</div>
+        <div class="card-body">
+          <div class="card-cat">${p.category}</div>
+          <div class="card-name">${p.name}</div>
+          <div class="card-price">₹${p.price}</div>
+          <div class="card-footer">
+            <button class="card-add-btn" onclick="addToCart('${p.id}')" ${!p.inStock ? 'disabled' : ''}>
+              ${p.inStock ? '+ Add to Cart' : 'Out of Stock'}
             </button>
           </div>
         </div>
       </div>
-    `).join('');
-  } else {
-    renderShop();
-  }
-  
-  // Update active filter tab
-  document.querySelectorAll(".filter-tab").forEach(tab => tab.classList.remove("active"));
-  if(category === 'all') {
-    document.querySelectorAll(".filter-tab")[0].classList.add("active");
-  } else {
-    document.querySelectorAll(".filter-tab").forEach(tab => {
-      if(tab.textContent === category) tab.classList.add("active");
-    });
-  }
+    `;
+  }).join('') : `<div class="empty-state" style="grid-column:1/-1;">
+    <div class="empty-icon">🔍</div>
+    <div class="empty-title">No products found</div>
+  </div>`;
+}
+
+window.setShopCategory = function(cat) {
+  activeShopCategory = cat;
+  renderShop();
 }
 
 // ===== CART =====
-window.addToCart = function(productId) {
-  const product = products.find(p => p.id === productId);
-  if(!product) return;
-  
-  cart[productId] = (cart[productId] || 0) + 1;
-  updateCart();
-  showToast(`✓ ${product.name} added to cart`);
+window.addToCart = function(id) {
+  const p = products.find(x => x.id === id);
+  if(!p || !p.inStock) return;
+  cart[id] = (cart[id] || 0) + 1;
+  updateCartBadge();
+  refreshQtyControls();
+  showToast(`✓ ${p.name} added to cart`);
 }
 
-function updateCart() {
-  const count = Object.values(cart).reduce((a, b) => a + b, 0);
+window.changeQty = function(id, delta) {
+  cart[id] = (cart[id] || 0) + delta;
+  if(cart[id] <= 0) delete cart[id];
+  updateCartBadge();
+  refreshQtyControls();
+  if(document.getElementById("page-cart").classList.contains("active")) renderCart();
+}
+
+function updateCartBadge() {
+  const count = Object.values(cart).reduce((a,b) => a+b, 0);
   document.getElementById("cartCount").textContent = count;
+}
+
+function refreshQtyControls() {
+  // Re-render just the controls in home rows without full rebuild
+  products.forEach(p => {
+    const row = document.getElementById("row-" + p.id);
+    if(!row) return;
+    const right = row.querySelector(".product-row-right");
+    if(!right) return;
+    const qty = cart[p.id] || 0;
+    const existing = right.querySelector(".qty-ctrl, .add-btn");
+    if(existing) existing.remove();
+
+    const ctrl = document.createElement("div");
+    if(qty > 0) {
+      ctrl.innerHTML = `<div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('${p.id}',-1)">−</button>
+        <span class="qty-num">${qty}</span>
+        <button class="qty-btn" onclick="changeQty('${p.id}',1)">+</button>
+      </div>`;
+    } else {
+      ctrl.innerHTML = `<button class="add-btn" onclick="addToCart('${p.id}')" ${!p.inStock ? 'disabled' : ''}>
+        ${p.inStock ? 'ADD' : 'N/A'}
+      </button>`;
+    }
+    right.appendChild(ctrl.firstElementChild);
+  });
 }
 
 function renderCart() {
   const container = document.getElementById("cartContainer");
-  const items = Object.entries(cart).map(([id, qty]) => {
-    const p = products.find(pr => pr.id === id);
-    return {...p, qty};
-  }).filter(i => i.qty > 0);
+  const items = Object.entries(cart)
+    .map(([id, qty]) => ({...products.find(p => p.id === id), qty}))
+    .filter(i => i && i.qty > 0);
 
   if(!items.length) {
     container.innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">🛒</div>
         <div class="empty-title">Your cart is empty</div>
-        <div class="empty-sub">Add products to get started</div>
-        <button class="btn btn-primary" onclick="showPage('shop')">Start Shopping</button>
-      </div>
-    `;
+        <div class="empty-sub">Add items from the menu</div>
+        <button class="empty-btn" onclick="showPage('home')">Browse Menu</button>
+      </div>`;
     return;
   }
 
-  const total = items.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
-  let html = '<div style="display:flex;flex-direction:column;gap:12px;">';
-  items.forEach(item => {
-    html += `
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;gap:12px;align-items:center;">
-        <div style="font-size:2rem;">${item.image}</div>
-        <div style="flex:1;">
-          <div style="font-weight:700;color:var(--text);">${item.name}</div>
-          <div style="font-size:0.85rem;color:var(--muted);">₹${item.price} × ${item.qty}</div>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-weight:700;color:var(--accent);">₹${item.price * item.qty}</div>
-          <div style="display:flex;gap:4px;margin-top:4px;">
-            <button class="btn btn-sm" style="background:var(--danger);color:#fff;padding:4px 8px;" onclick="updateQty('${item.id}', -1)">−</button>
-            <button class="btn btn-sm" style="background:var(--danger);color:#fff;padding:4px 8px;" onclick="updateQty('${item.id}', 1)">+</button>
-          </div>
+  const total = items.reduce((s,i) => s + i.price * i.qty, 0);
+  const itemsHTML = items.map(i => `
+    <div class="cart-item">
+      <div class="cart-item-icon">${i.image && i.image.startsWith('http') ? '' : i.image || '📦'}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${i.name}</div>
+        <div class="cart-item-price">₹${i.price} each</div>
+      </div>
+      <div class="cart-item-right">
+        <div class="cart-item-total">₹${i.price * i.qty}</div>
+        <div class="cart-qty">
+          <button class="cqb" onclick="changeQty('${i.id}',-1)">−</button>
+          <span class="cqn">${i.qty}</span>
+          <button class="cqb" onclick="changeQty('${i.id}',1)">+</button>
         </div>
       </div>
-    `;
-  });
-  html += '</div>';
-
-  html += `
-    <div style="margin-top:20px;padding:16px;background:var(--surface);border-radius:8px;border:1px solid var(--border);">
-      <div style="display:flex;justify-content:space-between;font-weight:800;font-size:1.1rem;color:var(--text);">
-        <span>Total:</span>
-        <span style="color:var(--accent);">₹${total}</span>
-      </div>
-    </div>
-    <button class="btn btn-primary btn-full" style="margin-top:16px;" onclick="openCheckout()">Proceed to Checkout</button>
-  `;
-
-  container.innerHTML = html;
-}
-
-window.updateQty = function(id, delta) {
-  cart[id] = (cart[id] || 0) + delta;
-  if(cart[id] <= 0) delete cart[id];
-  updateCart();
-  renderCart();
-}
-
-window.openCheckout = function() {
-  const items = Object.entries(cart).filter(([, qty]) => qty > 0);
-  if(!items.length) return;
-
-  currentOrderProduct = {
-    items: items.map(([id, qty]) => {
-      const p = products.find(pr => pr.id === id);
-      return {...p, qty};
-    }),
-    totalPrice: items.reduce((sum, [id, qty]) => {
-      const p = products.find(pr => pr.id === id);
-      return sum + (p.price * qty);
-    }, 0),
-    isCart: true
-  };
-
-  renderOrderForm();
-  document.getElementById("orderModal").classList.add("open");
-}
-
-function renderOrderForm() {
-  const el = document.getElementById("orderContent");
-  const itemsHTML = currentOrderProduct.items.map(item => `
-    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.9rem;">
-      <span>${item.qty}× ${item.name}</span>
-      <span style="font-weight:700;">₹${item.qty * item.price}</span>
     </div>
   `).join('');
 
-  el.innerHTML = `
-    <div style="background:var(--surface);padding:12px;border-radius:8px;margin-bottom:16px;">
+  container.innerHTML = `
+    ${itemsHTML}
+    <div class="cart-total-box">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Total</span>
+        <span class="cart-total-val">₹${total}</span>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="openCheckout()">Proceed to Checkout →</button>
+  `;
+}
+
+// ===== CHECKOUT =====
+window.openCheckout = function() {
+  const items = Object.entries(cart)
+    .map(([id,qty]) => ({...products.find(p=>p.id===id), qty}))
+    .filter(i => i && i.qty > 0);
+  if(!items.length) return;
+
+  currentOrder = {
+    items,
+    total: items.reduce((s,i) => s + i.price * i.qty, 0)
+  };
+
+  const itemsHTML = items.map(i => `
+    <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.88rem;">
+      <span>${i.qty}× ${i.name}</span>
+      <span style="font-weight:700;">₹${i.price * i.qty}</span>
+    </div>
+  `).join('');
+
+  document.getElementById("orderContent").innerHTML = `
+    <div style="background:var(--surface);border-radius:9px;padding:14px;margin-bottom:18px;">
       ${itemsHTML}
-      <div style="padding:12px 0;border-top:1px solid var(--border);margin-top:12px;display:flex;justify-content:space-between;font-weight:800;color:var(--accent);">
-        <span>Total:</span>
-        <span>₹${currentOrderProduct.totalPrice}</span>
+      <div style="display:flex;justify-content:space-between;padding-top:12px;margin-top:4px;border-top:2px solid var(--border);font-weight:800;color:var(--accent);">
+        <span>Total</span><span>₹${currentOrder.total}</span>
       </div>
     </div>
 
@@ -1269,24 +979,29 @@ function renderOrderForm() {
       <label class="form-label">Full Name</label>
       <input class="form-input" id="oName" placeholder="Your full name">
     </div>
-
     <div class="form-group">
       <label class="form-label">Mobile Number</label>
       <input class="form-input" id="oMobile" type="tel" placeholder="10-digit mobile">
     </div>
-
     <div class="form-group">
       <label class="form-label">Full Address</label>
       <input class="form-input" id="oAddress" placeholder="House no, street, area">
     </div>
-
     <div class="form-group">
       <label class="form-label">Pincode</label>
       <input class="form-input" id="oPincode" placeholder="413304">
     </div>
 
-    <button class="btn btn-primary btn-full" onclick="submitOrder()">Place Order</button>
+    <button class="btn btn-primary" onclick="submitOrder()" style="margin-top:6px;">
+      ✅ Place Order
+    </button>
   `;
+
+  document.getElementById("orderModal").classList.add("open");
+}
+
+window.closeOrderModal = function() {
+  document.getElementById("orderModal").classList.remove("open");
 }
 
 window.submitOrder = function() {
@@ -1299,337 +1014,35 @@ window.submitOrder = function() {
     showToast("⚠️ Please fill all fields");
     return;
   }
-
-  if(mobile.length < 10) {
-    showToast("⚠️ Enter valid 10-digit mobile");
+  if(mobile.length < 10 || !/^\d+$/.test(mobile)) {
+    showToast("⚠️ Enter a valid 10-digit mobile number");
     return;
   }
 
-  const order = {
-    id: "ORD-" + Date.now(),
-    customerName: name,
-    mobile, address, pincode,
-    products: currentOrderProduct.items.map(i => ({name:i.name, price:i.price, qty:i.qty})),
-    totalPrice: currentOrderProduct.totalPrice,
-    status: "new",
-    createdAt: new Date().toLocaleString('en-IN'),
-    createdTime: Date.now()
-  };
-
-  orders.unshift(order);
+  const orderId = "ORD-" + Date.now();
   cart = {};
-  updateCart();
-  
+  updateCartBadge();
+  refreshQtyControls();
+
   document.getElementById("orderContent").innerHTML = `
-    <div style="text-align:center;padding:40px 20px;">
-      <div style="font-size:3rem;margin-bottom:16px;">✅</div>
-      <h3 style="font-size:1.2rem;font-weight:800;margin-bottom:8px;color:var(--text);">Order Placed!</h3>
-      <p style="color:var(--muted);margin-bottom:20px;">Order ID: ${order.id}</p>
-      <p style="color:var(--muted);margin-bottom:24px;">We'll contact you at ${mobile} to confirm delivery.</p>
-      <button class="btn btn-primary btn-full" onclick="closeOrder()">Continue Shopping</button>
+    <div style="text-align:center;padding:40px 10px;">
+      <div style="font-size:3.5rem;margin-bottom:14px;">✅</div>
+      <h3 style="font-size:1.2rem;font-weight:900;margin-bottom:8px;">Order Placed!</h3>
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:6px;">Order ID: ${orderId}</p>
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:24px;">We'll contact you at ${mobile} to confirm delivery.</p>
+      <button class="btn btn-primary" onclick="closeOrderModal();showPage('home')">Continue Shopping</button>
     </div>
   `;
-
   showToast("✅ Order placed successfully!");
-}
-
-window.closeOrder = function() {
-  document.getElementById("orderModal").classList.remove("open");
-  showPage('home');
-}
-
-// ===== ADMIN =====
-window.adminLogin = function() {
-  const pass = document.getElementById("adminPass").value;
-  if(pass === ADMIN_PASSWORD) {
-    adminLoggedIn = true;
-    document.getElementById("admin-login").classList.remove("active");
-    document.getElementById("admin-dashboard").classList.add("active");
-    renderAdmin();
-  } else {
-    showToast("❌ Wrong password");
-  }
-}
-
-window.adminLogout = function() {
-  adminLoggedIn = false;
-  document.getElementById("admin-login").classList.add("active");
-  document.getElementById("admin-dashboard").classList.remove("active");
-  document.getElementById("adminPass").value = "";
-}
-
-function renderAdmin() {
-  renderAdminOrders();
-  renderAdminProducts();
-}
-
-function renderAdminOrders() {
-  const container = document.getElementById("ordersContainer");
-  if(!orders.length) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">📋</div>
-        <div class="empty-title">No orders yet</div>
-        <div class="empty-sub">Orders will appear here</div>
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = orders.map((o, i) => `
-    <div class="order-row" onclick="showOrderDetail('${o.id}')">
-      <div class="order-header">
-        <span class="order-id">#${o.id}</span>
-        <span class="order-time">${o.createdAt}</span>
-      </div>
-      <div class="order-customer">${o.customerName}</div>
-      <div class="order-details">
-        📱 ${o.mobile}<br>
-        📍 ${o.address}, ${o.pincode}
-      </div>
-      <div style="font-weight:700;color:var(--accent);margin-top:8px;">₹${o.totalPrice}</div>
-      <div class="order-badge ${getStatusBadgeClass(o.status)}">${o.status.toUpperCase()}</div>
-    </div>
-  `).join('');
-}
-
-function getStatusBadgeClass(status) {
-  const classes = {
-    'new': 'badge-new',
-    'accepted': 'badge-accepted',
-    'preparing': 'badge-preparing',
-    'shipped': 'badge-shipped',
-    'delivered': 'badge-delivered'
-  };
-  return classes[status] || 'badge-new';
-}
-
-window.showOrderDetail = function(orderId) {
-  const order = orders.find(o => o.id === orderId);
-  if(!order) return;
-
-  const content = document.getElementById("orderDetailContent");
-  content.innerHTML = `
-    <div class="detail-section">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div class="detail-order-id">${order.id}</div>
-        <button class="btn btn-secondary btn-sm" onclick="copyOrderId('${order.id}')">Copy ID</button>
-      </div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-section-title">Status</div>
-      <div class="detail-status-badges">
-        ${['new', 'accepted', 'preparing', 'shipped', 'delivered'].map(s => `
-          <button class="status-btn ${order.status === s ? 'active' : ''}" onclick="updateOrderStatus('${order.id}', '${s}')">
-            ${s}
-          </button>
-        `).join('')}
-      </div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-section-title">Customer Details</div>
-      <div class="detail-row">
-        <span class="detail-label">Name</span>
-        <span class="detail-value">${order.customerName}</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Mobile</span>
-        <span class="detail-value">${order.mobile}</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Address</span>
-        <span class="detail-value" style="text-align:right;max-width:50%;">${order.address}</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">Pincode</span>
-        <span class="detail-value">${order.pincode}</span>
-      </div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-section-title">Order Items</div>
-      ${order.products.map(p => `
-        <div class="detail-row">
-          <span class="detail-label">${p.qty}× ${p.name}</span>
-          <span class="detail-value">₹${p.qty * p.price}</span>
-        </div>
-      `).join('')}
-      <div class="detail-row" style="border-top:2px solid var(--border);padding-top:12px;margin-top:12px;">
-        <span class="detail-label" style="font-weight:900;">Total</span>
-        <span class="detail-value" style="color:var(--accent);font-size:1.1rem;">₹${order.totalPrice}</span>
-      </div>
-    </div>
-
-    <div style="display:flex;gap:8px;margin-top:20px;">
-      <button class="btn btn-secondary btn-full" onclick="closeOrderDetail()">Close</button>
-      <button class="btn btn-danger btn-full" onclick="deleteOrder('${order.id}')">Delete</button>
-    </div>
-  `;
-
-  document.getElementById("orderDetailModal").classList.add("open");
-}
-
-window.updateOrderStatus = function(orderId, status) {
-  const order = orders.find(o => o.id === orderId);
-  if(order) {
-    order.status = status;
-    renderAdminOrders();
-    showOrderDetail(orderId);
-    showToast(`✓ Order status updated to ${status}`);
-  }
-}
-
-window.deleteOrder = function(orderId) {
-  if(confirm("Delete this order?")) {
-    orders = orders.filter(o => o.id !== orderId);
-    renderAdminOrders();
-    closeOrderDetail();
-    showToast("✓ Order deleted");
-  }
-}
-
-window.closeOrderDetail = function() {
-  document.getElementById("orderDetailModal").classList.remove("open");
-}
-
-window.copyOrderId = function(id) {
-  navigator.clipboard.writeText(id);
-  showToast("✓ Order ID copied");
-}
-
-function renderAdminProducts() {
-  const container = document.getElementById("productsContainer-admin");
-  if(!products.length) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">📦</div>
-        <div class="empty-title">No products yet</div>
-        <div class="empty-sub">Add products from the Add tab</div>
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = products.map(p => `
-    <div class="admin-product-row">
-      <div class="admin-product-header">
-        <div class="admin-product-info">
-          <div class="admin-product-name">${p.image || '📦'} ${p.name}</div>
-          <div class="admin-product-details">${p.category} · ₹${p.price}</div>
-        </div>
-        <div class="product-stock ${p.inStock ? 'stock-in' : 'stock-out'}">
-          ${p.inStock ? 'In Stock' : 'Out'}
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:12px;">
-        <div style="flex:1;display:flex;gap:6px;">
-          <input type="number" value="${p.price}" id="price_${p.id}" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:6px;font-size:0.9rem;">
-          <button class="btn btn-secondary btn-sm" onclick="updatePrice('${p.id}')">Update ₹</button>
-        </div>
-      </div>
-      <div class="admin-actions">
-        <button class="btn btn-sm ${p.inStock ? 'btn-danger' : 'btn-success'}" onclick="toggleStock('${p.id}')">
-          ${p.inStock ? 'Out of Stock' : 'In Stock'}
-        </button>
-        <button class="btn btn-outline btn-sm" onclick="deleteProduct('${p.id}')">🗑 Delete</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-window.updatePrice = function(id) {
-  const newPrice = parseFloat(document.getElementById(`price_${id}`).value);
-  if(isNaN(newPrice) || newPrice <= 0) {
-    showToast("⚠️ Enter valid price");
-    return;
-  }
-  const product = products.find(p => p.id === id);
-  product.price = newPrice;
-  renderAdminProducts();
-  showToast("✓ Price updated");
-}
-
-window.toggleStock = function(id) {
-  const product = products.find(p => p.id === id);
-  product.inStock = !product.inStock;
-  renderAdminProducts();
-  renderShop();
-  showToast(`✓ ${product.inStock ? 'Marked in stock' : 'Marked out of stock'}`);
-}
-
-window.deleteProduct = function(id) {
-  if(confirm("Delete this product?")) {
-    products = products.filter(p => p.id !== id);
-    cart[id] && delete cart[id];
-    updateCart();
-    renderAdminProducts();
-    renderShop();
-    showToast("✓ Product deleted");
-  }
-}
-
-window.handleImageUpload = function() {
-  const file = document.getElementById("imageUpload").files[0];
-  if(!file) return;
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    document.getElementById("newImage").value = e.target.result;
-    showToast("✓ Image ready");
-  };
-  reader.readAsDataURL(file);
-}
-
-window.addProduct = function() {
-  const name = document.getElementById("newName").value.trim();
-  const price = parseFloat(document.getElementById("newPrice").value);
-  const category = document.getElementById("newCategory").value.trim() || "General";
-  const image = document.getElementById("newImage").value.trim();
-  const desc = document.getElementById("newDesc").value.trim();
-
-  if(!name || isNaN(price) || price <= 0) {
-    showToast("⚠️ Fill name and valid price");
-    return;
-  }
-
-  const newProduct = {
-    id: String(Date.now()),
-    name, price, category, image, desc,
-    inStock: true
-  };
-
-  products.push(newProduct);
-  document.getElementById("newName").value = "";
-  document.getElementById("newPrice").value = "";
-  document.getElementById("newCategory").value = "";
-  document.getElementById("newImage").value = "";
-  document.getElementById("newDesc").value = "";
-  document.getElementById("imageUpload").value = "";
-
-  renderAdminProducts();
-  renderShop();
-  showToast("✓ Product added!");
-}
-
-window.switchAdminTab = function(tab, el) {
-  document.querySelectorAll(".admin-tab").forEach(t => t.classList.remove("active"));
-  el.classList.add("active");
-  document.querySelectorAll(".admin-section").forEach(s => s.classList.remove("active"));
-  document.getElementById("admin-" + tab).classList.add("active");
 }
 
 // ===== TOAST =====
 window.showToast = function(msg) {
-  const toast = document.getElementById("toast");
-  toast.textContent = msg;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2500);
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
 }
-
-// ===== INIT =====
-window.addEventListener('load', initData);
 </script>
 </body>
 </html>
