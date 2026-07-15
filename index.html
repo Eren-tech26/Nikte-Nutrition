@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Nikate Nutrition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 :root{
   --bg:#ffffff;
   --surface:#f9f9f9;
@@ -20,10 +21,59 @@
   --success:#16a34a;
 }
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding-bottom:100px;line-height:1.6;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding-bottom:100px;line-height:1.6;-webkit-font-smoothing:antialiased;max-width:480px;margin:0 auto;}
 a{text-decoration:none;color:inherit;}
 
-/* HEADER */
+/* ── PAGES ── */
+.page{display:none;}
+.page.active{display:block;animation:fadeIn 0.25s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* ── BOTTOM PILL NAV (Mohi Cafe style) ── */
+.pill-nav{
+  position:fixed;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  width:calc(100% - 28px);
+  max-width:452px;
+  background:#111;
+  border-radius:100px;
+  padding:6px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  z-index:999;
+  box-shadow:0 12px 40px rgba(0,0,0,0.28),0 2px 8px rgba(0,0,0,0.14);
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:10px 4px;border-radius:80px;
+  cursor:pointer;border:none;background:transparent;text-decoration:none;
+  position:relative;transition:background 0.2s ease;font-family:'Inter',sans-serif;
+}
+.nav-item.active{background:#fff;}
+.nav-item svg{
+  width:20px;height:20px;stroke:rgba(255,255,255,0.45);fill:none;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+  transition:stroke 0.2s;
+}
+.nav-item.active svg{stroke:#111;}
+.nav-item .nl{
+  font-size:10px;font-weight:700;color:rgba(255,255,255,0.45);
+  transition:color 0.2s;letter-spacing:0.2px;
+}
+.nav-item.active .nl{color:#111;}
+.cart-dot{
+  position:absolute;top:8px;right:calc(50% - 18px);
+  background:#e53935;color:#fff;
+  font-size:8px;font-weight:800;
+  width:15px;height:15px;border-radius:50%;
+  display:none;align-items:center;justify-content:center;
+  border:1.5px solid #111;
+}
+.cart-dot.on{display:flex;}
+
+/* ── HEADER ── */
 .header{
   position:sticky;top:0;z-index:200;
   background:#fff;
@@ -40,68 +90,8 @@ a{text-decoration:none;color:inherit;}
   display:flex;align-items:center;justify-content:center;
   font-size:1.1rem;
 }
-.logo-name{
-  font-size:1.15rem;
-  font-weight:900;
-  color:var(--text);
-  letter-spacing:-0.5px;
-}
+.logo-name{font-size:1.15rem;font-weight:900;color:var(--text);letter-spacing:-0.5px;}
 .logo-name span{color:var(--accent);}
-.header-cart{
-  position:relative;
-  background:var(--accent);
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  padding:9px 16px;
-  font-size:0.85rem;
-  font-weight:700;
-  cursor:pointer;
-  display:flex;align-items:center;gap:7px;
-  font-family:'Inter',sans-serif;
-}
-.cart-badge{
-  background:#fff;
-  color:var(--accent);
-  border-radius:50%;
-  width:20px;height:20px;
-  font-size:0.7rem;
-  font-weight:900;
-  display:flex;align-items:center;justify-content:center;
-}
-
-/* BOTTOM NAV */
-.bottom-nav{
-  position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
-  z-index:999;
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:100px;
-  padding:6px 10px;
-  display:flex;gap:4px;
-  box-shadow:0 8px 32px rgba(0,0,0,0.12);
-}
-.nav-item{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:9px 18px;
-  border-radius:100px;
-  font-size:0.68rem;
-  font-weight:700;
-  color:var(--muted);
-  cursor:pointer;
-  transition:all 0.2s;
-  background:transparent;
-  border:none;
-  font-family:'Inter',sans-serif;
-}
-.nav-item svg{width:20px;height:20px;stroke-width:2;}
-.nav-item.active{background:var(--accent);color:#fff;}
-.nav-item.active svg{stroke:#fff;}
-
-/* PAGES */
-.page{display:none;}
-.page.active{display:block;animation:fadeIn 0.25s ease;}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 
 /* Hero banner */
 .home-hero{
@@ -111,177 +101,79 @@ a{text-decoration:none;color:inherit;}
 }
 .hero-badge{
   display:inline-flex;align-items:center;gap:6px;
-  background:#fff;
-  border:1px solid #bbf7d0;
-  border-radius:20px;
-  padding:5px 12px;
-  font-size:0.72rem;
-  font-weight:700;
-  color:var(--accent);
-  text-transform:uppercase;
-  letter-spacing:0.5px;
-  margin-bottom:12px;
+  background:#fff;border:1px solid #bbf7d0;border-radius:20px;
+  padding:5px 12px;font-size:0.72rem;font-weight:700;
+  color:var(--accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;
 }
-.home-hero h1{
-  font-size:1.9rem;
-  font-weight:900;
-  line-height:1.15;
-  letter-spacing:-0.8px;
-  color:var(--text);
-  margin-bottom:8px;
-}
+.home-hero h1{font-size:1.9rem;font-weight:900;line-height:1.15;letter-spacing:-0.8px;color:var(--text);margin-bottom:8px;}
 .home-hero h1 span{color:var(--accent);}
 .home-hero p{font-size:0.9rem;color:var(--muted);max-width:420px;}
 
 /* Store info bar */
 .store-info{
-  margin:16px 20px 0;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:14px 16px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
+  margin:16px 20px 0;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;
 }
-.store-info-top{
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:8px;
-}
+.store-info-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 .store-status{
-  display:inline-flex;align-items:center;gap:6px;
-  background:#dcfce7;color:var(--success);
-  font-size:0.72rem;font-weight:700;
-  padding:4px 10px;border-radius:20px;
+  display:inline-flex;align-items:center;gap:6px;background:#dcfce7;color:var(--success);
+  font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:20px;
 }
 .store-status::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--success);}
-.store-rating{
-  font-size:0.78rem;font-weight:700;color:var(--text);
-  display:flex;align-items:center;gap:4px;
-}
-.store-row{
-  display:flex;align-items:flex-start;gap:8px;
-  font-size:0.82rem;color:var(--muted);
-}
+.store-rating{font-size:0.78rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:4px;}
+.store-row{display:flex;align-items:flex-start;gap:8px;font-size:0.82rem;color:var(--muted);}
 .store-row svg{width:15px;height:15px;flex-shrink:0;margin-top:2px;stroke:var(--muted);stroke-width:2;}
 .store-call-btn{
-  margin-top:4px;
-  display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  background:var(--accent);color:#fff;
-  border:none;border-radius:8px;
-  padding:9px 14px;font-size:0.82rem;font-weight:700;
-  font-family:'Inter',sans-serif;cursor:pointer;
-  width:100%;
+  margin-top:4px;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:var(--accent);color:#fff;border:none;border-radius:8px;
+  padding:9px 14px;font-size:0.82rem;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;width:100%;
 }
 
-/* Quick Browse — Zomato style boxes */
-.quick-browse{
-  padding:20px 20px 0;
-}
-.quick-browse-title{
-  font-size:1rem;font-weight:800;color:var(--text);
-  margin-bottom:12px;letter-spacing:-0.3px;
-}
-.quick-browse-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
+/* Quick Browse */
+.quick-browse{padding:20px 20px 0;}
+.quick-browse-title{font-size:1rem;font-weight:800;color:var(--text);margin-bottom:12px;letter-spacing:-0.3px;}
+.quick-browse-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
 .quick-browse-box{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:16px 8px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:8px;
-  text-align:center;
-  cursor:pointer;
-  transition:all 0.2s;
-  font-family:'Inter',sans-serif;
-  border:none;
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:16px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;text-align:center;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;border:none;
 }
-.quick-browse-box:hover,.quick-browse-box:active{
-  border:1.5px solid var(--accent);
-  background:#f0fdf4;
-  transform:translateY(-2px);
-}
+.quick-browse-box:hover,.quick-browse-box:active{border:1.5px solid var(--accent);background:#f0fdf4;transform:translateY(-2px);}
 .quick-browse-box .qb-emoji{font-size:1.8rem;}
-.quick-browse-box .qb-label{
-  font-size:0.75rem;font-weight:700;color:var(--text);
-  line-height:1.25;
-}
+.quick-browse-box .qb-label{font-size:0.75rem;font-weight:700;color:var(--text);line-height:1.25;}
 
-/* Search bar on home */
+/* Search bar */
 .home-search{padding:16px 20px 0;}
 .search-wrap{position:relative;display:flex;align-items:center;}
-.search-wrap svg{
-  position:absolute;left:13px;
-  width:17px;height:17px;
-  stroke:var(--muted);stroke-width:2;
-  pointer-events:none;
-}
+.search-wrap svg{position:absolute;left:13px;width:17px;height:17px;stroke:var(--muted);stroke-width:2;pointer-events:none;}
 .search-input{
-  width:100%;
-  background:var(--surface);
-  border:1.5px solid var(--border);
-  border-radius:10px;
-  padding:11px 12px 11px 40px;
-  font-family:'Inter',sans-serif;
-  font-size:0.9rem;
-  color:var(--text);
-  outline:none;
-  transition:border 0.2s;
+  width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;
+  padding:11px 12px 11px 40px;font-family:'Inter',sans-serif;font-size:0.9rem;
+  color:var(--text);outline:none;transition:border 0.2s;
 }
 .search-input:focus{border-color:var(--accent);}
 .search-input::placeholder{color:var(--muted);}
 
 /* Sticky category pills */
-.cat-pills-wrap{
-  position:sticky;top:65px;z-index:100;
-  background:#fff;
-  border-bottom:1px solid var(--border);
-  padding:10px 0;
-}
-.cat-pills{
-  display:flex;gap:8px;
-  overflow-x:auto;
-  padding:0 20px;
-  scrollbar-width:none;
-}
+.cat-pills-wrap{position:sticky;top:65px;z-index:100;background:#fff;border-bottom:1px solid var(--border);padding:10px 0;}
+.cat-pills{display:flex;gap:8px;overflow-x:auto;padding:0 20px;scrollbar-width:none;}
 .cat-pills::-webkit-scrollbar{display:none;}
 .cat-pill{
-  flex-shrink:0;
-  padding:7px 16px;
-  border-radius:20px;
-  font-size:0.78rem;
-  font-weight:700;
-  cursor:pointer;
-  white-space:nowrap;
-  background:var(--surface);
-  border:1.5px solid var(--border);
-  color:var(--muted);
-  transition:all 0.2s;
-  font-family:'Inter',sans-serif;
+  flex-shrink:0;padding:7px 16px;border-radius:20px;font-size:0.78rem;font-weight:700;
+  cursor:pointer;white-space:nowrap;background:var(--surface);border:1.5px solid var(--border);
+  color:var(--muted);transition:all 0.2s;font-family:'Inter',sans-serif;
 }
 .cat-pill.active{background:var(--accent);color:#fff;border-color:var(--accent);}
 
-/* Category section on home */
+/* Category section */
 .cat-section{padding:24px 20px 0;}
-.cat-section-title{
-  font-size:1.1rem;font-weight:800;color:var(--text);
-  margin-bottom:4px;letter-spacing:-0.3px;
-  display:flex;align-items:center;gap:8px;
-}
+.cat-section-title{font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:4px;letter-spacing:-0.3px;display:flex;align-items:center;gap:8px;}
 .cat-section-title span{font-size:1.2rem;}
 .cat-count{font-size:0.75rem;font-weight:600;color:var(--muted);margin-bottom:14px;}
 .cat-divider{border:none;border-top:1px solid var(--border);margin:28px 0 0;}
 
 /* Product row */
-.product-row{
-  display:flex;align-items:center;gap:14px;
-  padding:16px 0;
-  border-bottom:1px solid var(--border);
-}
+.product-row{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--border);}
 .product-row:last-child{border-bottom:none;}
 .product-row-info{flex:1;min-width:0;}
 .row-category{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;font-weight:700;margin-bottom:3px;}
@@ -293,25 +185,21 @@ a{text-decoration:none;color:inherit;}
 .stock-out{background:#fee2e2;color:var(--danger);}
 .product-row-right{display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;}
 .product-thumb{
-  width:90px;height:90px;border-radius:10px;
-  background:var(--surface);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  font-size:2.2rem;overflow:hidden;position:relative;
+  width:90px;height:90px;border-radius:10px;background:var(--surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:2.2rem;overflow:hidden;position:relative;
 }
 .product-thumb img{width:100%;height:100%;object-fit:cover;}
 .add-btn{
   background:var(--accent);color:#fff;border:none;border-radius:8px;
-  padding:7px 18px;font-size:0.78rem;font-weight:700;
-  cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.2s;
-  width:90px;text-align:center;
+  padding:7px 18px;font-size:0.78rem;font-weight:700;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:background 0.2s;width:90px;text-align:center;
 }
 .add-btn:hover{background:var(--accent-dark);}
 .add-btn:disabled{background:#d1d5db;cursor:not-allowed;}
 .qty-ctrl{display:flex;align-items:center;width:90px;border:1.5px solid var(--accent);border-radius:8px;overflow:hidden;}
 .qty-btn{
-  background:#fff;color:var(--accent);border:none;
-  width:28px;height:30px;font-size:1.1rem;font-weight:900;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  background:#fff;color:var(--accent);border:none;width:28px;height:30px;
+  font-size:1.1rem;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;
   font-family:'Inter',sans-serif;flex-shrink:0;
 }
 .qty-num{flex:1;text-align:center;font-size:0.85rem;font-weight:800;color:var(--accent);}
@@ -384,7 +272,6 @@ a{text-decoration:none;color:inherit;}
 @keyframes toastIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 
 @media(min-width:640px){.products-grid{grid-template-columns:repeat(3,1fr);}}
-@media(min-width:1024px){.products-grid{grid-template-columns:repeat(4,1fr);}body{max-width:900px;margin:0 auto;}.cat-pills-wrap{top:65px;}}
 </style>
 </head>
 <body>
@@ -395,23 +282,16 @@ a{text-decoration:none;color:inherit;}
     <div class="logo-icon">🌿</div>
     <div class="logo-name">Nikate <span>Nutrition</span></div>
   </div>
-  <button class="header-cart" onclick="showPage('cart')">
-    🛒 Cart
-    <span class="cart-badge" id="cartCount">0</span>
-  </button>
 </div>
 
 <!-- HOME PAGE -->
 <div class="page active" id="page-home">
-
-  <!-- Hero -->
   <div class="home-hero">
     <div class="hero-badge">🌿 Premium Supplements</div>
     <h1>Fuel Your <span>Best Self</span></h1>
     <p>Trusted nutrition products for your health & wellness goals.</p>
   </div>
 
-  <!-- Store Info -->
   <div class="store-info">
     <div class="store-info-top">
       <span class="store-status">Open · Closes 9 PM</span>
@@ -430,38 +310,30 @@ a{text-decoration:none;color:inherit;}
     </a>
   </div>
 
-  <!-- Quick Browse -->
   <div class="quick-browse">
     <div class="quick-browse-title">Quick Browse</div>
     <div class="quick-browse-grid">
       <button class="quick-browse-box" onclick="setHomeCategory('Protein')">
-        <span class="qb-emoji">💪</span>
-        <span class="qb-label">Protein</span>
+        <span class="qb-emoji">💪</span><span class="qb-label">Protein</span>
       </button>
       <button class="quick-browse-box" onclick="setHomeCategory('Amino Acids')">
-        <span class="qb-emoji">⚡</span>
-        <span class="qb-label">Amino Acids</span>
+        <span class="qb-emoji">⚡</span><span class="qb-label">Amino Acids</span>
       </button>
       <button class="quick-browse-box" onclick="setHomeCategory('Performance')">
-        <span class="qb-emoji">🔥</span>
-        <span class="qb-label">Performance</span>
+        <span class="qb-emoji">🔥</span><span class="qb-label">Performance</span>
       </button>
       <button class="quick-browse-box" onclick="setHomeCategory('Vitamins')">
-        <span class="qb-emoji">🌿</span>
-        <span class="qb-label">Vitamins</span>
+        <span class="qb-emoji">🌿</span><span class="qb-label">Vitamins</span>
       </button>
       <button class="quick-browse-box" onclick="setHomeCategory('Wellness')">
-        <span class="qb-emoji">✨</span>
-        <span class="qb-label">Wellness</span>
+        <span class="qb-emoji">✨</span><span class="qb-label">Wellness</span>
       </button>
       <button class="quick-browse-box" onclick="setHomeCategory('all')">
-        <span class="qb-emoji">🏪</span>
-        <span class="qb-label">View All</span>
+        <span class="qb-emoji">🏪</span><span class="qb-label">View All</span>
       </button>
     </div>
   </div>
 
-  <!-- Search -->
   <div class="home-search" style="padding-top:16px;">
     <div class="search-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -469,14 +341,11 @@ a{text-decoration:none;color:inherit;}
     </div>
   </div>
 
-  <!-- Sticky Category Pills -->
   <div class="cat-pills-wrap" id="catPillsWrap">
     <div class="cat-pills" id="catPills"></div>
   </div>
 
-  <!-- Product list by category -->
   <div id="homeMenuContainer" style="padding:0 20px;"></div>
-
 </div>
 
 <!-- SHOP PAGE -->
@@ -510,21 +379,22 @@ a{text-decoration:none;color:inherit;}
   </div>
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
+<!-- BOTTOM PILL NAV -->
+<nav class="pill-nav">
   <button class="nav-item active" id="nav-home" onclick="showPage('home')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Home
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span class="nl">Home</span>
   </button>
   <button class="nav-item" id="nav-shop" onclick="showPage('shop')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-    Shop
+    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <span class="nl">Shop</span>
   </button>
   <button class="nav-item" id="nav-cart" onclick="showPage('cart')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-    Cart
+    <div class="cart-dot" id="cartDot">0</div>
+    <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    <span class="nl">Cart</span>
   </button>
-</div>
+</nav>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -740,7 +610,10 @@ window.changeQty = function(id, delta) {
 
 function updateCartBadge() {
   const count = Object.values(cart).reduce((a,b) => a+b, 0);
-  document.getElementById("cartCount").textContent = count;
+  document.getElementById("cartCount") && (document.getElementById("cartCount").textContent = count);
+  const dot = document.getElementById("cartDot");
+  if(count > 0) { dot.textContent = count; dot.classList.add("on"); }
+  else { dot.classList.remove("on"); }
 }
 
 function refreshQtyControls() {
