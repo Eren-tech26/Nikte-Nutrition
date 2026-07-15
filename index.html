@@ -8,48 +8,24 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { 
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-      background-color: #ffffff; 
-      color: #000000; 
-    }
-    .apple-card { 
-      background: #f5f5f7; 
-      border-radius: 20px; 
-      transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); 
-    }
-    .apple-card:hover { 
-      transform: translateY(-1px);
-    }
-    .pill-nav { 
-      background: rgba(255, 255, 255, 0.85); 
-      backdrop-filter: blur(20px); 
-      -webkit-backdrop-filter: blur(20px); 
-      border: 1px solid rgba(0, 0, 0, 0.04); 
-    }
-    .apple-input {
-      background: #f5f5f7;
-      border: 1px solid transparent;
-      border-radius: 14px;
-      transition: all 0.2s ease;
-    }
-    .apple-input:focus {
-      background: #ffffff;
-      border-color: #000000;
-      box-shadow: 0 0 0 1px #000000;
-    }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #ffffff; color: #000000; }
+    .apple-card { background: #f5f5f7; border-radius: 20px; transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); }
+    .apple-card:hover { transform: translateY(-1px); }
+    .pill-nav { background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(0,0,0,0.04); }
+    .apple-input { background: #f5f5f7; border: 1px solid transparent; border-radius: 14px; transition: all 0.2s ease; }
+    .apple-input:focus { background: #ffffff; border-color: #000000; box-shadow: 0 0 0 1px #000000; }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="pb-32 antialiased selection:bg-black selection:text-white">
 
-  <!-- ================= HEADER ================= -->
+  <!-- HEADER -->
   <header class="max-w-md mx-auto px-6 pt-6 flex justify-between items-center">
     <div>
       <h1 onclick="switchTab('home')" class="text-2xl font-black tracking-tight text-black cursor-pointer">Nikate Nutritions</h1>
       <p class="text-[9px] text-gray-400 mt-0.5 uppercase tracking-widest font-bold">
-        <i class="fa-solid fa-location-dot mr-1 text-black"></i> 362, Cottage Rd, Juni Peth, dombe galli, Juni Peth,Pandharpur, Maharashtra 413304
+        <i class="fa-solid fa-location-dot mr-1 text-black"></i> 362, Cottage Rd, Juni Peth, dombe galli, Pandharpur, Maharashtra 413304
       </p>
     </div>
     <div id="shop-status-badge" class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5">
@@ -57,10 +33,10 @@
     </div>
   </header>
 
-  <!-- ================= MAIN CONTENT ================= -->
+  <!-- MAIN CONTENT -->
   <main class="max-w-md mx-auto px-6 mt-6">
-    
-    <!-- ================= VIEW 1: HOME ================= -->
+
+    <!-- VIEW 1: HOME -->
     <div id="view-home" class="view-tab space-y-6">
       <div class="apple-card p-6 flex flex-col justify-between h-56 bg-cover bg-center relative overflow-hidden bg-gray-50 border border-gray-100">
         <div class="z-10">
@@ -70,23 +46,22 @@
         </div>
         <button onclick="switchTab('shop')" class="w-fit px-4 py-2 bg-black text-white rounded-xl text-[10px] font-bold uppercase tracking-wider z-10 hover:opacity-90 transition-opacity">Browse Products</button>
       </div>
-
       <div>
         <h3 class="text-xs font-black uppercase tracking-widest text-gray-400 mb-3">Top Categories</h3>
         <div class="grid grid-cols-2 gap-3">
-          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+          <div onclick="filterByCategory('cat_01')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
             <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-prescription-bottle-medical text-base"></i></div>
             <span class="text-xs font-bold text-black uppercase tracking-wide">Whey Protein</span>
           </div>
-          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+          <div onclick="filterByCategory('cat_02')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
             <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-bolt text-base"></i></div>
             <span class="text-xs font-bold text-black uppercase tracking-wide">Creatine & Pre</span>
           </div>
-          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+          <div onclick="filterByCategory('cat_03')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
             <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-capsules text-base"></i></div>
             <span class="text-xs font-bold text-black uppercase tracking-wide">Vitamins</span>
           </div>
-          <div onclick="switchTab('shop')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
+          <div onclick="filterByCategory('cat_04')" class="apple-card p-4 flex flex-col items-center justify-center text-center cursor-pointer h-28 border border-gray-50 bg-gray-50/50">
             <div class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center mb-2"><i class="fa-solid fa-dumbbell text-base"></i></div>
             <span class="text-xs font-bold text-black uppercase tracking-wide">Gainers</span>
           </div>
@@ -94,20 +69,36 @@
       </div>
     </div>
 
-    <!-- ================= VIEW 2: SHOP / PRODUCT LIST ================= -->
+    <!-- VIEW 2: SHOP -->
     <div id="view-shop" class="view-tab hidden space-y-4">
       <div class="pb-1">
         <h3 class="text-2xl font-black tracking-tight text-black">The Shop</h3>
         <p class="text-xs text-gray-400 font-medium">Tap a product to see details.</p>
       </div>
+
+      <!-- SEARCH + FILTER ROW -->
+      <div class="space-y-2">
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+          <input type="text" id="shop-search" placeholder="Search products..." oninput="renderShopProducts()" class="w-full pl-10 pr-4 py-3 apple-input text-xs font-semibold text-black outline-none">
+        </div>
+        <div class="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
+          <button onclick="setShopFilter('all')" data-filter="all" class="filter-btn shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white">All</button>
+          <button onclick="setShopFilter('cat_01')" data-filter="cat_01" class="filter-btn shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-gray-100 text-gray-500">Whey Protein</button>
+          <button onclick="setShopFilter('cat_02')" data-filter="cat_02" class="filter-btn shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-gray-100 text-gray-500">Creatine & Pre</button>
+          <button onclick="setShopFilter('cat_03')" data-filter="cat_03" class="filter-btn shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-gray-100 text-gray-500">Vitamins</button>
+          <button onclick="setShopFilter('cat_04')" data-filter="cat_04" class="filter-btn shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-gray-100 text-gray-500">Gainers</button>
+        </div>
+      </div>
+
       <div id="products-list" class="space-y-3"></div>
+      <p id="shop-no-results" class="hidden text-xs text-gray-400 font-bold py-10 text-center apple-card bg-gray-50">No products match your search.</p>
     </div>
 
-    <!-- ================= VIEW 3: CART & CHECKOUT ================= -->
+    <!-- VIEW 3: CART & CHECKOUT -->
     <div id="view-buy" class="view-tab hidden space-y-6">
       <h3 class="text-2xl font-black tracking-tight text-black">Your Cart</h3>
       <div id="cart-items" class="space-y-3"><p class="text-xs text-gray-400 font-bold py-4 text-center">Your cart is empty.</p></div>
-      
       <div class="pt-2">
         <div class="flex gap-2">
           <input type="text" id="coupon-input" placeholder="COUPON CODE" class="flex-1 px-4 py-3.5 apple-input outline-none text-xs font-bold uppercase tracking-wider text-black">
@@ -115,13 +106,11 @@
         </div>
         <p id="coupon-message" class="text-[10px] mt-2 font-black uppercase tracking-widest"></p>
       </div>
-
       <div class="apple-card p-5 space-y-3 bg-gray-50 border border-gray-100">
         <div class="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wide"><span>Subtotal</span><span id="cart-subtotal" class="text-black font-black">₹0</span></div>
         <div class="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wide"><span>Discount</span><span id="cart-discount" class="text-black font-black">- ₹0</span></div>
         <div class="flex justify-between text-xs font-black text-black border-t border-gray-200 pt-3 uppercase tracking-wide"><span>Total</span><span id="cart-total" class="text-lg font-black">₹0</span></div>
       </div>
-
       <div class="space-y-3">
         <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Delivery Details</h4>
         <input type="text" id="cust-name" placeholder="Full Name" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black">
@@ -131,7 +120,7 @@
       </div>
     </div>
 
-    <!-- ================= VIEW 4: SUPPORT ================= -->
+    <!-- VIEW 4: SUPPORT -->
     <div id="view-contact" class="view-tab hidden space-y-4">
       <h3 class="text-2xl font-black tracking-tight text-black">Support</h3>
       <div class="space-y-4">
@@ -143,7 +132,7 @@
       </div>
     </div>
 
-    <!-- ================= VIEW 5: ORDER HISTORY ================= -->
+    <!-- VIEW 5: ORDER HISTORY -->
     <div id="view-history" class="view-tab hidden space-y-4">
       <h3 class="text-2xl font-black tracking-tight text-black">Order History</h3>
       <div id="history-list" class="space-y-3"><p class="text-xs text-gray-400 font-bold py-4 text-center">No past orders found.</p></div>
@@ -151,60 +140,45 @@
 
   </main>
 
-  <!-- ================= PRODUCT DETAIL OVERLAY ================= -->
+  <!-- PRODUCT DETAIL OVERLAY -->
   <div id="product-detail-view" class="fixed inset-0 bg-white z-[100] hidden flex-col transform translate-y-full transition-transform duration-300">
-    <!-- Top bar -->
     <div class="px-6 py-4 flex justify-between items-center bg-white border-b border-gray-100 sticky top-0 z-10">
       <button onclick="closeProductView()" class="w-9 h-9 flex items-center justify-center bg-gray-50 rounded-xl text-black hover:bg-gray-100"><i class="fa-solid fa-arrow-left text-xs"></i></button>
       <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Product Details</span>
       <button onclick="switchTab('buy'); closeProductView();" class="w-9 h-9 flex items-center justify-center bg-gray-50 rounded-xl text-black hover:bg-gray-100"><i class="fa-solid fa-bag-shopping text-xs"></i></button>
     </div>
-
-    <!-- Scrollable content -->
     <div class="flex-1 overflow-y-auto hide-scrollbar pb-48">
-      <!-- Product image -->
       <div class="w-full h-80 bg-white flex items-center justify-center p-8 border-b border-gray-50 relative">
         <img id="pd-image" src="" class="max-h-full object-contain drop-shadow-md">
       </div>
-      
-      <!-- Product info -->
       <div class="p-6 space-y-6">
         <div>
           <span id="pd-cat-badge" class="text-[9px] font-black text-gray-400 uppercase tracking-widest bg-gray-100 px-2 py-0.5 rounded">GENUINE SUPPLEMENT</span>
           <h2 id="pd-name" class="text-2xl font-black text-black tracking-tight mt-2.5 leading-tight">Product Name</h2>
-          
           <div class="flex items-center gap-4 mt-3.5">
             <span id="pd-price" class="text-3xl font-black text-black tracking-tight">₹0</span>
-            <div class="flex items-center gap-1 bg-black text-white px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wide">
-              4.9 <i class="fa-solid fa-star text-[8px] mb-0.5"></i>
-            </div>
+            <div class="flex items-center gap-1 bg-black text-white px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wide">4.9 <i class="fa-solid fa-star text-[8px] mb-0.5"></i></div>
             <span class="text-[10px] text-gray-400 font-bold tracking-wide">(Verified Buyers)</span>
           </div>
         </div>
-
-        <!-- Trust icons -->
         <div class="grid grid-cols-3 gap-3 border-y border-gray-100 py-4">
           <div class="text-center p-2"><i class="fa-solid fa-shield-halved text-black text-base mb-1 block"></i><p class="text-[9px] text-black font-black uppercase tracking-wider">100% Genuine</p></div>
           <div class="text-center p-2"><i class="fa-solid fa-truck-fast text-black text-base mb-1 block"></i><p class="text-[9px] text-black font-black uppercase tracking-wider">Local Delivery</p></div>
           <div class="text-center p-2"><i class="fa-solid fa-cube text-black text-base mb-1 block"></i><p class="text-[9px] text-black font-black uppercase tracking-wider">Factory Sealed</p></div>
         </div>
-
-        <!-- Description -->
         <div>
           <h3 class="text-xs font-black text-black uppercase tracking-widest mb-2">Product Details</h3>
           <p id="pd-desc" class="text-xs text-gray-600 leading-relaxed font-medium whitespace-pre-line bg-gray-50 p-4 rounded-2xl border border-gray-100/50"></p>
         </div>
 
-        <!-- WRITE YOUR REVIEW SECTION -->
+        <!-- REVIEW FORM -->
         <div class="space-y-3 border-b border-gray-100 pb-6">
           <h3 class="text-xs font-black text-black uppercase tracking-widest">Write Your Review</h3>
-          
           <div class="space-y-3">
             <div>
               <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Your Name</label>
               <input type="text" id="pd-review-name" placeholder="Enter your name" class="w-full px-4 py-2.5 apple-input text-xs outline-none font-semibold text-black">
             </div>
-
             <div>
               <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Your Rating</label>
               <div class="flex gap-2">
@@ -216,24 +190,21 @@
               </div>
               <p id="pd-rating-text" class="text-[9px] text-gray-400 font-bold mt-1">Select rating</p>
             </div>
-
             <div>
               <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Your Review (Max 300 chars)</label>
               <textarea id="pd-review-text" placeholder="Share your experience with this product..." rows="3" class="w-full px-4 py-2.5 apple-input text-xs outline-none font-semibold text-black resize-none"></textarea>
               <p id="pd-char-count" class="text-[8px] text-gray-400 font-bold mt-1">0 / 300 characters</p>
             </div>
-
             <button onclick="submitPDReview()" class="w-full py-3 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity">Post Review</button>
           </div>
         </div>
 
-        <!-- All Reviews Section -->
+        <!-- REVIEWS LIST -->
         <div class="space-y-3">
           <div class="flex justify-between items-center border-b border-gray-100 pb-2">
             <h3 class="text-xs font-black text-black uppercase tracking-widest">Customer Reviews</h3>
             <span class="text-[10px] text-gray-400 font-bold uppercase">All Reviews</span>
           </div>
-          
           <div id="pd-reviews-container" class="space-y-2.5">
             <p class="text-xs text-gray-400 font-bold text-center py-4">Loading reviews...</p>
           </div>
@@ -241,14 +212,14 @@
       </div>
     </div>
 
-    <!-- Bottom action buttons -->
+    <!-- Bottom action -->
     <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 p-4 pb-8 flex gap-3 shadow-[0_-12px_30px_rgba(0,0,0,0.03)]">
       <button id="pd-add-btn" class="flex-1 py-4 bg-gray-50 text-black rounded-xl font-bold text-xs uppercase tracking-wider border border-gray-100 transition-colors hover:bg-gray-100">Add to Cart</button>
       <button id="pd-buy-btn" class="flex-1 py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider transition-opacity hover:opacity-90">Buy Now</button>
     </div>
   </div>
 
-  <!-- ================= BOTTOM NAV ================= -->
+  <!-- BOTTOM NAV -->
   <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm pill-nav rounded-2xl px-2 py-2.5 shadow-xl z-50 flex justify-between items-center">
     <button onclick="switchTab('home')" class="nav-btn text-black flex flex-col items-center flex-1 py-1" data-tab="home"><i class="fa-solid fa-house text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Home</span></button>
     <button onclick="switchTab('shop')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="shop"><i class="fa-solid fa-magnifying-glass text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Shop</span></button>
@@ -261,7 +232,7 @@
     <button onclick="switchTab('history')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="history"><i class="fa-solid fa-clock-rotate-left text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">History</span></button>
   </nav>
 
-  <!-- ================= LIVE CHAT WIDGET ================= -->
+  <!-- LIVE CHAT WIDGET -->
   <div id="chat-widget" class="fixed bottom-24 right-6 z-40">
     <button onclick="toggleChatWindow()" class="w-12 h-12 bg-black text-white rounded-2xl shadow-xl flex items-center justify-center hover:scale-105 transition-transform">
       <i class="fa-solid fa-comment-dots text-base"></i>
@@ -285,7 +256,7 @@
     </div>
   </div>
 
-  <!-- ================= APP LOGIC ================= -->
+  <!-- APP LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
@@ -309,82 +280,112 @@
     let currentProductId = null;
     let pdSelectedRating = 0;
 
+    // ---- In-memory product store for search/filter ----
+    let allProducts = {};
+    let activeFilter = 'all';
+
+    const categoryMap = { cat_01: 'Whey Protein', cat_02: 'Creatine & Pre', cat_03: 'Vitamins', cat_04: 'Gainers' };
+
     // ================= TAB SWITCHING =================
     window.switchTab = (tabId) => {
       document.querySelectorAll('.view-tab').forEach(v => v.classList.add('hidden'));
       document.getElementById(`view-${tabId}`).classList.remove('hidden');
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        if(btn.dataset.tab === tabId) { 
-          btn.classList.add('text-black'); 
-          btn.classList.remove('text-gray-400'); 
-        } else { 
-          btn.classList.remove('text-black'); 
-          btn.classList.add('text-gray-400'); 
-        }
+        btn.classList.toggle('text-black', btn.dataset.tab === tabId);
+        btn.classList.toggle('text-gray-400', btn.dataset.tab !== tabId);
       });
     };
 
-    // Store open/closed status
+    // ================= SHOP SEARCH + FILTER =================
+    window.setShopFilter = (cat) => {
+      activeFilter = cat;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        const isActive = btn.dataset.filter === cat;
+        btn.className = `filter-btn shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${isActive ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'}`;
+        });
+      renderShopProducts();
+    };
+
+    // Called from Home category cards — filter + switch tab
+    window.filterByCategory = (cat) => {
+      switchTab('shop');
+      setShopFilter(cat);
+    };
+
+    window.renderShopProducts = () => {
+      const query = (document.getElementById('shop-search').value || '').toLowerCase().trim();
+      const list = document.getElementById('products-list');
+      const noResults = document.getElementById('shop-no-results');
+      list.innerHTML = '';
+
+      const entries = Object.entries(allProducts);
+      const filtered = entries.filter(([id, p]) => {
+        const matchCat = activeFilter === 'all' || p.categoryId === activeFilter;
+        const matchSearch = !query || p.name.toLowerCase().includes(query) || (p.description || '').toLowerCase().includes(query);
+        return matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        noResults.classList.remove('hidden');
+        return;
+      }
+      noResults.classList.add('hidden');
+
+      filtered.forEach(([id, prod]) => {
+        const catLabel = categoryMap[prod.categoryId] || 'Featured';
+        const fallbackDesc = "Premium sports nutrition made to help with muscle recovery, endurance, and real results.";
+        const desc = prod.description || fallbackDesc;
+
+        const div = document.createElement('div');
+        div.className = 'apple-card p-4 flex items-center justify-between cursor-pointer border border-gray-50 bg-gray-50/40 hover:bg-gray-50/80 transition-colors';
+        div.innerHTML = `
+          <div class="flex items-center gap-4">
+            <img src="${prod.image || ''}" class="w-16 h-16 object-contain rounded-xl bg-white p-1 border border-gray-100/50 mix-blend-multiply" onerror="this.src='https://images.unsplash.com/photo-1579758629938-03607ccdbaba?w=120'">
+            <div>
+              <span class="text-[8px] font-black text-gray-400 uppercase tracking-widest">${catLabel}</span>
+              <h4 class="font-black text-xs text-black leading-tight mt-0.5">${prod.name}</h4>
+              <p class="text-xs text-black font-black mt-1">₹${prod.price}</p>
+              <span class="text-[8px] mt-1.5 inline-block px-2 py-0.5 font-black rounded ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'} uppercase tracking-wide">
+                ${prod.inStock ? 'In Stock' : 'Out of Stock'}
+              </span>
+            </div>
+          </div>
+          <button class="w-8 h-8 bg-white border border-gray-200 text-black text-xs font-black rounded-lg flex items-center justify-center"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+        `;
+        div.addEventListener('click', () => openProductView(id, prod.name, prod.price, prod.image, prod.inStock, desc, catLabel));
+        list.appendChild(div);
+      });
+    };
+
+    // ================= FIREBASE LISTENERS =================
     onValue(ref(db, 'shopStatus'), (snap) => {
       const data = snap.val();
-      if(data) {
+      if (data) {
         const badge = document.getElementById('shop-status-badge');
-        badge.innerHTML = data.isOpen 
+        badge.innerHTML = data.isOpen
           ? `<span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Open`
           : `<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Closed`;
-        badge.className = data.isOpen 
+        badge.className = data.isOpen
           ? "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5"
           : "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5";
       }
     });
 
-    // Load products
     onValue(ref(db, 'products'), (snap) => {
-      const data = snap.val();
-      const shop = document.getElementById('products-list');
-      shop.innerHTML = '';
-      if(!data) {
-        shop.innerHTML = `<p class="text-xs text-gray-400 font-bold py-8 text-center apple-card bg-gray-50">No products available.</p>`;
-        return;
-      }
-
-      Object.entries(data).forEach(([id, prod]) => {
-        const safeName = prod.name.replace(/'/g, "\\'");
-        const fallbackDesc = "Premium sports nutrition made to help with muscle recovery, endurance, and real results.";
-        const safeDesc = (prod.description || fallbackDesc).replace(/'/g, "\\'").replace(/\n/g, "\\n");
-        const categoryMap = { cat_01: 'Whey Protein', cat_02: 'Creatine & Pre', cat_03: 'Vitamins', cat_04: 'Gainers' };
-        const catLabel = categoryMap[prod.categoryId] || 'Featured';
-        
-        shop.innerHTML += `
-          <div onclick="openProductView('${id}', '${safeName}', ${prod.price}, '${prod.image}', ${prod.inStock}, '${safeDesc}', '${catLabel}')" class="apple-card p-4 flex items-center justify-between cursor-pointer border border-gray-50 bg-gray-50/40 hover:bg-gray-50/80 transition-colors">
-            <div class="flex items-center gap-4">
-              <img src="${prod.image}" class="w-16 h-16 object-contain rounded-xl bg-white p-1 border border-gray-100/50 mix-blend-multiply">
-              <div>
-                <span class="text-[8px] font-black text-gray-400 uppercase tracking-widest">${catLabel}</span>
-                <h4 class="font-black text-xs text-black leading-tight mt-0.5">${prod.name}</h4>
-                <p class="text-xs text-black font-black mt-1">₹${prod.price}</p>
-                <span class="text-[8px] mt-1.5 inline-block px-2 py-0.5 font-black rounded ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'} uppercase tracking-wide">
-                  ${prod.inStock ? 'In Stock' : 'Out of Stock'}
-                </span>
-              </div>
-            </div>
-            <button class="w-8 h-8 bg-white border border-gray-200 text-black text-xs font-black rounded-lg flex items-center justify-center"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-          </div>
-        `;
-      });
+      allProducts = snap.val() || {};
+      renderShopProducts();
     });
 
-    // Product detail popup
+    // ================= PRODUCT DETAIL =================
     window.openProductView = (id, name, price, image, inStock, desc, catLabel) => {
       currentProductId = id;
       pdSelectedRating = 0;
       const modal = document.getElementById('product-detail-view');
-      document.getElementById('pd-image').src = image;
+      document.getElementById('pd-image').src = image || '';
       document.getElementById('pd-name').textContent = name;
       document.getElementById('pd-price').textContent = `₹${price}`;
       document.getElementById('pd-desc').textContent = desc;
       document.getElementById('pd-cat-badge').textContent = catLabel.toUpperCase();
-      
       document.getElementById('pd-review-name').value = '';
       document.getElementById('pd-review-text').value = '';
       document.getElementById('pd-rating-text').textContent = 'Select rating';
@@ -398,12 +399,12 @@
       const addBtn = document.getElementById('pd-add-btn');
       const buyBtn = document.getElementById('pd-buy-btn');
 
-      if(inStock) {
+      if (inStock) {
         addBtn.textContent = "Add to Cart";
         addBtn.className = "flex-1 py-4 bg-gray-50 text-black rounded-xl font-bold text-xs uppercase tracking-wider border border-gray-100 transition-colors hover:bg-gray-100";
-        addBtn.onclick = () => { 
-          addToCart(id, name, price); 
-          addBtn.textContent = "Added!"; 
+        addBtn.onclick = () => {
+          addToCart(id, name, price);
+          addBtn.textContent = "Added!";
           setTimeout(() => addBtn.textContent = "Add to Cart", 1200);
         };
         buyBtn.style.display = "block";
@@ -425,10 +426,10 @@
       setTimeout(() => modal.classList.add('hidden'), 300);
     };
 
-    // Cart logic
+    // ================= CART =================
     window.addToCart = (id, name, price) => {
       const existing = cart.find(item => item.id === id);
-      if(existing) existing.qty += 1;
+      if (existing) existing.qty += 1;
       else cart.push({ id, name, price, qty: 1 });
       updateCartUI();
     };
@@ -438,17 +439,17 @@
       const itemsContainer = document.getElementById('cart-items');
       const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
 
-      if(totalCount > 0) { badge.textContent = totalCount; badge.classList.remove('hidden'); } 
+      if (totalCount > 0) { badge.textContent = totalCount; badge.classList.remove('hidden'); }
       else badge.classList.add('hidden');
 
-      if(cart.length === 0) {
+      if (cart.length === 0) {
         itemsContainer.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50 border border-gray-150">Your cart is empty.</p>`;
         document.getElementById('cart-subtotal').textContent = `₹0`;
         document.getElementById('cart-discount').textContent = `- ₹0`;
         document.getElementById('cart-total').textContent = `₹0`;
         return;
       }
-      
+
       itemsContainer.innerHTML = cart.map(item => `
         <div class="flex justify-between items-center bg-gray-50 border border-gray-100 p-4 rounded-2xl">
           <div class="flex-1 pr-4">
@@ -466,7 +467,6 @@
       const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
       const discount = activeCoupon ? (activeCoupon.discountType === 'percentage' ? (subtotal * activeCoupon.value / 100) : activeCoupon.value) : 0;
       const total = Math.max(0, subtotal - discount);
-
       document.getElementById('cart-subtotal').textContent = `₹${subtotal}`;
       document.getElementById('cart-discount').textContent = `- ₹${discount}`;
       document.getElementById('cart-total').textContent = `₹${total}`;
@@ -474,21 +474,18 @@
 
     window.changeQty = (id, change) => {
       const item = cart.find(i => i.id === id);
-      if(item) {
-        item.qty += change;
-        if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
-      }
+      if (item) { item.qty += change; if (item.qty <= 0) cart = cart.filter(i => i.id !== id); }
       updateCartUI();
     };
 
-    // Coupon check
+    // ================= COUPON =================
     window.applyCoupon = () => {
       const code = document.getElementById('coupon-input').value.toUpperCase().trim();
       const msg = document.getElementById('coupon-message');
-      if(!code) return;
+      if (!code) return;
       onValue(ref(db, `coupons/${code}`), (snap) => {
         const val = snap.val();
-        if(val && val.isActive) {
+        if (val && val.isActive) {
           activeCoupon = val;
           msg.textContent = `${val.value}% DISCOUNT APPLIED!`;
           msg.className = "text-[10px] mt-2 text-black font-black uppercase tracking-widest";
@@ -500,75 +497,80 @@
       }, { onlyOnce: true });
     };
 
-    // Place order
+    // ================= ORDER =================
     window.submitOrder = () => {
       const name = document.getElementById('cust-name').value.trim();
       const phone = document.getElementById('cust-phone').value.trim();
       const address = document.getElementById('cust-address').value.trim();
-      if(!name || !phone || !address || cart.length === 0) { alert("Please fill in all fields before placing your order."); return; }
-      
+      if (!name || !phone || !address || cart.length === 0) { alert("Please fill in all fields before placing your order."); return; }
+
       const totalAmount = parseFloat(document.getElementById('cart-total').textContent.replace('₹', ''));
-      const newOrder = { customerName: name, customerPhone: phone, address: address, items: cart, totalAmount, status: "pending", timestamp: Date.now() };
-      
+      const newOrder = { customerName: name, customerPhone: phone, address, items: cart, totalAmount, status: "pending", timestamp: Date.now() };
+
       const pushRef = push(ref(db, 'orders'));
       set(pushRef, newOrder).then(() => {
         const history = JSON.parse(localStorage.getItem('orders_history')) || [];
         history.push({ id: pushRef.key, ...newOrder });
         localStorage.setItem('orders_history', JSON.stringify(history));
-      const wpMsg = `Hi! I'm ${name}. I've placed an order on Nikate Nutritions website. Please share your QR code or payment details so I can send the money. 🙏`;
-       window.open(`https://wa.me/918698343237?text=${encodeURIComponent(wpMsg)}`, '_blank');
-        cart = []; 
+        const wpMsg = `Hi! I'm ${name}. I've placed an order on Nikate Nutritions website. Please share your QR code or payment details so I can send the money. 🙏`;
+        window.open(`https://wa.me/918698343237?text=${encodeURIComponent(wpMsg)}`, '_blank');
+        cart = [];
         activeCoupon = null;
         document.getElementById('coupon-input').value = '';
         document.getElementById('coupon-message').textContent = '';
-        updateCartUI(); 
-        switchTab('history'); 
+        updateCartUI();
+        switchTab('history');
         renderHistory();
       });
     };
 
     window.sendIssueReport = () => {
       const desc = document.getElementById('issue-desc').value.trim();
-      if(!desc) { alert("Please describe your issue first."); return; }
+      if (!desc) { alert("Please describe your issue first."); return; }
       window.open(`https://wa.me/918698343237?text=${encodeURIComponent('Support Issue: ' + desc)}`, '_blank');
     };
 
+    // ================= ORDER HISTORY =================
     function renderHistory() {
       const list = document.getElementById('history-list');
       const hist = JSON.parse(localStorage.getItem('orders_history')) || [];
-      if(hist.length === 0) return;
+      if (hist.length === 0) { list.innerHTML = `<p class="text-xs text-gray-400 font-bold py-4 text-center">No past orders found.</p>`; return; }
       list.innerHTML = '';
-      hist.forEach(item => {
+      hist.reverse().forEach(item => {
         onValue(ref(db, `orders/${item.id}`), (snap) => {
           const live = snap.val();
           const status = live ? live.status : 'pending';
-          let color = "bg-yellow-50 text-yellow-600";
-          if(status === 'shipping' || status === 'preparing') color = "bg-blue-50 text-blue-600";
-          if(status === 'shipped') color = "bg-black text-white";
-          if(status === 'declined') color = "bg-red-50 text-red-500";
-
+          const colorMap = {
+            pending: 'bg-yellow-50 text-yellow-600',
+            accepted: 'bg-blue-50 text-blue-600',
+            shipping: 'bg-purple-50 text-purple-600',
+            delivered: 'bg-green-50 text-green-600',
+            rejected: 'bg-red-50 text-red-500'
+          };
+          const color = colorMap[status] || 'bg-yellow-50 text-yellow-600';
           const html = `
             <div class="flex justify-between items-center">
               <div>
                 <p class="text-[8px] text-gray-400 font-black uppercase tracking-widest">ORDER ID: #${item.id.slice(-6).toUpperCase()}</p>
                 <h5 class="font-black text-sm text-black mt-0.5">₹${item.totalAmount}</h5>
+                <p class="text-[9px] text-gray-400 font-medium mt-0.5">${(item.items || []).map(i => i.name).join(', ')}</p>
               </div>
               <span class="text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider ${color}">${status}</span>
             </div>`;
           const cont = document.getElementById(`ord-${item.id}`);
-          if(cont) cont.innerHTML = html;
-          else { 
-            const div = document.createElement('div'); 
-            div.id = `ord-${item.id}`; 
-            div.className = "apple-card p-4 border border-gray-100 bg-gray-50/50"; 
-            div.innerHTML = html; 
-            list.appendChild(div); 
+          if (cont) cont.innerHTML = html;
+          else {
+            const div = document.createElement('div');
+            div.id = `ord-${item.id}`;
+            div.className = "apple-card p-4 border border-gray-100 bg-gray-50/50";
+            div.innerHTML = html;
+            list.appendChild(div);
           }
         });
       });
     }
 
-    // ================= PRODUCT REVIEW FUNCTIONS =================
+    // ================= REVIEWS =================
     window.setPDRating = (rating) => {
       pdSelectedRating = rating;
       document.querySelectorAll('.pd-rating-btn').forEach(btn => {
@@ -580,32 +582,19 @@
     };
 
     document.addEventListener('input', (e) => {
-      if(e.target.id === 'pd-review-text') {
+      if (e.target.id === 'pd-review-text') {
         const count = e.target.value.length;
         document.getElementById('pd-char-count').textContent = `${count} / 300 characters`;
-        if(count > 300) e.target.value = e.target.value.slice(0, 300);
+        if (count > 300) e.target.value = e.target.value.slice(0, 300);
       }
     });
 
     window.submitPDReview = () => {
       const name = document.getElementById('pd-review-name').value.trim();
       const text = document.getElementById('pd-review-text').value.trim();
-      
-      if(!name || pdSelectedRating === 0 || !text) {
-        alert("Please fill all fields and select a rating.");
-        return;
-      }
-
-      if(!currentProductId) return;
-
-      const review = {
-        productId: currentProductId,
-        customerName: name,
-        rating: pdSelectedRating,
-        text: text,
-        timestamp: Date.now()
-      };
-
+      if (!name || pdSelectedRating === 0 || !text) { alert("Please fill all fields and select a rating."); return; }
+      if (!currentProductId) return;
+      const review = { productId: currentProductId, customerName: name, rating: pdSelectedRating, text, timestamp: Date.now() };
       const pushRef = push(ref(db, `productReviews/${currentProductId}`));
       set(pushRef, review).then(() => {
         alert("Review posted successfully!");
@@ -627,12 +616,10 @@
         const data = snap.val();
         const container = document.getElementById('pd-reviews-container');
         container.innerHTML = '';
-        
-        if(!data) {
+        if (!data) {
           container.innerHTML = `<p class="text-xs text-gray-400 font-bold py-4 text-center">No reviews yet. Be the first to review!</p>`;
           return;
         }
-
         Object.values(data).reverse().forEach(review => {
           const stars = '⭐'.repeat(review.rating);
           container.innerHTML += `
@@ -646,28 +633,27 @@
               </div>
               <p class="text-xs text-gray-600 font-medium leading-relaxed">${review.text}</p>
               <p class="text-[8px] text-gray-300">${new Date(review.timestamp).toLocaleDateString()}</p>
-            </div>
-          `;
+            </div>`;
         });
       });
     }
 
-    // Live chat logic
+    // ================= CHAT =================
     window.toggleChatWindow = () => {
       const win = document.getElementById('chat-window');
       win.classList.toggle('hidden');
-      if(!win.classList.contains('hidden') && chatUser) startChatSession();
+      if (!win.classList.contains('hidden') && chatUser) startChatSession();
     };
-    
+
     window.startChat = () => {
       const n = document.getElementById('chat-user-name').value.trim();
       const p = document.getElementById('chat-user-phone').value.trim();
-      if(!n || !p) return;
+      if (!n || !p) return;
       chatUser = { name: n, phone: p };
       localStorage.setItem('chatUser', JSON.stringify(chatUser));
       startChatSession();
     };
-    
+
     function startChatSession() {
       document.getElementById('chat-setup').classList.add('hidden');
       document.getElementById('chat-messages').classList.remove('hidden');
@@ -675,7 +661,7 @@
       onValue(ref(db, `chats/chat_${chatUser.phone}/messages`), (snap) => {
         const box = document.getElementById('chat-messages');
         box.innerHTML = '';
-        if(!snap.val()) return;
+        if (!snap.val()) return;
         Object.values(snap.val()).forEach(msg => {
           const isMe = msg.sender === 'customer';
           box.innerHTML += `
@@ -688,17 +674,17 @@
         box.scrollTop = box.scrollHeight;
       });
     }
-    
+
     window.sendChatMessage = () => {
       const inp = document.getElementById('chat-msg-input');
       const text = inp.value.trim();
-      if(!text || !chatUser) return;
-      set(push(ref(db, `chats/chat_${chatUser.phone}/messages`)), { sender: 'customer', text: text, timestamp: Date.now() });
+      if (!text || !chatUser) return;
+      set(push(ref(db, `chats/chat_${chatUser.phone}/messages`)), { sender: 'customer', text, timestamp: Date.now() });
       set(ref(db, `chats/chat_${chatUser.phone}/customerInfo`), chatUser);
       inp.value = '';
     };
 
-    // Load order history on page load
+    // Init
     renderHistory();
   </script>
 </body>
