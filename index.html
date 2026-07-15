@@ -515,7 +515,8 @@
         const history = JSON.parse(localStorage.getItem('orders_history')) || [];
         history.push({ id: pushRef.key, ...newOrder });
         localStorage.setItem('orders_history', JSON.stringify(history));
-        alert("Your order has been placed successfully.");
+      const wpMsg = `Hi! I'm ${name}. I've placed an order on Nikate Nutritions website. Please share your QR code or payment details so I can send the money. 🙏`;
+       window.open(`https://wa.me/918698343237?text=${encodeURIComponent(wpMsg)}`, '_blank');
         cart = []; 
         activeCoupon = null;
         document.getElementById('coupon-input').value = '';
