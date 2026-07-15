@@ -43,174 +43,174 @@
 </head>
 <body class="pb-32 antialiased selection:bg-black selection:text-white">
 
-  <!-- ================= SECURE AUTHENTICATION SCREEN ================= -->
+  <!-- ================= LOGIN SCREEN ================= -->
   <div id="login-screen" class="fixed inset-0 z-[999] flex items-center justify-center p-6 bg-white">
     <div class="w-full max-w-sm space-y-8">
       <div class="text-center">
         <div class="inline-flex w-14 h-14 bg-black text-white text-xl rounded-2xl items-center justify-center mb-4">💊</div>
         <h2 class="text-3xl font-black tracking-tight text-black">Nikate Admin</h2>
-        <p class="text-xs text-gray-400 font-medium mt-1">Authorized Store Access Terminal</p>
+        <p class="text-xs text-gray-400 font-medium mt-1">Store Login</p>
       </div>
 
       <div class="bg-red-50 text-red-600 text-xs font-bold p-3.5 rounded-xl text-center hidden" id="errorMsg"></div>
       
       <div class="space-y-4 pt-2">
         <div>
-          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Corporate Email</label>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Email</label>
           <input class="w-full px-4 py-3.5 apple-input outline-none text-sm font-medium text-black" id="email" type="email" placeholder="admin@example.com">
         </div>
         <div>
-          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Security Password</label>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Password</label>
           <input class="w-full px-4 py-3.5 apple-input outline-none text-sm font-medium text-black" id="password" type="password" placeholder="••••••••">
         </div>
-        <button class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity mt-2" id="loginBtn">Authenticate</button>
+        <button class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity mt-2" id="loginBtn">Log In</button>
       </div>
     </div>
   </div>
 
-  <!-- ================= MASTER DASHBOARD TERMINAL (MOBILE-FIRST) ================= -->
+  <!-- ================= DASHBOARD ================= -->
   <div id="dashboard-screen" class="hidden">
     
-    <!-- EXECUTIVE TOP NAV BAR -->
+    <!-- TOP BAR -->
     <header class="max-w-md mx-auto px-6 pt-6 flex justify-between items-center border-b border-gray-100 pb-5">
       <div>
-        <h1 class="text-2xl font-black tracking-tight text-black">Console</h1>
-        <p id="page-subtitle" class="text-[9px] text-gray-400 font-black uppercase tracking-widest mt-0.5">Operational Pipeline</p>
+        <h1 class="text-2xl font-black tracking-tight text-black">Dashboard</h1>
+        <p id="page-subtitle" class="text-[9px] text-gray-400 font-black uppercase tracking-widest mt-0.5">Orders</p>
       </div>
       <div class="flex items-center gap-2">
         <button id="shop-toggle-btn" onclick="toggleStoreStatus()" class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5">Checking...</button>
       </div>
     </header>
 
-    <!-- CONTENT WRAPPER -->
+    <!-- CONTENT -->
     <main class="max-w-md mx-auto px-6 mt-6">
       
-      <!-- TAB 1: OPERATIONAL PIPELINE (ORDERS) -->
+      <!-- TAB 1: ORDERS -->
       <section id="view-orders" class="dash-view space-y-4">
         <div class="flex justify-between items-center">
-          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-bolt mr-1.5 text-black"></i>Customer Queues</h3>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-bolt mr-1.5 text-black"></i>Orders</h3>
           <span class="text-xs font-black text-black">Active: <span id="stat-orders">0</span></span>
         </div>
         <div id="orders-list" class="space-y-4"></div>
       </section>
 
-      <!-- TAB 2: PRODUCT ASSET CATALOG -->
+      <!-- TAB 2: PRODUCTS -->
       <section id="view-catalog" class="dash-view hidden space-y-4">
         <div class="flex justify-between items-center mb-2">
-          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-boxes-stacked mr-1.5 text-black"></i>Product Assets</h3>
-          <button onclick="openProductModal()" class="px-4 py-2 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider hover:opacity-90 transition-opacity"><i class="fa-solid fa-plus mr-1"></i> Add Asset</button>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-boxes-stacked mr-1.5 text-black"></i>Products</h3>
+          <button onclick="openProductModal()" class="px-4 py-2 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider hover:opacity-90 transition-opacity"><i class="fa-solid fa-plus mr-1"></i> Add Product</button>
         </div>
         <div id="products-list" class="space-y-3"></div>
       </section>
 
-      <!-- TAB 3: PROMO ENGINE (COUPONS) -->
+      <!-- TAB 3: COUPONS -->
       <section id="view-coupons" class="dash-view hidden space-y-6">
         <div class="space-y-4">
-          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-tag mr-1.5 text-black"></i>Create Promo Rule</h3>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-tag mr-1.5 text-black"></i>Create Coupon</h3>
           <div class="space-y-3">
-            <input type="text" id="new-coupon-code" placeholder="PROMO CODE (E.G. FIT20)" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-bold uppercase tracking-wide text-black">
-            <input type="number" id="new-coupon-val" placeholder="Discount Percentage (%)" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-bold text-black">
-            <button onclick="createCouponCode()" class="w-full py-3.5 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-opacity hover:opacity-90">Activate Promo</button>
+            <input type="text" id="new-coupon-code" placeholder="CODE (E.G. FIT20)" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-bold uppercase tracking-wide text-black">
+            <input type="number" id="new-coupon-val" placeholder="Discount Percent (%)" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-bold text-black">
+            <button onclick="createCouponCode()" class="w-full py-3.5 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-opacity hover:opacity-90">Add Coupon</button>
           </div>
         </div>
         <div class="space-y-4">
-          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Promo Configurations</h3>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Current Coupons</h3>
           <div id="coupons-list" class="space-y-2"></div>
         </div>
       </section>
 
-      <!-- TAB 4: CLIENT INBOX (CHATS) -->
+      <!-- TAB 4: CHATS -->
       <section id="view-chats" class="dash-view hidden space-y-4">
         <div class="space-y-4">
-          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-users mr-1.5 text-black"></i>Active User Rooms</h3>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-users mr-1.5 text-black"></i>Customer Chats</h3>
           <div id="chats-queue" class="space-y-2 max-h-[360px] overflow-y-auto hide-scrollbar"></div>
         </div>
 
-        <!-- Pop-up overlay for Active Chat Window -->
+        <!-- Chat popup window -->
         <div id="admin-chat-box" class="hidden fixed inset-0 bg-white z-[150] flex flex-col">
           <div class="bg-black text-white p-4 flex justify-between items-center">
             <div>
-              <h4 id="active-chat-title" class="font-bold text-sm">Active Thread</h4>
-              <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Secure Customer Support Link</p>
+              <h4 id="active-chat-title" class="font-bold text-sm">Chat</h4>
+              <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Customer Support</p>
             </div>
             <button onclick="closeAdminChat()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20"><i class="fa-solid fa-xmark text-sm"></i></button>
           </div>
           <div id="admin-messages-box" class="p-4 flex-1 overflow-y-auto space-y-3 text-xs bg-gray-50 hide-scrollbar"></div>
           <div class="p-3 bg-white border-t border-gray-100 flex gap-2 items-center pb-8">
-            <input type="text" id="admin-chat-input" placeholder="Type transmission response..." class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs outline-none font-semibold text-black">
+            <input type="text" id="admin-chat-input" placeholder="Type a reply..." class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs outline-none font-semibold text-black">
             <button onclick="sendAdminReply()" class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity"><i class="fa-solid fa-paper-plane text-xs"></i></button>
           </div>
         </div>
       </section>
 
-      <!-- TAB 5: SYSTEM TERMINAL -->
+      <!-- TAB 5: SETTINGS -->
       <section id="view-system" class="dash-view hidden space-y-6">
         <div>
-          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3"><i class="fa-solid fa-gears mr-1.5 text-black"></i>System Parameters</h3>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3"><i class="fa-solid fa-gears mr-1.5 text-black"></i>Settings</h3>
           <div class="apple-card p-5 space-y-4 border border-gray-100">
             <div>
-              <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Active Database Node</p>
+              <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Database</p>
               <p class="font-bold text-xs text-black mt-1">nikte-nutritions-default-rtdb</p>
             </div>
             <div class="border-t border-gray-100 pt-4">
-              <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-2">Platform Power State</p>
-              <button id="system-toggle-wide" onclick="toggleStoreStatus()" class="w-full py-3 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider">Toggle Operational Power</button>
+              <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-2">Store Status</p>
+              <button id="system-toggle-wide" onclick="toggleStoreStatus()" class="w-full py-3 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider">Turn Store On/Off</button>
             </div>
           </div>
         </div>
-        <button id="logoutBtn" class="w-full py-4 bg-red-50 text-red-600 border border-red-100 font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 hover:bg-red-100/50 transition-colors"><i class="fa-solid fa-right-from-bracket text-xs"></i> Shut Down Session</button>
+        <button id="logoutBtn" class="w-full py-4 bg-red-50 text-red-600 border border-red-100 font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 hover:bg-red-100/50 transition-colors"><i class="fa-solid fa-right-from-bracket text-xs"></i> Log Out</button>
       </section>
 
     </main>
 
-    <!-- ================= FLOATING NAV PILL DRAWER ================= -->
+    <!-- ================= BOTTOM NAV ================= -->
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm pill-nav rounded-2xl px-1 py-2.5 shadow-xl z-50 flex justify-between items-center">
       <button onclick="switchTab('orders')" class="nav-btn text-black flex flex-col items-center flex-1 py-1" data-tab="orders">
         <i class="fa-solid fa-box text-base"></i>
-        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Pipeline</span>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Orders</span>
       </button>
       <button onclick="switchTab('catalog')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="catalog">
         <i class="fa-solid fa-list text-base"></i>
-        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Catalog</span>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Products</span>
       </button>
       <button onclick="switchTab('coupons')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="coupons">
         <i class="fa-solid fa-tags text-base"></i>
-        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Promo</span>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Coupons</span>
       </button>
       <button onclick="switchTab('chats')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1 relative" data-tab="chats">
         <i class="fa-solid fa-comments text-base"></i>
         <span id="chat-alert-dot" class="w-1.5 h-1.5 rounded-full bg-black absolute top-1 right-6 hidden animate-pulse"></span>
-        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Inbox</span>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Chats</span>
       </button>
       <button onclick="switchTab('system')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="system">
         <i class="fa-solid fa-sliders text-base"></i>
-        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">System</span>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Settings</span>
       </button>
     </nav>
 
   </div>
 
-  <!-- ================= ASSET EDIT/ADD POPUP INTERFACE MODAL ================= -->
+  <!-- ================= PRODUCT ADD/EDIT POPUP ================= -->
   <div id="prod-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-md z-[200] flex items-center justify-center p-4">
     <div class="bg-white p-6 rounded-3xl w-full max-w-sm space-y-4 border border-gray-100">
       <div class="flex justify-between items-center border-b border-gray-100 pb-3">
-        <h3 id="modal-title" class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Database Entry Setup</h3>
+        <h3 id="modal-title" class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Product Details</h3>
         <button onclick="closeProductModal()" class="text-gray-400 hover:text-black"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <input type="hidden" id="prod-id" value="">
       
       <div class="space-y-3">
         <div>
-          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Product Designation Name</label>
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Product Name</label>
           <input type="text" id="prod-name" class="w-full px-4 py-3 apple-input text-xs font-semibold text-black outline-none">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Price Value (INR)</label>
+            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Price (INR)</label>
             <input type="number" id="prod-price" class="w-full px-4 py-3 apple-input text-xs font-bold text-black outline-none">
           </div>
           <div>
-            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Operational Category</label>
+            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Category</label>
             <select id="prod-cat" class="w-full px-4 py-3 apple-input text-xs font-bold text-black outline-none appearance-none">
               <option value="cat_01">Whey Protein</option>
               <option value="cat_02">Creatine & Pre</option>
@@ -220,20 +220,20 @@
           </div>
         </div>
         <div>
-          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Direct Cloud Image URI Link</label>
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Image Link</label>
           <input type="text" id="prod-img" class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none">
         </div>
         <div>
-          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Full Client Specifications</label>
-          <textarea id="prod-desc" rows="4" placeholder="Detail supplement formula parameters, verified purity components..." class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none resize-none hide-scrollbar"></textarea>
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Description</label>
+          <textarea id="prod-desc" rows="4" placeholder="Product details, ingredients, etc..." class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none resize-none hide-scrollbar"></textarea>
         </div>
       </div>
 
-      <button onclick="saveProduct()" class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider mt-2 hover:opacity-90 transition-opacity">Commit Database Sync</button>
+      <button onclick="saveProduct()" class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider mt-2 hover:opacity-90 transition-opacity">Save Product</button>
     </div>
   </div>
 
-  <!-- ================= CORE FRAMEWORK EXECUTION MODULE ================= -->
+  <!-- ================= APP LOGIC ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -256,7 +256,7 @@
     let storeOpen = true;
     let selectedChatId = null;
 
-    // ================= SECURITY VERIFICATION PIPELINE =================
+    // ================= LOGIN CHECK =================
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('login-screen').style.display = 'none';
@@ -275,25 +275,25 @@
       const btn = document.getElementById('loginBtn');
       
       if(!email || !password) { 
-        errorMsg.textContent = 'Required validation parameters missing.'; 
+        errorMsg.textContent = 'Please fill in all fields.'; 
         errorMsg.classList.remove('hidden'); 
         return; 
       }
-      btn.textContent = "Processing Authorization..."; btn.disabled = true;
+      btn.textContent = "Logging in..."; btn.disabled = true;
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        btn.textContent = "Authenticate"; btn.disabled = false;
+        btn.textContent = "Log In"; btn.disabled = false;
         errorMsg.classList.add('hidden');
       } catch(error) {
-        errorMsg.textContent = 'Invalid credentials. Access Denied.';
+        errorMsg.textContent = 'Wrong email or password.';
         errorMsg.classList.remove('hidden');
-        btn.textContent = "Authenticate"; btn.disabled = false;
+        btn.textContent = "Log In"; btn.disabled = false;
       }
     });
 
     document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
-    // ================= INTERFACE PILL SWITCH SYSTEM =================
+    // ================= TAB SWITCHING =================
     window.switchTab = (tabId) => {
       document.querySelectorAll('.dash-view').forEach(v => v.classList.add('hidden'));
       document.getElementById(`view-${tabId}`).classList.remove('hidden');
@@ -308,20 +308,20 @@
         }
       });
       const titles = { 
-        orders: 'Operational Pipeline', 
-        catalog: 'Product Asset Catalog', 
-        coupons: 'Promo Engine Room', 
-        chats: 'Communications Inbox',
-        system: 'System Configuration'
+        orders: 'Orders', 
+        catalog: 'Products', 
+        coupons: 'Coupons', 
+        chats: 'Chats',
+        system: 'Settings'
       };
       document.getElementById('page-subtitle').textContent = titles[tabId];
     };
 
     window.toggleStoreStatus = () => update(ref(db, 'shopStatus'), { isOpen: !storeOpen });
 
-    // ================= LIVE DATABASE LISTENERS =================
+    // ================= LIVE DATA =================
     function loadDashboardData() {
-      // 1. Operational Engine Status
+      // 1. Store Open/Closed Status
       onValue(ref(db, 'shopStatus'), (snap) => {
         const data = snap.val();
         if(data) {
@@ -329,26 +329,26 @@
           const btn = document.getElementById('shop-toggle-btn');
           const wideBtn = document.getElementById('system-toggle-wide');
           
-          btn.textContent = storeOpen ? 'STORE: ACTIVE' : 'STORE: PAUSED';
+          btn.textContent = storeOpen ? 'STORE: OPEN' : 'STORE: CLOSED';
           btn.className = storeOpen 
             ? "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5"
             : "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5";
             
-          wideBtn.textContent = storeOpen ? 'DEACTIVATE STORE FRONT' : 'ACTIVATE STORE FRONT';
+          wideBtn.textContent = storeOpen ? 'CLOSE STORE' : 'OPEN STORE';
           wideBtn.className = storeOpen
             ? "w-full py-3 bg-red-50 border border-red-100 text-red-600 text-[10px] font-bold rounded-xl uppercase tracking-wider"
             : "w-full py-3 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider";
         }
       });
 
-      // 2. Order System Engine
+      // 2. Orders
       onValue(ref(db, 'orders'), (snap) => {
         const data = snap.val();
         const list = document.getElementById('orders-list');
         list.innerHTML = '';
         if(!data) { 
           document.getElementById('stat-orders').textContent = '0';
-          list.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50 border border-gray-100">Operational active pipeline empty.</p>`; 
+          list.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50 border border-gray-100">No orders yet.</p>`; 
           return; 
         }
         
@@ -371,18 +371,18 @@
                 <div>
                   <h4 class="font-black text-xs text-black">${order.customerName}</h4>
                   <p class="text-[9px] text-gray-400 font-semibold mt-0.5">${order.customerPhone}</p>
-                  <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-1">UID: #${id.slice(-6).toUpperCase()}</p>
+                  <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-1">Order ID: #${id.slice(-6).toUpperCase()}</p>
                 </div>
                 <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${badgeColor}">${order.status}</span>
               </div>
               <div class="mt-3 space-y-1.5 border-t border-b border-gray-50 py-2.5 my-2.5">
-                <p class="text-[11px] text-gray-600 font-medium"><strong>Manifest:</strong> ${items}</p>
-                <p class="text-[11px] text-gray-600 font-medium"><strong>Logistics Target:</strong> ${order.address}</p>
+                <p class="text-[11px] text-gray-600 font-medium"><strong>Items:</strong> ${items}</p>
+                <p class="text-[11px] text-gray-600 font-medium"><strong>Address:</strong> ${order.address}</p>
               </div>
               <div class="flex justify-between items-center mt-4">
                 <span class="font-black text-sm text-black">₹${order.totalAmount}</span>
                 
-                <!-- ALL OPTIONS ACCESSIBLE AT ONCE VIA DROPDOWN SELECTOR -->
+                <!-- Status dropdown -->
                 <div class="relative flex items-center">
                   <select onchange="updateStatus('${id}', this.value)" class="pl-3 pr-8 py-1.5 bg-gray-50 border border-gray-200 text-black text-[10px] font-black uppercase tracking-wider rounded-xl outline-none appearance-none cursor-pointer focus:bg-white focus:border-black transition-all">
                     <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
@@ -402,7 +402,7 @@
         });
       });
 
-      // 3. Products Manifest Pipeline
+      // 3. Products
       onValue(ref(db, 'products'), (snap) => {
         const data = snap.val();
         const list = document.getElementById('products-list');
@@ -423,7 +423,7 @@
                 </div>
               </div>
               <div class="flex items-center gap-1.5">
-                <button onclick="toggleStock('${id}', ${!prod.inStock})" class="px-2 py-1 rounded text-[8px] font-black uppercase tracking-wide ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'}">${prod.inStock ? 'In Stock' : 'Void'}</button>
+                <button onclick="toggleStock('${id}', ${!prod.inStock})" class="px-2 py-1 rounded text-[8px] font-black uppercase tracking-wide ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'}">${prod.inStock ? 'In Stock' : 'Out of Stock'}</button>
                 <button onclick="editProduct('${id}', '${safeName}', ${prod.price}, '${prod.image}', '${prod.categoryId || ''}', '${safeDesc}')" class="w-7 h-7 bg-white border border-gray-150 text-black rounded-lg flex justify-center items-center"><i class="fa-solid fa-pen text-[9px]"></i></button>
                 <button onclick="deleteProduct('${id}')" class="w-7 h-7 bg-white border border-gray-150 text-red-500 rounded-lg flex justify-center items-center"><i class="fa-solid fa-trash text-[9px]"></i></button>
               </div>
@@ -432,13 +432,13 @@
         });
       });
 
-      // 4. Coupon Matrix Rules
+      // 4. Coupons
       onValue(ref(db, 'coupons'), (snap) => {
         const data = snap.val();
         const box = document.getElementById('coupons-list');
         box.innerHTML = '';
         if(!data) {
-          box.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50">No active promo rules deployed.</p>`;
+          box.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50">No coupons yet.</p>`;
           return;
         }
         Object.entries(data).forEach(([code, c]) => {
@@ -451,7 +451,7 @@
         });
       });
 
-      // 5. Communications Sync Matrix
+      // 5. Chats
       onValue(ref(db, 'chats'), (snap) => {
         const data = snap.val();
         const list = document.getElementById('chats-queue');
@@ -477,12 +477,12 @@
       });
     }
 
-    // ================= DATA LOGIC HOOK OPERATIONS =================
+    // ================= ACTIONS =================
     window.updateStatus = (id, status) => update(ref(db, `orders/${id}`), { status });
     window.toggleStock = (id, val) => update(ref(db, `products/${id}`), { inStock: val });
-    window.deleteProduct = (id) => { if(confirm('Delete product node permanently?')) remove(ref(db, `products/${id}`)); };
+    window.deleteProduct = (id) => { if(confirm('Delete this product for good?')) remove(ref(db, `products/${id}`)); };
 
-    // Manifest Asset Control Modal Mechanics
+    // Product modal
     window.openProductModal = () => {
       document.getElementById('prod-id').value = '';
       document.getElementById('prod-name').value = '';
@@ -515,12 +515,12 @@
         inStock: true
       };
       
-      if(!payload.name || isNaN(payload.price)) return alert("Requires primary designation and valid value parameters.");
+      if(!payload.name || isNaN(payload.price)) return alert("Please enter a name and a valid price.");
       if(id) update(ref(db, `products/${id}`), payload).then(closeProductModal);
       else set(push(ref(db, 'products')), payload).then(closeProductModal);
     };
 
-    // Promotion Rules Deletion/Creation Matrix
+    // Coupons
     window.createCouponCode = () => {
       const code = document.getElementById('new-coupon-code').value.toUpperCase().trim();
       const val = parseFloat(document.getElementById('new-coupon-val').value);
@@ -531,10 +531,10 @@
       });
     };
 
-    // Customer Communications Channels
+    // Chats
     window.openAdminChat = (chatId, name) => {
       selectedChatId = chatId;
-      document.getElementById('active-chat-title').textContent = `Room: ${name}`;
+      document.getElementById('active-chat-title').textContent = `Chat: ${name}`;
       document.getElementById('admin-chat-box').classList.remove('hidden');
       
       onValue(ref(db, `chats/${chatId}/messages`), (snap) => {
