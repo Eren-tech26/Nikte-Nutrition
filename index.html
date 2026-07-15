@@ -194,8 +194,8 @@
           <h3 class="text-xs font-black text-black uppercase tracking-widest mb-2">Formula Profile Breakdown</h3>
           <p id="pd-desc" class="text-xs text-gray-600 leading-relaxed font-medium whitespace-pre-line bg-gray-50 p-4 rounded-2xl border border-gray-100/50"></p>
         </div>
-        
-        <!-- WRITE YOUR OWN REVIEW SECTION -->
+
+        <!-- WRITE YOUR REVIEW SECTION -->
         <div class="space-y-3 border-b border-gray-100 pb-6">
           <h3 class="text-xs font-black text-black uppercase tracking-widest">Write Your Review</h3>
           
@@ -227,7 +227,7 @@
           </div>
         </div>
 
-        <!-- Premium Amazon-Grade Customer Reviews Ledger Block -->
+        <!-- All Reviews Section -->
         <div class="space-y-3">
           <div class="flex justify-between items-center border-b border-gray-100 pb-2">
             <h3 class="text-xs font-black text-black uppercase tracking-widest">Customer Reviews</h3>
@@ -236,19 +236,6 @@
           
           <div id="pd-reviews-container" class="space-y-2.5">
             <p class="text-xs text-gray-400 font-bold text-center py-4">Loading reviews...</p>
-          </div>
-        </div>
-
-            <div class="bg-gray-50 border border-gray-100 p-4 rounded-2xl space-y-1.5">
-              <div class="flex justify-between items-center text-xs">
-                <span class="font-black text-black">Rohan M.</span>
-                <div class="flex items-center gap-1.5 text-black font-bold text-[10px]">
-                  <span class="text-[9px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-circle-check text-black mr-0.5"></i> Verified Buyer</span>
-                  <span>•</span> 4.8 <i class="fa-solid fa-star text-[8px]"></i>
-                </div>
-              </div>
-              <p class="text-xs text-gray-600 font-medium leading-relaxed">Purity mix profiles perform outstandingly. Solubility yields match the high benchmark criteria perfectly. Will definitely acquire remaining operational nutrition assets from here.</p>
-            </div>
           </div>
         </div>
       </div>
@@ -319,6 +306,8 @@
     let cart = [];
     let activeCoupon = null;
     let chatUser = JSON.parse(localStorage.getItem('chatUser')) || null;
+    let currentProductId = null;
+    let pdSelectedRating = 0;
 
     // ================= GLOBAL SCOPE SCOPING DECLARATIONS =================
     window.switchTab = (tabId) => {
@@ -386,9 +375,6 @@
     });
 
     // Amazon Interface Modal Presentation Mechanics
-    let currentProductId = null;
-    let pdSelectedRating = 0;
-
     window.openProductView = (id, name, price, image, inStock, desc, catLabel) => {
       currentProductId = id;
       pdSelectedRating = 0;
@@ -398,6 +384,7 @@
       document.getElementById('pd-price').textContent = `₹${price}`;
       document.getElementById('pd-desc').textContent = desc;
       document.getElementById('pd-cat-badge').textContent = catLabel.toUpperCase();
+      
       document.getElementById('pd-review-name').value = '';
       document.getElementById('pd-review-text').value = '';
       document.getElementById('pd-rating-text').textContent = 'Select rating';
@@ -407,6 +394,7 @@
         btn.classList.add('bg-gray-50', 'text-black', 'border-gray-100');
       });
       loadProductReviews(id);
+
       const addBtn = document.getElementById('pd-add-btn');
       const buyBtn = document.getElementById('pd-buy-btn');
 
@@ -579,53 +567,7 @@
       });
     }
 
-    // Synchronized Client Customer Chat Matrix Engine Tasks
-    window.toggleChatWindow = () => {
-      const win = document.getElementById('chat-window');
-      win.classList.toggle('hidden');
-      if(!win.classList.contains('hidden') && chatUser) startChatSession();
-    };
-    
-    window.startChat = () => {
-      const n = document.getElementById('chat-user-name').value.trim();
-      const p = document.getElementById('chat-user-phone').value.trim();
-      if(!n || !p) return;
-      chatUser = { name: n, phone: p };
-      localStorage.setItem('chatUser', JSON.stringify(chatUser));
-      startChatSession();
-    };
-    
-    function startChatSession() {
-      document.getElementById('chat-setup').classList.add('hidden');
-      document.getElementById('chat-messages').classList.remove('hidden');
-      document.getElementById('chat-input-area').classList.remove('hidden');
-      onValue(ref(db, `chats/chat_${chatUser.phone}/messages`), (snap) => {
-        const box = document.getElementById('chat-messages');
-        box.innerHTML = '';
-        if(!snap.val()) return;
-        Object.values(snap.val()).forEach(msg => {
-          const isMe = msg.sender === 'customer';
-          box.innerHTML += `
-            <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
-              <div class="max-w-[80%] p-3 rounded-2xl ${isMe ? 'bg-black text-white rounded-br-none' : 'bg-gray-200 text-black rounded-bl-none'}">
-                <p class="font-semibold leading-relaxed">${msg.text}</p>
-              </div>
-            </div>`;
-        });
-        box.scrollTop = box.scrollHeight;
-      });
-    }
-    
-    window.sendChatMessage = () => {
-      const inp = document.getElementById('chat-msg-input');
-      const text = inp.value.trim();
-      if(!text || !chatUser) return;
-      set(push(ref(db, `chats/chat_${chatUser.phone}/messages`)), { sender: 'customer', text: text, timestamp: Date.now() });
-      set(ref(db, `chats/chat_${chatUser.phone}/customerInfo`), chatUser);
-      inp.value = '';
-    };
-
-// ================= PRODUCT DETAIL REVIEW FUNCTIONS =================
+    // ================= PRODUCT REVIEW FUNCTIONS =================
     window.setPDRating = (rating) => {
       pdSelectedRating = rating;
       document.querySelectorAll('.pd-rating-btn').forEach(btn => {
@@ -709,9 +651,54 @@
       });
     }
 
+    // Synchronized Client Customer Chat Matrix Engine Tasks
+    window.toggleChatWindow = () => {
+      const win = document.getElementById('chat-window');
+      win.classList.toggle('hidden');
+      if(!win.classList.contains('hidden') && chatUser) startChatSession();
+    };
+    
+    window.startChat = () => {
+      const n = document.getElementById('chat-user-name').value.trim();
+      const p = document.getElementById('chat-user-phone').value.trim();
+      if(!n || !p) return;
+      chatUser = { name: n, phone: p };
+      localStorage.setItem('chatUser', JSON.stringify(chatUser));
+      startChatSession();
+    };
+    
+    function startChatSession() {
+      document.getElementById('chat-setup').classList.add('hidden');
+      document.getElementById('chat-messages').classList.remove('hidden');
+      document.getElementById('chat-input-area').classList.remove('hidden');
+      onValue(ref(db, `chats/chat_${chatUser.phone}/messages`), (snap) => {
+        const box = document.getElementById('chat-messages');
+        box.innerHTML = '';
+        if(!snap.val()) return;
+        Object.values(snap.val()).forEach(msg => {
+          const isMe = msg.sender === 'customer';
+          box.innerHTML += `
+            <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
+              <div class="max-w-[80%] p-3 rounded-2xl ${isMe ? 'bg-black text-white rounded-br-none' : 'bg-gray-200 text-black rounded-bl-none'}">
+                <p class="font-semibold leading-relaxed">${msg.text}</p>
+              </div>
+            </div>`;
+        });
+        box.scrollTop = box.scrollHeight;
+      });
+    }
+    
+    window.sendChatMessage = () => {
+      const inp = document.getElementById('chat-msg-input');
+      const text = inp.value.trim();
+      if(!text || !chatUser) return;
+      set(push(ref(db, `chats/chat_${chatUser.phone}/messages`)), { sender: 'customer', text: text, timestamp: Date.now() });
+      set(ref(db, `chats/chat_${chatUser.phone}/customerInfo`), chatUser);
+      inp.value = '';
+    };
+
     // Initial Processing Handlers
     renderHistory();
   </script>
 </body>
 </html>
-
