@@ -649,9 +649,7 @@ window.sendIssueReport = () => {
     document.getElementById('issue-upload-status').textContent = '';
     document.getElementById('issue-img-file').value = '';
   });
-};237?text=${encodeURIComponent('Support Issue: ' + desc)}`, '_blank');
-    };
-
+  
     function renderHistory() {
       const list = document.getElementById('history-list');
       const hist = JSON.parse(localStorage.getItem('orders_history')) || [];
