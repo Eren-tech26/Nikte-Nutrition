@@ -1,152 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Login & Dashboard - Nikate Nutrition</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-/* LOGIN STYLES */
-:root { --primary: #16a34a; --primary-dark: #15803d; --danger: #ef4444; --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; }
-body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; margin: 0; }
-#login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
-.login-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
-.logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 1.3rem; margin-bottom: 32px; justify-content: center; }
-.logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: white; }
-.form-group { margin-bottom: 18px; }
-.form-label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
-.form-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.95rem; }
-.btn-login { width: 100%; padding: 13px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s;}
-.btn-login:hover { background: var(--primary-dark); }
-.error-msg { background: #fee2e2; color: var(--danger); border-radius: 8px; padding: 12px; font-size: 0.9rem; margin-bottom: 16px; display: none; text-align: center; }
-
-/* DASHBOARD STYLES */
-#dashboard-screen { display: none; min-height: 100vh; background: #f5f5f7; }
-.admin-sidebar { width: 260px; background: white; border-right: 1px solid #e2e8f0; height: 100vh; position: fixed; left: 0; top: 0; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; z-index: 10; }
-.admin-main { margin-left: 260px; padding: 32px; }
-.nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #64748b; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 8px; font-size: 0.9rem;}
-.nav-item:hover { background: #f1f5f9; color: #0f172a; }
-.nav-active { background: #0f172a !important; color: white !important; }
-.hide-scrollbar::-webkit-scrollbar { display: none; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nikate Admin Console</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+      background-color: #ffffff; 
+      color: #000000; 
+      min-height: 100vh;
+    }
+    .apple-card {
+      background: #f5f5f7;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease;
+    }
+    .apple-input {
+      background: #f5f5f7;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+    .apple-input:focus {
+      background: #ffffff;
+      border-color: #000000;
+      box-shadow: 0 0 0 1px #000000;
+    }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* Login overlay matching premium theme */
+    #login-screen {
+      background-color: #ffffff;
+    }
+  </style>
 </head>
-<body>
+<body class="antialiased">
 
-  <!-- ================= SECURE LOGIN SCREEN ================= -->
-  <div id="login-screen">
-    <div class="login-card">
-      <div class="logo">
-        <div class="logo-icon">💊</div>
-        <span>Nikate Admin</span>
+  <!-- ================= SECURE AUTHENTICATION SCREEN ================= -->
+  <div id="login-screen" class="fixed inset-0 z-[999] flex items-center justify-center p-6">
+    <div class="w-full max-w-sm space-y-8">
+      <div class="text-center">
+        <div class="inline-flex w-14 h-14 bg-black text-white text-xl rounded-2xl items-center justify-center mb-4">💊</div>
+        <h2 class="text-3xl font-black tracking-tight text-black">Nikate Admin</h2>
+        <p class="text-xs text-gray-400 font-medium mt-1">Authorized Store Access Terminal</p>
       </div>
-      <h2 class="text-center text-2xl font-bold mb-1 text-slate-800">Welcome back</h2>
-      <p class="text-center text-gray-500 mb-6 text-sm font-medium">Sign in to manage your store</p>
 
-      <div class="error-msg" id="errorMsg"></div>
+      <div class="bg-red-50 text-red-600 text-xs font-bold p-3.5 rounded-xl text-center hidden" id="errorMsg"></div>
       
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input class="form-input focus:ring-2 focus:ring-green-500 outline-none" id="email" type="email" placeholder="admin@example.com">
+      <div class="space-y-4 pt-2">
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Corporate Email</label>
+          <input class="w-full px-4 py-3.5 apple-input outline-none text-sm font-medium text-black" id="email" type="email" placeholder="admin@example.com">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Security Password</label>
+          <input class="w-full px-4 py-3.5 apple-input outline-none text-sm font-medium text-black" id="password" type="password" placeholder="••••••••">
+        </div>
+        <button class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity mt-2" id="loginBtn">Authenticate</button>
       </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input focus:ring-2 focus:ring-green-500 outline-none" id="password" type="password" placeholder="••••••••">
-      </div>
-      <button class="btn-login mt-2" id="loginBtn">Sign In</button>
     </div>
   </div>
 
-  <!-- ================= DASHBOARD SCREEN ================= -->
-  <div id="dashboard-screen">
+  <!-- ================= MASTER DASHBOARD TERMINAL ================= -->
+  <div id="dashboard-screen" class="hidden min-height: 100vh;">
     
-    <!-- LEFT SIDEBAR -->
-    <aside class="admin-sidebar">
-      <div>
-        <div class="logo mb-8 justify-start">
-          <div class="logo-icon scale-75 origin-left">💊</div>
-          <span class="text-lg">Nikate Admin</span>
+    <!-- SYSTEM SIDEBAR NAV -->
+    <aside class="w-64 bg-white border-r border-gray-100 h-screen fixed left-0 top-0 p-6 flex flex-col justify-between z-40">
+      <div class="space-y-8">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-black text-white rounded-xl flex items-center justify-center text-sm">💊</div>
+          <span class="text-lg font-black tracking-tight text-black">Nikate Admin</span>
         </div>
-        <nav>
-          <div onclick="switchTab('orders')" class="nav-item nav-active" data-tab="orders"><i class="fa-solid fa-box w-5"></i> Pipeline</div>
-          <div onclick="switchTab('catalog')" class="nav-item" data-tab="catalog"><i class="fa-solid fa-list w-5"></i> Catalog</div>
-          <div onclick="switchTab('coupons')" class="nav-item" data-tab="coupons"><i class="fa-solid fa-tags w-5"></i> Coupons</div>
-          <div onclick="switchTab('chats')" class="nav-item relative" data-tab="chats">
-            <i class="fa-solid fa-comments w-5"></i> Inbox
-            <span id="chat-alert-dot" class="w-2 h-2 rounded-full bg-red-500 absolute top-3.5 right-4 hidden"></span>
-          </div>
+        
+        <nav class="space-y-1">
+          <button onclick="switchTab('orders')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wide transition-colors group text-black bg-gray-100" data-tab="orders">
+            <i class="fa-solid fa-box text-sm"></i> Operational Pipeline
+          </button>
+          <button onclick="switchTab('catalog')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wide transition-colors group text-gray-400 hover:text-black hover:bg-gray-50" data-tab="catalog">
+            <i class="fa-solid fa-list text-sm"></i> Product Asset Catalog
+          </button>
+          <button onclick="switchTab('coupons')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wide transition-colors group text-gray-400 hover:text-black hover:bg-gray-50" data-tab="coupons">
+            <i class="fa-solid fa-tags text-sm"></i> Promo Engine
+          </button>
+          <button onclick="switchTab('chats')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs uppercase tracking-wide transition-colors group text-gray-400 hover:text-black hover:bg-gray-50 relative" data-tab="chats">
+            <i class="fa-solid fa-comments text-sm"></i> Client Inbox
+            <span id="chat-alert-dot" class="w-2 h-2 rounded-full bg-black absolute top-1/2 -translate-y-1/2 right-4 hidden animate-pulse"></span>
+          </button>
         </nav>
       </div>
       
-      <div class="border-t border-gray-100 pt-4 space-y-3">
-        <button id="shop-toggle-btn" onclick="toggleStoreStatus()" class="w-full py-3 bg-black text-white text-xs font-bold rounded-lg uppercase tracking-wider">Checking...</button>
-        <button id="logoutBtn" class="text-red-500 font-bold text-sm flex items-center gap-2 hover:bg-red-50 p-3 rounded-lg w-full transition-colors"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</button>
+      <div class="border-t border-gray-100 pt-4 space-y-2">
+        <button id="shop-toggle-btn" onclick="toggleStoreStatus()" class="w-full py-3.5 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider transition-opacity hover:opacity-90">Checking Systems...</button>
+        <button id="logoutBtn" class="w-full text-red-500 font-bold text-xs uppercase tracking-wide flex items-center justify-center gap-2 p-3 rounded-xl hover:bg-red-50 transition-colors"><i class="fa-solid fa-right-from-bracket text-xs"></i> Sign Out</button>
       </div>
     </aside>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="admin-main">
-      <header class="flex justify-between items-center mb-8 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+    <!-- CONTENT FRAMEWORK -->
+    <main class="ml-64 p-8 max-w-5xl">
+      
+      <!-- EXECUTIVE CONSOLE HEADER -->
+      <header class="flex justify-between items-end border-b border-gray-100 pb-6 mb-8">
         <div>
-          <h1 id="page-title" class="text-2xl font-bold text-slate-800">Operational Pipeline</h1>
-          <p class="text-xs text-gray-500 font-medium mt-1">Real-time management dashboard</p>
+          <p class="text-[10px] text-gray-400 font-black uppercase tracking-widest">Global Overview</p>
+          <h1 id="page-title" class="text-3xl font-black tracking-tight text-black mt-1">Operational Pipeline</h1>
         </div>
-        <div class="flex gap-6 text-right">
-          <div><p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Orders</p><p id="stat-orders" class="font-bold text-lg">0</p></div>
-          <div class="border-l border-gray-200 pl-6"><p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Assets</p><p id="stat-products" class="font-bold text-lg">0</p></div>
+        <div class="flex gap-8 text-right">
+          <div>
+            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Live Orders</p>
+            <p id="stat-orders" class="font-black text-2xl text-black mt-0.5">0</p>
+          </div>
+          <div class="border-l border-gray-100 pl-8">
+            <p class="text-[9px] font-bold text-gray-400 uppercase tracking-wider">Total Products</p>
+            <p id="stat-products" class="font-black text-2xl text-black mt-0.5">0</p>
+          </div>
         </div>
       </header>
 
-      <!-- TAB 1: ORDERS -->
-      <section id="view-orders" class="dash-view">
-        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-          <h3 class="font-bold text-gray-500 mb-4 uppercase text-xs tracking-wider"><i class="fa-solid fa-bolt mr-2"></i>Active Orders</h3>
-          <div id="orders-list" class="space-y-4"></div>
-        </div>
+      <!-- TAB 1: OPERATIONAL PIPELINE -->
+      <section id="view-orders" class="dash-view space-y-4">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2"><i class="fa-solid fa-bolt mr-1.5 text-black"></i>Active Customer Request Queues</h3>
+        <div id="orders-list" class="space-y-4"></div>
       </section>
 
-      <!-- TAB 2: CATALOG -->
-      <section id="view-catalog" class="dash-view hidden">
-        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-          <div class="flex justify-between items-center mb-6">
-            <h3 class="font-bold text-gray-500 uppercase text-xs tracking-wider"><i class="fa-solid fa-boxes-stacked mr-2"></i>Product Inventory</h3>
-            <button onclick="openProductModal()" class="px-4 py-2 bg-green-600 text-white text-xs font-bold rounded-lg uppercase tracking-wider hover:bg-green-700 transition-colors"><i class="fa-solid fa-plus mr-1"></i> Add Product</button>
+      <!-- TAB 2: CATALOG INVENTORY -->
+      <section id="view-catalog" class="dash-view hidden space-y-4">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-boxes-stacked mr-1.5 text-black"></i>Product Assets Inventory</h3>
+          <button onclick="openProductModal()" class="px-4 py-2 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider hover:opacity-90 transition-opacity"><i class="fa-solid fa-plus mr-1"></i> Add Asset</button>
+        </div>
+        <div id="products-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </section>
+
+      <!-- TAB 3: PROMO ENGINE -->
+      <section id="view-coupons" class="dash-view hidden grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-tag mr-1.5 text-black"></i>Create Engine Rule</h3>
+          <div class="space-y-3">
+            <input type="text" id="new-coupon-code" placeholder="PROMO CODE (E.G. FIT20)" class="w-full px-4 py-3.5 apple-input text-sm outline-none font-bold uppercase tracking-wide text-black">
+            <input type="number" id="new-coupon-val" placeholder="Discount Percentage (%)" class="w-full px-4 py-3.5 apple-input text-sm outline-none font-bold text-black">
+            <button onclick="createCouponCode()" class="w-full py-3.5 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-opacity hover:opacity-90">Activate Promo</button>
           </div>
-          <div id="products-list" class="grid grid-cols-1 lg:grid-cols-2 gap-4"></div>
         </div>
-      </section>
-
-      <!-- TAB 3: COUPONS -->
-      <section id="view-coupons" class="dash-view hidden grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-fit">
-          <h3 class="font-bold text-gray-500 uppercase text-xs tracking-wider mb-4"><i class="fa-solid fa-tag mr-2"></i>New Promo Code</h3>
-          <input type="text" id="new-coupon-code" placeholder="CODE (e.g. FIT20)" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none mb-3 font-bold uppercase">
-          <input type="number" id="new-coupon-val" placeholder="Discount %" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-sm outline-none mb-4 font-bold">
-          <button onclick="createCouponCode()" class="w-full py-3 bg-black text-white rounded-lg text-xs font-bold uppercase tracking-wider">Activate</button>
-        </div>
-        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm md:col-span-2">
-          <h3 class="font-bold text-gray-500 uppercase text-xs tracking-wider mb-4">Live Coupons</h3>
+        <div class="md:col-span-2 space-y-4">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Promo Configurations</h3>
           <div id="coupons-list" class="space-y-2"></div>
         </div>
       </section>
 
-      <!-- TAB 4: CHATS -->
-      <section id="view-chats" class="dash-view hidden grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm h-[500px] overflow-y-auto hide-scrollbar">
-          <h3 class="font-bold text-gray-500 uppercase text-xs tracking-wider mb-4"><i class="fa-solid fa-users mr-2"></i>Active Users</h3>
-          <div id="chats-queue" class="space-y-2"></div>
+      <!-- TAB 4: CLIENT INBOX -->
+      <section id="view-chats" class="dash-view hidden grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="space-y-4">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-users mr-1.5 text-black"></i>Active Users Rooms</h3>
+          <div id="chats-queue" class="space-y-2 h-[480px] overflow-y-auto hide-scrollbar"></div>
         </div>
         <div class="md:col-span-2">
-          <div id="admin-chat-box" class="hidden bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col h-[500px]">
-            <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
-              <div><h4 id="active-chat-title" class="font-bold text-sm">Thread</h4><p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Live Support</p></div>
-              <button onclick="closeAdminChat()" class="opacity-80 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+          <div id="admin-chat-box" class="hidden apple-card border border-gray-100 overflow-hidden flex flex-col h-[520px]">
+            <div class="bg-black text-white p-4 flex justify-between items-center">
+              <div>
+                <h4 id="active-chat-title" class="font-bold text-sm">Active Thread</h4>
+                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Secure Customer Support Link</p>
+              </div>
+              <button onclick="closeAdminChat()" class="text-white/70 hover:text-white"><i class="fa-solid fa-xmark text-sm"></i></button>
             </div>
-            <div id="admin-messages-box" class="p-4 flex-1 overflow-y-auto space-y-3 text-sm bg-gray-50 hide-scrollbar"></div>
-            <div class="p-3 bg-white border-t border-gray-200 flex gap-2">
-              <input type="text" id="admin-chat-input" placeholder="Type response..." class="flex-1 px-4 py-2 bg-gray-100 rounded-lg text-sm outline-none font-medium">
-              <button onclick="sendAdminReply()" class="w-10 h-10 bg-green-600 text-white rounded-lg flex items-center justify-center hover:bg-green-700 transition-colors"><i class="fa-solid fa-paper-plane text-sm"></i></button>
+            <div id="admin-messages-box" class="p-4 flex-1 overflow-y-auto space-y-3 text-xs bg-white hide-scrollbar"></div>
+            <div class="p-3 bg-gray-50 border-t border-gray-100 flex gap-2 items-center">
+              <input type="text" id="admin-chat-input" placeholder="Type administrative transmission response..." class="flex-1 px-4 py-3 bg-white border border-gray-100 rounded-xl text-xs outline-none font-semibold text-black">
+              <button onclick="sendAdminReply()" class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity"><i class="fa-solid fa-paper-plane text-xs"></i></button>
             </div>
           </div>
         </div>
@@ -154,28 +179,28 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
     </main>
   </div>
 
-  <!-- ================= ADD/EDIT PRODUCT MODAL ================= -->
-  <div id="prod-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-    <div class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-md space-y-4">
+  <!-- ================= ASSET MANIFEST INTERFACE CONSOLE MODAL ================= -->
+  <div id="prod-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-md z-[200] flex items-center justify-center p-4">
+    <div class="bg-white p-6 rounded-3xl w-full max-w-md space-y-4 border border-gray-100">
       <div class="flex justify-between items-center border-b border-gray-100 pb-3">
-        <h3 id="modal-title" class="font-bold text-sm uppercase tracking-wider text-slate-800">Asset Configuration</h3>
+        <h3 id="modal-title" class="text-xs font-bold uppercase tracking-widest text-gray-400">Database Entry Setup</h3>
         <button onclick="closeProductModal()" class="text-gray-400 hover:text-black"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <input type="hidden" id="prod-id" value="">
       
       <div class="space-y-3">
         <div>
-          <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Product Name</label>
-          <input type="text" id="prod-name" class="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-semibold focus:ring-2 focus:ring-green-500 outline-none">
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Product Designation Name</label>
+          <input type="text" id="prod-name" class="w-full px-4 py-3 apple-input text-xs font-semibold text-black outline-none">
         </div>
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Price (INR)</label>
-            <input type="number" id="prod-price" class="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-bold focus:ring-2 focus:ring-green-500 outline-none">
+            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Price Asset Value (INR)</label>
+            <input type="number" id="prod-price" class="w-full px-4 py-3 apple-input text-xs font-bold text-black outline-none">
           </div>
           <div>
-            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Category</label>
-            <select id="prod-cat" class="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-bold focus:ring-2 focus:ring-green-500 outline-none">
+            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Operational Category</label>
+            <select id="prod-cat" class="w-full px-4 py-3 apple-input text-xs font-bold text-black outline-none appearance-none">
               <option value="cat_01">Whey Protein</option>
               <option value="cat_02">Creatine & Pre</option>
               <option value="cat_03">Vitamins</option>
@@ -184,21 +209,20 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
           </div>
         </div>
         <div>
-          <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Direct Image URL</label>
-          <input type="text" id="prod-img" class="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-2 focus:ring-green-500 outline-none">
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Direct Cloud Image URI Link</label>
+          <input type="text" id="prod-img" class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none">
         </div>
-        
-        <!-- THE NEW DESCRIPTION TEXTAREA -->
         <div>
-          <label class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Full Customer Description</label>
-          <textarea id="prod-desc" rows="4" placeholder="Detail the supplement benefits, authenticity markers, and usage instructions here..." class="w-full mt-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm font-medium focus:ring-2 focus:ring-green-500 outline-none hide-scrollbar"></textarea>
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Full Client Description Specifications</label>
+          <textarea id="prod-desc" rows="4" placeholder="Detail supplement formula parameters, verified purity components, nutritional yields, and explicit cycle profiles..." class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none resize-none hide-scrollbar"></textarea>
         </div>
       </div>
 
-      <button onclick="saveProduct()" class="w-full py-3.5 bg-black text-white rounded-lg text-xs font-bold uppercase tracking-wider mt-2 hover:bg-slate-800 transition-colors">Save To Database</button>
+      <button onclick="saveProduct()" class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider mt-2 hover:opacity-90 transition-opacity">Commit Database Sync</button>
     </div>
   </div>
 
+  <!-- ================= CORE FRAMEWORK EXECUTION MODULE ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -221,7 +245,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
     let storeOpen = true;
     let selectedChatId = null;
 
-    // ================= AUTHENTICATION =================
+    // ================= SECURITY VERIFICATION PIPELINE =================
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('login-screen').style.display = 'none';
@@ -239,57 +263,73 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
       const errorMsg = document.getElementById('errorMsg');
       const btn = document.getElementById('loginBtn');
       
-      if(!email || !password) { errorMsg.textContent = 'Fields required'; errorMsg.classList.add('show'); return; }
-      btn.textContent = "Authenticating..."; btn.disabled = true;
+      if(!email || !password) { 
+        errorMsg.textContent = 'Required validation parameters missing.'; 
+        errorMsg.classList.remove('hidden'); 
+        return; 
+      }
+      btn.textContent = "Processing Authorization..."; btn.disabled = true;
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        btn.textContent = "Sign In"; btn.disabled = false;
+        btn.textContent = "Authenticate"; btn.disabled = false;
+        errorMsg.classList.add('hidden');
       } catch(error) {
         errorMsg.textContent = 'Invalid credentials. Access Denied.';
-        errorMsg.classList.add('show');
-        btn.textContent = "Sign In"; btn.disabled = false;
+        errorMsg.classList.remove('hidden');
+        btn.textContent = "Authenticate"; btn.disabled = false;
       }
     });
 
     document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
-    // ================= UI NAVIGATION =================
+    // ================= INTERFACE SWITCH SYSTEM =================
     window.switchTab = (tabId) => {
       document.querySelectorAll('.dash-view').forEach(v => v.classList.add('hidden'));
       document.getElementById(`view-${tabId}`).classList.remove('hidden');
       
-      document.querySelectorAll('.nav-item').forEach(btn => {
-        if(btn.dataset.tab === tabId) btn.classList.add('nav-active');
-        else btn.classList.remove('nav-active');
+      document.querySelectorAll('nav button').forEach(btn => {
+        if(btn.dataset.tab === tabId) {
+          btn.classList.add('text-black', 'bg-gray-100');
+          btn.classList.remove('text-gray-400', 'hover:text-black', 'hover:bg-gray-50');
+        } else {
+          btn.classList.remove('text-black', 'bg-gray-100');
+          btn.classList.add('text-gray-400', 'hover:text-black', 'hover:bg-gray-50');
+        }
       });
-      const titles = { orders: 'Operational Pipeline', catalog: 'Product Inventory', coupons: 'Promo Engine', chats: 'Client Inbox' };
+      const titles = { 
+        orders: 'Operational Pipeline', 
+        catalog: 'Product Asset Catalog', 
+        coupons: 'Promo Engine Room', 
+        chats: 'Client Communications Inbox' 
+      };
       document.getElementById('page-title').textContent = titles[tabId];
     };
 
-    // Store Status Toggle
     window.toggleStoreStatus = () => update(ref(db, 'shopStatus'), { isOpen: !storeOpen });
 
-    // ================= CORE DATA LOADERS =================
+    // ================= LIVE DATABASE LISTENERS =================
     function loadDashboardData() {
-      // 1. Store Status
+      // 1. Operational Engine Status
       onValue(ref(db, 'shopStatus'), (snap) => {
         const data = snap.val();
         if(data) {
           storeOpen = data.isOpen;
           const btn = document.getElementById('shop-toggle-btn');
-          btn.textContent = storeOpen ? 'STORE: LIVE' : 'STORE: PAUSED';
-          btn.className = storeOpen ? "w-full py-3 bg-green-50 text-green-600 border border-green-200 rounded-lg text-xs font-bold uppercase tracking-wider" : "w-full py-3 bg-red-50 text-red-600 border border-red-200 rounded-lg text-xs font-bold uppercase tracking-wider";
+          btn.textContent = storeOpen ? 'STORE FRONT: ACTIVE' : 'STORE FRONT: PAUSED';
+          btn.className = storeOpen 
+            ? "w-full py-3.5 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider text-center"
+            : "w-full py-3.5 bg-red-50 text-red-600 border border-red-100 text-[10px] font-bold rounded-xl uppercase tracking-wider text-center";
         }
       });
 
-      // 2. Orders Pipeline
+      // 2. Order System Engine 
       onValue(ref(db, 'orders'), (snap) => {
         const data = snap.val();
         const list = document.getElementById('orders-list');
         list.innerHTML = '';
         if(!data) { 
           document.getElementById('stat-orders').textContent = '0';
-          list.innerHTML = `<p class="text-sm text-gray-500 font-medium py-8 text-center">Pipeline is empty.</p>`; 
+          list.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50">Operational active pipeline empty.</p>`; 
           return; 
         }
         
@@ -298,30 +338,35 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
         
         arr.reverse().forEach(([id, order]) => {
           let items = order.items.map(i => `${i.name} (x${i.qty})`).join(', ');
-          let color = "text-yellow-600 bg-yellow-50 border-yellow-200";
-          if(order.status === 'shipping' || order.status === 'preparing') color = "text-blue-600 bg-blue-50 border-blue-200";
-          if(order.status === 'shipped') color = "text-green-600 bg-green-50 border-green-200";
-          if(order.status === 'declined') color = "text-red-600 bg-red-50 border-red-200";
+          let color = "text-yellow-600 bg-yellow-50";
+          if(order.status === 'shipping' || order.status === 'preparing') color = "text-blue-600 bg-blue-50";
+          if(order.status === 'shipped') color = "text-black bg-gray-100";
+          if(order.status === 'declined') color = "text-red-600 bg-red-50";
 
           list.innerHTML += `
-            <div class="p-5 border border-gray-200 rounded-xl bg-gray-50/50 hover:border-gray-300 transition-colors">
+            <div class="p-6 border border-gray-100 rounded-2xl bg-white hover:border-gray-200 transition-colors">
               <div class="flex justify-between items-start">
-                <div><h4 class="font-bold text-sm text-slate-800">${order.customerName} - ${order.customerPhone}</h4><p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">UID: #${id.slice(-6).toUpperCase()}</p></div>
-                <span class="px-2 py-1 rounded border text-[9px] font-bold uppercase tracking-wider ${color}">${order.status}</span>
+                <div>
+                  <h4 class="font-black text-sm text-black">${order.customerName} — ${order.customerPhone}</h4>
+                  <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1">UID: #${id.slice(-6).toUpperCase()}</p>
+                </div>
+                <span class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider ${color}">${order.status}</span>
               </div>
-              <p class="text-xs text-gray-600 mt-3 font-medium"><strong>Cart:</strong> ${items}</p>
-              <p class="text-xs text-gray-600 mt-1 font-medium"><strong>Location:</strong> ${order.address}</p>
-              <div class="mt-4 pt-4 border-t border-gray-200 flex justify-between items-center">
-                <span class="font-black text-sm">₹${order.totalAmount}</span>
+              <div class="mt-4 space-y-1.5 border-t border-b border-gray-50 py-3 my-3">
+                <p class="text-xs text-gray-600 font-medium"><strong>Manifest:</strong> ${items}</p>
+                <p class="text-xs text-gray-600 font-medium"><strong>Logistics Target:</strong> ${order.address}</p>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="font-black text-base text-black">₹${order.totalAmount}</span>
                 <div class="flex gap-2">
                   ${order.status === 'pending' ? `
-                    <button onclick="updateStatus('${id}', 'preparing')" class="px-3 py-1.5 bg-slate-800 text-white text-[10px] font-bold rounded uppercase">Accept</button>
-                    <button onclick="updateStatus('${id}', 'declined')" class="px-3 py-1.5 bg-gray-200 text-black text-[10px] font-bold rounded uppercase">Decline</button>
+                    <button onclick="updateStatus('${id}', 'preparing')" class="px-3.5 py-2 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Accept</button>
+                    <button onclick="updateStatus('${id}', 'declined')" class="px-3.5 py-2 bg-gray-100 text-black text-[9px] font-bold rounded-lg uppercase tracking-wider">Decline</button>
                   ` : order.status === 'preparing' ? `
-                    <button onclick="updateStatus('${id}', 'shipping')" class="px-3 py-1.5 bg-blue-600 text-white text-[10px] font-bold rounded uppercase">Ship Package</button>
+                    <button onclick="updateStatus('${id}', 'shipping')" class="px-3.5 py-2 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Deploy Shipment</button>
                   ` : order.status === 'shipping' ? `
-                    <button onclick="updateStatus('${id}', 'shipped')" class="px-3 py-1.5 bg-green-600 text-white text-[10px] font-bold rounded uppercase">Complete</button>
-                  ` : `<span class="text-[10px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-check text-green-500 mr-1"></i>Handled</span>`}
+                    <button onclick="updateStatus('${id}', 'shipped')" class="px-3.5 py-2 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Mark Complete</button>
+                  ` : `<span class="text-[9px] text-gray-400 font-black uppercase tracking-wide"><i class="fa-solid fa-check text-black mr-1"></i>Handled Archive</span>`}
                 </div>
               </div>
             </div>
@@ -329,7 +374,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
         });
       });
 
-      // 3. Product Catalog
+      // 3. Products Manifest Pipeline
       onValue(ref(db, 'products'), (snap) => {
         const data = snap.val();
         const list = document.getElementById('products-list');
@@ -342,41 +387,44 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
           const safeDesc = (prod.description || '').replace(/'/g, "\\'").replace(/\n/g, "\\n");
 
           list.innerHTML += `
-            <div class="p-4 border border-gray-200 rounded-xl flex justify-between items-center bg-white hover:shadow-sm transition-shadow">
+            <div class="p-4 apple-card flex justify-between items-center">
               <div class="flex items-center gap-4">
-                <img src="${prod.image}" class="w-12 h-12 object-contain rounded-lg border border-gray-100 p-1">
+                <img src="${prod.image}" class="w-14 h-14 object-contain rounded-xl bg-white border border-gray-100 p-1">
                 <div>
-                  <h4 class="font-bold text-xs text-slate-800">${prod.name}</h4>
-                  <p class="text-[10px] text-gray-500 font-bold mt-1">₹${prod.price} <span class="mx-1">•</span> ${prod.categoryId || 'No Cat'}</p>
+                  <h4 class="font-black text-xs text-black leading-tight">${prod.name}</h4>
+                  <p class="text-[9px] text-gray-400 font-black mt-1">VAL: ₹${prod.price} <span class="mx-1 text-gray-300">•</span> CAT: ${prod.categoryId || 'NONE'}</p>
                 </div>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="toggleStock('${id}', ${!prod.inStock})" class="px-2 py-1 rounded text-[9px] font-bold uppercase tracking-wider ${prod.inStock ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}">${prod.inStock ? 'In Stock' : 'Out Stock'}</button>
-                <button onclick="editProduct('${id}', '${safeName}', ${prod.price}, '${prod.image}', '${prod.categoryId || ''}', '${safeDesc}')" class="w-7 h-7 bg-gray-50 border border-gray-200 rounded flex justify-center items-center text-gray-600 hover:bg-gray-100"><i class="fa-solid fa-pen text-[10px]"></i></button>
-                <button onclick="deleteProduct('${id}')" class="w-7 h-7 bg-red-50 rounded flex justify-center items-center text-red-500 hover:bg-red-100"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                <button onclick="toggleStock('${id}', ${!prod.inStock})" class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wide ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'}">${prod.inStock ? 'Active' : 'Stock Void'}</button>
+                <button onclick="editProduct('${id}', '${safeName}', ${prod.price}, '${prod.image}', '${prod.categoryId || ''}', '${safeDesc}')" class="w-8 h-8 bg-white border border-gray-100 text-black rounded-lg flex justify-center items-center hover:bg-gray-50"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                <button onclick="deleteProduct('${id}')" class="w-8 h-8 bg-white border border-gray-100 text-red-500 rounded-lg flex justify-center items-center hover:bg-red-50"><i class="fa-solid fa-trash text-[10px]"></i></button>
               </div>
             </div>
           `;
         });
       });
 
-      // 4. Coupons
+      // 4. Coupon Matrix Rules
       onValue(ref(db, 'coupons'), (snap) => {
         const data = snap.val();
         const box = document.getElementById('coupons-list');
         box.innerHTML = '';
-        if(!data) return;
+        if(!data) {
+          box.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card">No promo metrics deployed.</p>`;
+          return;
+        }
         Object.entries(data).forEach(([code, c]) => {
           box.innerHTML += `
-            <div class="flex justify-between items-center bg-gray-50 border border-gray-200 p-3 rounded-lg text-xs font-bold">
-              <span class="text-slate-800 uppercase tracking-wider">${code} <span class="text-green-600 ml-2">(${c.value}% OFF)</span></span>
-              <button onclick="remove(ref(db, 'coupons/${code}'))" class="text-red-500 hover:text-red-600"><i class="fa-solid fa-trash"></i></button>
+            <div class="flex justify-between items-center bg-gray-50 border border-gray-100 p-4 rounded-xl text-xs font-bold">
+              <span class="text-black uppercase tracking-wide">${code} <span class="text-gray-400 font-semibold ml-2">(${c.value}% OFF APPLIED)</span></span>
+              <button onclick="remove(ref(db, 'coupons/${code}'))" class="text-red-500 hover:text-red-600 p-1"><i class="fa-solid fa-trash-can"></i></button>
             </div>
           `;
         });
       });
 
-      // 5. Chats
+      // 5. Communications Sync Matrix
       onValue(ref(db, 'chats'), (snap) => {
         const data = snap.val();
         const list = document.getElementById('chats-queue');
@@ -390,8 +438,11 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
           const info = val.customerInfo;
           if(!info) return;
           list.innerHTML += `
-            <button onclick="openAdminChat('${key}', '${info.name}')" class="w-full text-left p-4 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-xl flex items-center justify-between transition-colors">
-              <div><p class="font-bold text-sm text-slate-800">${info.name}</p><p class="text-[10px] text-gray-500 font-bold tracking-wider mt-0.5">${info.phone}</p></div>
+            <button onclick="openAdminChat('${key}', '${info.name}')" class="w-full text-left p-4 bg-gray-50 border border-gray-100 hover:bg-gray-100 rounded-xl flex items-center justify-between transition-colors">
+              <div>
+                <p class="font-black text-xs text-black">${info.name}</p>
+                <p class="text-[9px] text-gray-400 font-bold tracking-wide mt-0.5">${info.phone}</p>
+              </div>
               <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
             </button>
           `;
@@ -399,12 +450,12 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
       });
     }
 
-    // ================= OPERATIONS =================
+    // ================= DATA LOGIC HOOK OPERATIONS =================
     window.updateStatus = (id, status) => update(ref(db, `orders/${id}`), { status });
     window.toggleStock = (id, val) => update(ref(db, `products/${id}`), { inStock: val });
-    window.deleteProduct = (id) => { if(confirm('Delete product asset permanently?')) remove(ref(db, `products/${id}`)); };
+    window.deleteProduct = (id) => { if(confirm('Delete product data node permanently?')) remove(ref(db, `products/${id}`)); };
 
-    // Product Modal
+    // Manifest Asset Control System Windows
     window.openProductModal = () => {
       document.getElementById('prod-id').value = '';
       document.getElementById('prod-name').value = '';
@@ -420,7 +471,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
       document.getElementById('prod-price').value = price;
       document.getElementById('prod-img').value = image;
       document.getElementById('prod-cat').value = cat;
-      document.getElementById('prod-desc').value = desc; // Injects description here
+      document.getElementById('prod-desc').value = desc; 
       document.getElementById('prod-modal').classList.remove('hidden');
     };
 
@@ -437,12 +488,12 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
         inStock: true
       };
       
-      if(!payload.name || isNaN(payload.price)) return alert("Requires Name and Price");
+      if(!payload.name || isNaN(payload.price)) return alert("Requires primary name designation and valid asset value validation parameters.");
       if(id) update(ref(db, `products/${id}`), payload).then(closeProductModal);
       else set(push(ref(db, 'products')), payload).then(closeProductModal);
     };
 
-    // Coupons
+    // Promotion Matrix Generation Engine
     window.createCouponCode = () => {
       const code = document.getElementById('new-coupon-code').value.toUpperCase().trim();
       const val = parseFloat(document.getElementById('new-coupon-val').value);
@@ -453,10 +504,10 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
       });
     };
 
-    // Chat
+    // Client Synchronized Chat Channels
     window.openAdminChat = (chatId, name) => {
       selectedChatId = chatId;
-      document.getElementById('active-chat-title').textContent = `Chat: ${name}`;
+      document.getElementById('active-chat-title').textContent = `Room Terminal: ${name}`;
       document.getElementById('admin-chat-box').classList.remove('hidden');
       
       onValue(ref(db, `chats/${chatId}/messages`), (snap) => {
@@ -467,8 +518,8 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
           const isCustomer = msg.sender === 'customer';
           box.innerHTML += `
             <div class="flex ${isCustomer ? 'justify-start' : 'justify-end'}">
-              <div class="max-w-[75%] p-3 rounded-xl ${isCustomer ? 'bg-white border border-gray-200 text-slate-800' : 'bg-slate-900 text-white'}">
-                <p class="font-medium">${msg.text}</p>
+              <div class="max-w-[80%] p-3 rounded-2xl ${isCustomer ? 'bg-gray-100 text-black rounded-bl-none' : 'bg-black text-white rounded-br-none'}">
+                <p class="font-medium leading-relaxed">${msg.text}</p>
               </div>
             </div>
           `;
@@ -478,6 +529,7 @@ body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--tex
     };
     
     window.closeAdminChat = () => { document.getElementById('admin-chat-box').classList.add('hidden'); selectedChatId = null; };
+    
     window.sendAdminReply = () => {
       const inp = document.getElementById('admin-chat-input');
       const text = inp.value.trim();
