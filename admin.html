@@ -43,6 +43,7 @@
 </head>
 <body class="pb-32 antialiased selection:bg-black selection:text-white">
 
+  <!-- ================= SECURE AUTHENTICATION SCREEN ================= -->
   <div id="login-screen" class="fixed inset-0 z-[999] flex items-center justify-center p-6 bg-white">
     <div class="w-full max-w-sm space-y-8">
       <div class="text-center">
@@ -67,8 +68,10 @@
     </div>
   </div>
 
+  <!-- ================= MASTER DASHBOARD TERMINAL (MOBILE-FIRST) ================= -->
   <div id="dashboard-screen" class="hidden">
     
+    <!-- EXECUTIVE TOP NAV BAR -->
     <header class="max-w-md mx-auto px-6 pt-6 flex justify-between items-center border-b border-gray-100 pb-5">
       <div>
         <h1 class="text-2xl font-black tracking-tight text-black">Console</h1>
@@ -79,8 +82,10 @@
       </div>
     </header>
 
+    <!-- CONTENT WRAPPER -->
     <main class="max-w-md mx-auto px-6 mt-6">
       
+      <!-- TAB 1: OPERATIONAL PIPELINE (ORDERS) -->
       <section id="view-orders" class="dash-view space-y-4">
         <div class="flex justify-between items-center">
           <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-bolt mr-1.5 text-black"></i>Customer Queues</h3>
@@ -89,6 +94,7 @@
         <div id="orders-list" class="space-y-4"></div>
       </section>
 
+      <!-- TAB 2: PRODUCT ASSET CATALOG -->
       <section id="view-catalog" class="dash-view hidden space-y-4">
         <div class="flex justify-between items-center mb-2">
           <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-boxes-stacked mr-1.5 text-black"></i>Product Assets</h3>
@@ -97,6 +103,7 @@
         <div id="products-list" class="space-y-3"></div>
       </section>
 
+      <!-- TAB 3: PROMO ENGINE (COUPONS) -->
       <section id="view-coupons" class="dash-view hidden space-y-6">
         <div class="space-y-4">
           <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-tag mr-1.5 text-black"></i>Create Promo Rule</h3>
@@ -112,12 +119,14 @@
         </div>
       </section>
 
+      <!-- TAB 4: CLIENT INBOX (CHATS) -->
       <section id="view-chats" class="dash-view hidden space-y-4">
         <div class="space-y-4">
           <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-users mr-1.5 text-black"></i>Active User Rooms</h3>
           <div id="chats-queue" class="space-y-2 max-h-[360px] overflow-y-auto hide-scrollbar"></div>
         </div>
 
+        <!-- Pop-up overlay for Active Chat Window -->
         <div id="admin-chat-box" class="hidden fixed inset-0 bg-white z-[150] flex flex-col">
           <div class="bg-black text-white p-4 flex justify-between items-center">
             <div>
@@ -134,6 +143,7 @@
         </div>
       </section>
 
+      <!-- TAB 5: SYSTEM TERMINAL -->
       <section id="view-system" class="dash-view hidden space-y-6">
         <div>
           <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3"><i class="fa-solid fa-gears mr-1.5 text-black"></i>System Parameters</h3>
@@ -153,6 +163,7 @@
 
     </main>
 
+    <!-- ================= FLOATING NAV PILL DRAWER ================= -->
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm pill-nav rounded-2xl px-1 py-2.5 shadow-xl z-50 flex justify-between items-center">
       <button onclick="switchTab('orders')" class="nav-btn text-black flex flex-col items-center flex-1 py-1" data-tab="orders">
         <i class="fa-solid fa-box text-base"></i>
@@ -179,6 +190,7 @@
 
   </div>
 
+  <!-- ================= ASSET EDIT/ADD POPUP INTERFACE MODAL ================= -->
   <div id="prod-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-md z-[200] flex items-center justify-center p-4">
     <div class="bg-white p-6 rounded-3xl w-full max-w-sm space-y-4 border border-gray-100">
       <div class="flex justify-between items-center border-b border-gray-100 pb-3">
@@ -221,6 +233,7 @@
     </div>
   </div>
 
+  <!-- ================= CORE FRAMEWORK EXECUTION MODULE ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
@@ -328,7 +341,7 @@
         }
       });
 
-      // 2. Order System Engine 
+      // 2. Order System Engine
       onValue(ref(db, 'orders'), (snap) => {
         const data = snap.val();
         const list = document.getElementById('orders-list');
@@ -344,37 +357,45 @@
         
         arr.reverse().forEach(([id, order]) => {
           let items = order.items.map(i => `${i.name} (x${i.qty})`).join(', ');
-          let color = "text-yellow-600 bg-yellow-50";
-          if(order.status === 'shipping' || order.status === 'preparing') color = "text-blue-600 bg-blue-50";
-          if(order.status === 'shipped') color = "text-black bg-gray-100";
-          if(order.status === 'declined') color = "text-red-600 bg-red-50";
+          
+          // Badge colors based on status
+          let badgeColor = "text-yellow-600 bg-yellow-50";
+          if(order.status === 'preparing') badgeColor = "text-blue-600 bg-blue-50";
+          if(order.status === 'shipping') badgeColor = "text-purple-600 bg-purple-50";
+          if(order.status === 'shipped') badgeColor = "text-black bg-gray-100";
+          if(order.status === 'declined') badgeColor = "text-red-600 bg-red-50";
 
           list.innerHTML += `
-            <div class="p-5 border border-gray-100 rounded-2xl bg-white">
+            <div class="p-5 border border-gray-100 rounded-2xl bg-white shadow-sm">
               <div class="flex justify-between items-start">
                 <div>
                   <h4 class="font-black text-xs text-black">${order.customerName}</h4>
                   <p class="text-[9px] text-gray-400 font-semibold mt-0.5">${order.customerPhone}</p>
                   <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-1">UID: #${id.slice(-6).toUpperCase()}</p>
                 </div>
-                <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${color}">${order.status}</span>
+                <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${badgeColor}">${order.status}</span>
               </div>
               <div class="mt-3 space-y-1.5 border-t border-b border-gray-50 py-2.5 my-2.5">
                 <p class="text-[11px] text-gray-600 font-medium"><strong>Manifest:</strong> ${items}</p>
                 <p class="text-[11px] text-gray-600 font-medium"><strong>Logistics Target:</strong> ${order.address}</p>
               </div>
-              <div class="flex justify-between items-center">
+              <div class="flex justify-between items-center mt-4">
                 <span class="font-black text-sm text-black">₹${order.totalAmount}</span>
-                <div class="flex gap-1.5">
-                  ${order.status === 'pending' ? `
-                    <button onclick="updateStatus('${id}', 'preparing')" class="px-3 py-1.5 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Accept</button>
-                    <button onclick="updateStatus('${id}', 'declined')" class="px-3 py-1.5 bg-gray-150 text-black text-[9px] font-bold rounded-lg uppercase tracking-wider">Decline</button>
-                  ` : order.status === 'preparing' ? `
-                    <button onclick="updateStatus('${id}', 'shipping')" class="px-3 py-1.5 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Deploy</button>
-                  ` : order.status === 'shipping' ? `
-                    <button onclick="updateStatus('${id}', 'shipped')" class="px-3 py-1.5 bg-black text-white text-[9px] font-bold rounded-lg uppercase tracking-wider">Mark Done</button>
-                  ` : `<span class="text-[8px] text-gray-400 font-black uppercase tracking-wide"><i class="fa-solid fa-check text-black mr-1"></i>Handled Archive</span>`}
+                
+                <!-- ALL OPTIONS ACCESSIBLE AT ONCE VIA DROPDOWN SELECTOR -->
+                <div class="relative flex items-center">
+                  <select onchange="updateStatus('${id}', this.value)" class="pl-3 pr-8 py-1.5 bg-gray-50 border border-gray-200 text-black text-[10px] font-black uppercase tracking-wider rounded-xl outline-none appearance-none cursor-pointer focus:bg-white focus:border-black transition-all">
+                    <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                    <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>📦 Preparing</option>
+                    <option value="shipping" ${order.status === 'shipping' ? 'selected' : ''}>🚚 Shipping</option>
+                    <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>✅ Shipped</option>
+                    <option value="declined" ${order.status === 'declined' ? 'selected' : ''}>❌ Declined</option>
+                  </select>
+                  <div class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-gray-400">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
                 </div>
+
               </div>
             </div>
           `;
