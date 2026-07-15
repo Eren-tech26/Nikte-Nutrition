@@ -20,7 +20,6 @@
 </head>
 <body class="pb-32 antialiased selection:bg-black selection:text-white">
 
-  <!-- HEADER -->
   <header class="max-w-md mx-auto px-6 pt-6 flex justify-between items-center">
     <div>
       <h1 onclick="switchTab('home')" class="text-2xl font-black tracking-tight text-black cursor-pointer">Nikate Nutritions</h1>
@@ -33,10 +32,8 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
   <main class="max-w-md mx-auto px-6 mt-6">
 
-    <!-- VIEW 1: HOME -->
     <div id="view-home" class="view-tab space-y-6">
       <div class="apple-card p-6 flex flex-col justify-between h-56 bg-cover bg-center relative overflow-hidden bg-gray-50 border border-gray-100">
         <div class="z-10">
@@ -69,14 +66,11 @@
       </div>
     </div>
 
-    <!-- VIEW 2: SHOP -->
     <div id="view-shop" class="view-tab hidden space-y-4">
       <div class="pb-1">
         <h3 class="text-2xl font-black tracking-tight text-black">The Shop</h3>
         <p class="text-xs text-gray-400 font-medium">Tap a product to see details.</p>
       </div>
-
-      <!-- SEARCH + FILTER ROW -->
       <div class="space-y-2">
         <div class="relative">
           <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
@@ -90,7 +84,6 @@
           <button onclick="setShopFilter('cat_04')" data-filter="cat_04" class="filter-btn shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-gray-100 text-gray-500">Gainers</button>
         </div>
       </div>
-
       <div id="products-list" class="space-y-3"></div>
       <p id="shop-no-results" class="hidden text-xs text-gray-400 font-bold py-10 text-center apple-card bg-gray-50">No products match your search.</p>
     </div>
@@ -116,7 +109,28 @@
         <input type="text" id="cust-name" placeholder="Full Name" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black">
         <input type="text" id="cust-phone" placeholder="Phone Number" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black">
         <textarea id="cust-address" placeholder="Full Delivery Address & Landmark" rows="2" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black resize-none h-20"></textarea>
-        <button onclick="submitOrder()" class="w-full py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity mt-2">Place Order</button>
+        <button onclick="goToPayment()" class="w-full py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity mt-2">Proceed to Payment</button>
+      </div>
+    </div>
+
+    <!-- VIEW: PAYMENT (NEW) -->
+    <div id="view-payment" class="view-tab hidden space-y-6">
+      <h3 class="text-2xl font-black tracking-tight text-black">Complete Payment</h3>
+      <div class="apple-card p-6 bg-gray-50 border border-gray-100 text-center space-y-3">
+        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Pay via UPI to</p>
+        <p class="text-lg font-black text-black break-all">918698343237@ptyes</p>
+        <div class="bg-white p-4 rounded-2xl inline-block border border-gray-100">
+          <img id="pay-qr-img" src="" class="w-40 h-40">
+        </div>
+        <p id="pay-amount-display" class="text-2xl font-black text-black">₹0</p>
+        <p class="text-xs text-gray-500 font-medium">Scan the QR or pay manually to the UPI ID above, then enter your UTR / Transaction ID below so we can verify it.</p>
+      </div>
+      <div class="space-y-3">
+        <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Payment Confirmation</h4>
+        <input type="text" id="pay-utr" placeholder="Enter 12-digit UTR / Transaction ID" maxlength="30" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black">
+        <p id="pay-utr-error" class="hidden text-[10px] font-black uppercase tracking-widest text-red-500">Please enter a valid UTR number.</p>
+        <button onclick="submitPaymentProof()" class="w-full py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity">Submit Payment Proof</button>
+        <p class="text-[10px] text-gray-400 font-bold text-center pt-1">Your order will be confirmed once our team verifies the payment against our bank statement. Track status under History.</p>
       </div>
     </div>
 
@@ -140,7 +154,6 @@
 
   </main>
 
-  <!-- PRODUCT DETAIL OVERLAY -->
   <div id="product-detail-view" class="fixed inset-0 bg-white z-[100] hidden flex-col transform translate-y-full transition-transform duration-300">
     <div class="px-6 py-4 flex justify-between items-center bg-white border-b border-gray-100 sticky top-0 z-10">
       <button onclick="closeProductView()" class="w-9 h-9 flex items-center justify-center bg-gray-50 rounded-xl text-black hover:bg-gray-100"><i class="fa-solid fa-arrow-left text-xs"></i></button>
@@ -170,8 +183,6 @@
           <h3 class="text-xs font-black text-black uppercase tracking-widest mb-2">Product Details</h3>
           <p id="pd-desc" class="text-xs text-gray-600 leading-relaxed font-medium whitespace-pre-line bg-gray-50 p-4 rounded-2xl border border-gray-100/50"></p>
         </div>
-
-        <!-- REVIEW FORM -->
         <div class="space-y-3 border-b border-gray-100 pb-6">
           <h3 class="text-xs font-black text-black uppercase tracking-widest">Write Your Review</h3>
           <div class="space-y-3">
@@ -198,8 +209,6 @@
             <button onclick="submitPDReview()" class="w-full py-3 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity">Post Review</button>
           </div>
         </div>
-
-        <!-- REVIEWS LIST -->
         <div class="space-y-3">
           <div class="flex justify-between items-center border-b border-gray-100 pb-2">
             <h3 class="text-xs font-black text-black uppercase tracking-widest">Customer Reviews</h3>
@@ -211,15 +220,12 @@
         </div>
       </div>
     </div>
-
-    <!-- Bottom action -->
     <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-100 p-4 pb-8 flex gap-3 shadow-[0_-12px_30px_rgba(0,0,0,0.03)]">
       <button id="pd-add-btn" class="flex-1 py-4 bg-gray-50 text-black rounded-xl font-bold text-xs uppercase tracking-wider border border-gray-100 transition-colors hover:bg-gray-100">Add to Cart</button>
       <button id="pd-buy-btn" class="flex-1 py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider transition-opacity hover:opacity-90">Buy Now</button>
     </div>
   </div>
 
-  <!-- BOTTOM NAV -->
   <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm pill-nav rounded-2xl px-2 py-2.5 shadow-xl z-50 flex justify-between items-center">
     <button onclick="switchTab('home')" class="nav-btn text-black flex flex-col items-center flex-1 py-1" data-tab="home"><i class="fa-solid fa-house text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Home</span></button>
     <button onclick="switchTab('shop')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="shop"><i class="fa-solid fa-magnifying-glass text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Shop</span></button>
@@ -232,7 +238,6 @@
     <button onclick="switchTab('history')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="history"><i class="fa-solid fa-clock-rotate-left text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">History</span></button>
   </nav>
 
-  <!-- LIVE CHAT WIDGET -->
   <div id="chat-widget" class="fixed bottom-24 right-6 z-40">
     <button onclick="toggleChatWindow()" class="w-12 h-12 bg-black text-white rounded-2xl shadow-xl flex items-center justify-center hover:scale-105 transition-transform">
       <i class="fa-solid fa-comment-dots text-base"></i>
@@ -256,7 +261,6 @@
     </div>
   </div>
 
-  <!-- APP LOGIC -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
     import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
@@ -279,14 +283,14 @@
     let chatUser = JSON.parse(localStorage.getItem('chatUser')) || null;
     let currentProductId = null;
     let pdSelectedRating = 0;
+    let pendingOrder = null; // holds order details between checkout and payment step
 
-    // ---- In-memory product store for search/filter ----
     let allProducts = {};
     let activeFilter = 'all';
 
+    const UPI_ID = "918698343237@ptyes";
     const categoryMap = { cat_01: 'Whey Protein', cat_02: 'Creatine & Pre', cat_03: 'Vitamins', cat_04: 'Gainers' };
 
-    // ================= TAB SWITCHING =================
     window.switchTab = (tabId) => {
       document.querySelectorAll('.view-tab').forEach(v => v.classList.add('hidden'));
       document.getElementById(`view-${tabId}`).classList.remove('hidden');
@@ -296,17 +300,15 @@
       });
     };
 
-    // ================= SHOP SEARCH + FILTER =================
     window.setShopFilter = (cat) => {
       activeFilter = cat;
       document.querySelectorAll('.filter-btn').forEach(btn => {
         const isActive = btn.dataset.filter === cat;
         btn.className = `filter-btn shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider ${isActive ? 'bg-black text-white' : 'bg-gray-100 text-gray-500'}`;
-        });
+      });
       renderShopProducts();
     };
 
-    // Called from Home category cards — filter + switch tab
     window.filterByCategory = (cat) => {
       switchTab('shop');
       setShopFilter(cat);
@@ -357,7 +359,6 @@
       });
     };
 
-    // ================= FIREBASE LISTENERS =================
     onValue(ref(db, 'shopStatus'), (snap) => {
       const data = snap.val();
       if (data) {
@@ -376,7 +377,6 @@
       renderShopProducts();
     });
 
-    // ================= PRODUCT DETAIL =================
     window.openProductView = (id, name, price, image, inStock, desc, catLabel) => {
       currentProductId = id;
       pdSelectedRating = 0;
@@ -426,7 +426,6 @@
       setTimeout(() => modal.classList.add('hidden'), 300);
     };
 
-    // ================= CART =================
     window.addToCart = (id, name, price) => {
       const existing = cart.find(item => item.id === id);
       if (existing) existing.qty += 1;
@@ -478,7 +477,6 @@
       updateCartUI();
     };
 
-    // ================= COUPON =================
     window.applyCoupon = () => {
       const code = document.getElementById('coupon-input').value.toUpperCase().trim();
       const msg = document.getElementById('coupon-message');
@@ -497,27 +495,57 @@
       }, { onlyOnce: true });
     };
 
-    // ================= ORDER =================
-    window.submitOrder = () => {
+    // ================= CHECKOUT -> PAYMENT STEP =================
+    window.goToPayment = () => {
       const name = document.getElementById('cust-name').value.trim();
       const phone = document.getElementById('cust-phone').value.trim();
       const address = document.getElementById('cust-address').value.trim();
-      if (!name || !phone || !address || cart.length === 0) { alert("Please fill in all fields before placing your order."); return; }
+      if (!name || !phone || !address || cart.length === 0) { alert("Please fill in all fields before proceeding."); return; }
 
       const totalAmount = parseFloat(document.getElementById('cart-total').textContent.replace('₹', ''));
-      const newOrder = { customerName: name, customerPhone: phone, address, items: cart, totalAmount, status: "pending", timestamp: Date.now() };
+      pendingOrder = { customerName: name, customerPhone: phone, address, items: JSON.parse(JSON.stringify(cart)), totalAmount };
+
+      document.getElementById('pay-amount-display').textContent = `₹${totalAmount}`;
+      document.getElementById('pay-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(`upi://pay?pa=${UPI_ID}&am=${totalAmount}&cu=INR`)}`;
+      document.getElementById('pay-utr').value = '';
+      document.getElementById('pay-utr-error').classList.add('hidden');
+      switchTab('payment');
+    };
+
+    // ================= SUBMIT PAYMENT PROOF (UTR) =================
+    window.submitPaymentProof = () => {
+      if (!pendingOrder) { switchTab('buy'); return; }
+      const utr = document.getElementById('pay-utr').value.trim();
+      const errorEl = document.getElementById('pay-utr-error');
+
+      if (!utr || utr.length < 6) {
+        errorEl.textContent = "Please enter a valid UTR / Transaction ID.";
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      errorEl.classList.add('hidden');
+
+      const newOrder = {
+        ...pendingOrder,
+        utr,
+        status: "payment_submitted", // admin flips to 'confirmed' or 'rejected' after checking bank statement
+        timestamp: Date.now()
+      };
 
       const pushRef = push(ref(db, 'orders'));
       set(pushRef, newOrder).then(() => {
         const history = JSON.parse(localStorage.getItem('orders_history')) || [];
         history.push({ id: pushRef.key, ...newOrder });
         localStorage.setItem('orders_history', JSON.stringify(history));
-        const wpMsg = `Hi! I'm ${name}. I've placed an order on Nikate Nutritions website. Please share your QR code or payment details so I can send the money. 🙏`;
-        window.open(`https://wa.me/918698343237?text=${encodeURIComponent(wpMsg)}`, '_blank');
+
         cart = [];
         activeCoupon = null;
+        pendingOrder = null;
         document.getElementById('coupon-input').value = '';
         document.getElementById('coupon-message').textContent = '';
+        document.getElementById('cust-name').value = '';
+        document.getElementById('cust-phone').value = '';
+        document.getElementById('cust-address').value = '';
         updateCartUI();
         switchTab('history');
         renderHistory();
@@ -530,7 +558,6 @@
       window.open(`https://wa.me/918698343237?text=${encodeURIComponent('Support Issue: ' + desc)}`, '_blank');
     };
 
-    // ================= ORDER HISTORY =================
     function renderHistory() {
       const list = document.getElementById('history-list');
       const hist = JSON.parse(localStorage.getItem('orders_history')) || [];
@@ -539,10 +566,10 @@
       hist.reverse().forEach(item => {
         onValue(ref(db, `orders/${item.id}`), (snap) => {
           const live = snap.val();
-          const status = live ? live.status : 'pending';
+          const status = live ? live.status : 'payment_submitted';
           const colorMap = {
-            pending: 'bg-yellow-50 text-yellow-600',
-            accepted: 'bg-blue-50 text-blue-600',
+            payment_submitted: 'bg-yellow-50 text-yellow-600',
+            confirmed: 'bg-blue-50 text-blue-600',
             shipping: 'bg-purple-50 text-purple-600',
             delivered: 'bg-green-50 text-green-600',
             rejected: 'bg-red-50 text-red-500'
@@ -554,8 +581,9 @@
                 <p class="text-[8px] text-gray-400 font-black uppercase tracking-widest">ORDER ID: #${item.id.slice(-6).toUpperCase()}</p>
                 <h5 class="font-black text-sm text-black mt-0.5">₹${item.totalAmount}</h5>
                 <p class="text-[9px] text-gray-400 font-medium mt-0.5">${(item.items || []).map(i => i.name).join(', ')}</p>
+                <p class="text-[8px] text-gray-300 font-bold mt-0.5">UTR: ${item.utr || '—'}</p>
               </div>
-              <span class="text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider ${color}">${status}</span>
+              <span class="text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider ${color}">${status.replace('_',' ')}</span>
             </div>`;
           const cont = document.getElementById(`ord-${item.id}`);
           if (cont) cont.innerHTML = html;
@@ -570,7 +598,6 @@
       });
     }
 
-    // ================= REVIEWS =================
     window.setPDRating = (rating) => {
       pdSelectedRating = rating;
       document.querySelectorAll('.pd-rating-btn').forEach(btn => {
@@ -638,7 +665,6 @@
       });
     }
 
-    // ================= CHAT =================
     window.toggleChatWindow = () => {
       const win = document.getElementById('chat-window');
       win.classList.toggle('hidden');
@@ -684,7 +710,6 @@
       inp.value = '';
     };
 
-    // Init
     renderHistory();
   </script>
 </body>
