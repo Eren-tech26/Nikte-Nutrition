@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nikate Admin Console</title>
+  <title>Console Dashboard — Nikate Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -12,108 +12,172 @@
       background-color: #f5f5f7;
       color: #1d1d1f;
     }
+    .nav-active {
+      background-color: #000000;
+      color: #ffffff !important;
+    }
   </style>
 </head>
-<body class="p-6">
+<body class="flex min-h-screen">
 
-  <div class="max-w-6xl mx-auto space-y-6">
-    
-    <!-- HEADER -->
-    <header class="flex justify-between items-center bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+  <!-- ================= SIDEBAR NAVIGATION ================= -->
+  <aside class="w-64 bg-white border-r border-gray-100 flex flex-col justify-between p-6">
+    <div class="space-y-8">
       <div>
-        <h1 class="text-2xl font-extrabold tracking-tight">Console Dashboard</h1>
-        <p class="text-xs text-gray-400 mt-1">Nikate Nutritions & Supplements Operations Hub</p>
+        <h1 class="text-lg font-black tracking-tight text-black">Nikate Admin</h1>
+        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Enterprise Dashboard</p>
       </div>
-      <!-- Shop Open Toggle Status -->
-      <div class="flex items-center gap-3">
-        <span class="text-sm font-semibold">Store Status:</span>
-        <button id="shop-toggle-btn" onclick="toggleStoreStatus()" class="px-4 py-2 bg-black text-white rounded-xl text-xs font-bold">Checking...</button>
+
+      <nav class="space-y-1">
+        <button onclick="switchAdminTab('overview')" class="admin-nav-btn nav-active w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-gray-500 hover:text-black flex items-center gap-3 transition-colors">
+          <i class="fa-solid fa-chart-line text-sm"></i> Operational Center
+        </button>
+        <button onclick="switchAdminTab('catalog')" class="admin-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-gray-500 hover:text-black flex items-center gap-3 transition-colors">
+          <i class="fa-solid fa-boxes-stacked text-sm"></i> Product Catalog
+        </button>
+        <button onclick="switchAdminTab('coupons')" class="admin-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-gray-500 hover:text-black flex items-center gap-3 transition-colors">
+          <i class="fa-solid fa-tags text-sm"></i> Coupon & Promos
+        </button>
+        <button onclick="switchAdminTab('chats')" class="admin-nav-btn w-full text-left px-4 py-3 rounded-xl text-xs font-bold text-gray-500 hover:text-black flex items-center gap-3 transition-colors relative">
+          <i class="fa-solid fa-comments text-sm"></i> Client Inbox
+          <span id="chat-alert-dot" class="w-2 h-2 rounded-full bg-red-500 absolute top-4 right-4 hidden"></span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Store Status Toggle -->
+    <div class="border-t border-gray-100 pt-6 space-y-3">
+      <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-gray-400">
+        <span>Storefront Status</span>
+      </div>
+      <button id="shop-toggle-btn" onclick="toggleStoreStatus()" class="w-full py-3 bg-black text-white text-xs font-black rounded-xl tracking-wider">Checking Status...</button>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN DASHBOARD BODY ================= -->
+  <main class="flex-1 p-8 overflow-y-auto max-w-5xl">
+    
+    <!-- HEADER METRIC STRIP -->
+    <header class="flex justify-between items-center mb-8 bg-white p-6 rounded-2xl border border-gray-100/50 shadow-sm">
+      <div>
+        <h2 id="view-title" class="text-xl font-black text-black">Operational Center</h2>
+        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-1">Real-time telemetry and management controls</p>
+      </div>
+      
+      <!-- Mini Quick Stats -->
+      <div class="flex gap-6">
+        <div class="text-right">
+          <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Today's Orders</p>
+          <p id="stat-orders-count" class="text-base font-black">0</p>
+        </div>
+        <div class="text-right border-l border-gray-100 pl-6">
+          <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Stock Assets</p>
+          <p id="stat-products-count" class="text-base font-black">0</p>
+        </div>
       </div>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-      <!-- COLUMN 1: LIVE ORDERS PIPELINE -->
-      <div class="lg:col-span-2 space-y-6">
-        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-          <h2 class="text-lg font-extrabold tracking-tight mb-4 text-black"><i class="fa-solid fa-truck-ramp-box mr-2"></i>Incoming Orders</h2>
-          <div id="admin-orders-list" class="space-y-4">
-            <p class="text-xs text-gray-400">Loading order queue...</p>
-          </div>
+    <!-- SECTION 1: INCOMING ORDER PIPELINE -->
+    <section id="tab-overview" class="admin-view-tab space-y-6">
+      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-6"><i class="fa-solid fa-truck-ramp-box mr-2 text-black"></i>Processing Pipeline</h3>
+        <div id="admin-orders-list" class="space-y-4">
+          <p class="text-xs text-gray-400 font-semibold">Loading orders data stream...</p>
         </div>
-        
-        <!-- PRODUCT DIRECTORY EDITOR -->
-        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
-          <div class="flex justify-between items-center">
-            <h2 class="text-lg font-extrabold tracking-tight text-black"><i class="fa-solid fa-boxes-stacked mr-2"></i>Product Catalog</h2>
-            <button onclick="openProductModal()" class="px-3 py-1.5 bg-black text-white rounded-xl text-xs font-bold">Add Product</button>
+      </div>
+    </section>
+
+    <!-- SECTION 2: COMPREHENSIVE INVENTORY CATALOG -->
+    <section id="tab-catalog" class="admin-view-tab hidden space-y-6">
+      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+        <div class="flex justify-between items-center">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-boxes-stacked mr-2 text-black"></i>Supplements Directory</h3>
+          <button onclick="openNewProductModal()" class="px-4 py-2 bg-black text-white text-xs font-black rounded-xl uppercase tracking-wider"><i class="fa-solid fa-plus mr-1.5"></i>Add Product</button>
+        </div>
+        <div id="admin-products-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Dynamically populated list -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: PROMO & COUPONS MANAGER -->
+    <section id="tab-coupons" class="admin-view-tab hidden grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4 h-fit">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-tag mr-2 text-black"></i>Create Coupon</h3>
+        <div class="space-y-3 pt-2">
+          <input type="text" id="new-coupon-code" placeholder="CODE (e.g. ULTRA20)" class="w-full px-4 py-3 bg-gray-50 border-none rounded-xl text-xs outline-none font-bold uppercase tracking-wider">
+          <input type="number" id="new-coupon-val" placeholder="Discount Percentage" class="w-full px-4 py-3 bg-gray-50 border-none rounded-xl text-xs outline-none font-bold">
+          <button onclick="createCouponCode()" class="w-full py-3 bg-black text-white rounded-xl text-xs font-black uppercase tracking-wider">Enable Coupon</button>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm col-span-2 space-y-4">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400">Active Coupons</h3>
+        <div id="coupons-list" class="space-y-2">
+          <!-- Active codes -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: CLIENT INBOX TERMINAL -->
+    <section id="tab-chats" class="admin-view-tab hidden grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-400"><i class="fa-solid fa-comments mr-2 text-black"></i>Active Dialogues</h3>
+        <div id="chats-queue" class="space-y-2">
+          <!-- Queued Chats -->
+        </div>
+      </div>
+      <div class="col-span-2">
+        <div id="admin-chat-box" class="hidden bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden flex flex-col h-[500px]">
+          <div class="bg-black text-white p-4 flex justify-between items-center">
+            <div>
+              <h4 id="active-chat-title" class="font-bold text-xs tracking-wide">Select Chat Thread</h4>
+              <span class="text-[9px] opacity-75 uppercase tracking-widest font-bold">Direct Console Routing</span>
+            </div>
+            <button onclick="closeAdminChat()" class="opacity-80 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
           </div>
-          <div id="admin-products-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Dynamically populated list -->
+          <div id="admin-messages-box" class="p-4 flex-1 overflow-y-auto space-y-3 text-xs bg-gray-50"></div>
+          <div class="p-3 bg-white border-t border-gray-100 flex gap-2">
+            <input type="text" id="admin-chat-input" placeholder="Type administrative response..." class="flex-1 px-4 py-2.5 bg-gray-100 rounded-xl text-xs outline-none font-semibold">
+            <button onclick="sendAdminReply()" class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center"><i class="fa-solid fa-paper-plane text-xs"></i></button>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- COLUMN 2: OPERATIONS & CHATS -->
-      <div class="space-y-6">
-        
-        <!-- COUPON ENGINE PANEL -->
-        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
-          <h2 class="text-lg font-extrabold tracking-tight text-black"><i class="fa-solid fa-ticket-simple mr-2"></i>Coupon Generator</h2>
-          <div class="space-y-3">
-            <input type="text" id="new-coupon-code" placeholder="CODE (e.g. FIT30)" class="w-full px-3 py-2 bg-gray-50 border-none rounded-xl text-xs outline-none">
-            <input type="number" id="new-coupon-val" placeholder="Discount Amount/Percentage" class="w-full px-3 py-2 bg-gray-50 border-none rounded-xl text-xs outline-none">
-            <button onclick="createCouponCode()" class="w-full py-2.5 bg-black text-white rounded-xl text-xs font-bold">Activate Coupon</button>
-          </div>
-          <div id="coupons-list" class="border-t border-gray-100 pt-3 space-y-2">
-            <!-- Active coupons shown here -->
-          </div>
-        </div>
+  </main>
 
-        <!-- LIVE CHAT QUEUE TERMINAL -->
-        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
-          <h2 class="text-lg font-extrabold tracking-tight text-black"><i class="fa-solid fa-comments mr-2"></i>Live Inbox</h2>
-          <div id="chats-queue" class="space-y-2">
-            <!-- Inbox List -->
-          </div>
-          <!-- Admin Chat Frame -->
-          <div id="admin-chat-box" class="hidden border border-gray-100 rounded-xl overflow-hidden flex flex-col h-64 bg-gray-50">
-            <div class="bg-black text-white p-3 text-xs flex justify-between items-center">
-              <span id="active-chat-title" class="font-bold">Chatting with...</span>
-              <button onclick="closeAdminChat()" class="opacity-80"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div id="admin-messages-box" class="p-3 flex-1 overflow-y-auto space-y-2 text-[11px]"></div>
-            <div class="p-2 bg-white flex gap-2">
-              <input type="text" id="admin-chat-input" placeholder="Type reply..." class="flex-1 px-3 py-1.5 bg-gray-50 rounded-xl text-xs outline-none">
-              <button onclick="sendAdminReply()" class="px-3 py-1 bg-black text-white rounded-xl text-xs"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- PRODUCT EDITING / ADD MODAL -->
-  <div id="prod-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-2xl shadow-2xl w-96 space-y-4">
-      <div class="flex justify-between items-center">
-        <h3 id="modal-title" class="font-extrabold text-base">New Product Asset</h3>
+  <!-- ================= POP-UP ADD/EDIT PRODUCT MODAL ================= -->
+  <div id="prod-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-[200] flex items-center justify-center">
+    <div class="bg-white p-6 rounded-3xl shadow-2xl w-96 space-y-4">
+      <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+        <h3 id="modal-title" class="font-black text-sm uppercase tracking-wider">Configure Asset</h3>
         <button onclick="closeProductModal()" class="text-gray-400 hover:text-black"><i class="fa-solid fa-xmark"></i></button>
       </div>
+      <input type="hidden" id="prod-id" value="">
       <div class="space-y-3">
-        <input type="text" id="prod-name" placeholder="Product Name" class="w-full px-3 py-2 bg-gray-50 border-none rounded-xl text-xs outline-none focus:ring-1 focus:ring-black">
-        <input type="number" id="prod-price" placeholder="Pricing (INR)" class="w-full px-3 py-2 bg-gray-50 border-none rounded-xl text-xs outline-none focus:ring-1 focus:ring-black">
-        <input type="text" id="prod-img" placeholder="Image URL (Unsplash or direct link)" class="w-full px-3 py-2 bg-gray-50 border-none rounded-xl text-xs outline-none focus:ring-1 focus:ring-black">
-        <select id="prod-cat" class="w-full px-3 py-2 bg-gray-50 border-none rounded-xl text-xs outline-none focus:ring-1 focus:ring-black">
-          <option value="cat_01">Whey Protein</option>
-          <option value="cat_02">Creatine & Pre-Workout</option>
-          <option value="cat_03">Vitamins & Essentials</option>
-        </select>
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Product Name</label>
+          <input type="text" id="prod-name" class="w-full px-3 py-2 bg-gray-100 border-none rounded-xl text-xs outline-none focus:ring-1 focus:ring-black font-semibold mt-1">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Price (INR)</label>
+          <input type="number" id="prod-price" class="w-full px-3 py-2 bg-gray-100 border-none rounded-xl text-xs outline-none focus:ring-1 focus:ring-black font-semibold mt-1">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Image Direct URL</label>
+          <input type="text" id="prod-img" class="w-full px-3 py-2 bg-gray-100 border-none rounded-xl text-xs outline-none focus:ring-1 focus:ring-black font-semibold mt-1">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Asset Category</label>
+          <select id="prod-cat" class="w-full px-3 py-2 bg-gray-100 border-none rounded-xl text-xs outline-none focus:ring-1 focus:ring-black font-bold mt-1">
+            <option value="cat_01">Whey Protein</option>
+            <option value="cat_02">Creatine & Pre-Workout</option>
+            <option value="cat_03">Vitamins & Essentials</option>
+            <option value="cat_04">Mass Gainers</option>
+          </select>
+        </div>
       </div>
-      <button onclick="saveProductItem()" class="w-full py-3 bg-black text-white rounded-xl text-xs font-bold">Save Assets</button>
+      <button onclick="saveProductItem()" class="w-full py-3.5 bg-black text-white rounded-xl text-xs font-black uppercase tracking-wider">Save Asset Settings</button>
     </div>
   </div>
 
@@ -137,7 +201,24 @@
     let storeOpen = true;
     let selectedChatId = null;
 
-    // Toggle Store Status Live State
+    // View Swapper logic
+    window.switchAdminTab = (tabId) => {
+      document.querySelectorAll('.admin-view-tab').forEach(t => t.classList.add('hidden'));
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+      
+      document.querySelectorAll('.admin-nav-btn').forEach(btn => {
+        if(btn.getAttribute('onclick').includes(tabId)) {
+          btn.classList.add('nav-active');
+        } else {
+          btn.classList.remove('nav-active');
+        }
+      });
+      
+      const titles = { overview: "Operational Center", catalog: "Product Catalog", coupons: "Coupon & Promos", chats: "Client Inbox" };
+      document.getElementById('view-title').textContent = titles[tabId];
+    };
+
+    // Store status watcher
     onValue(ref(db, 'shopStatus'), (snap) => {
       const data = snap.val();
       if(data) {
@@ -145,8 +226,8 @@
         const btn = document.getElementById('shop-toggle-btn');
         btn.textContent = storeOpen ? 'ACTIVE - OPEN' : 'PAUSED - CLOSED';
         btn.className = storeOpen 
-          ? "px-4 py-2 bg-green-500 text-white rounded-xl text-xs font-bold transition-all" 
-          : "px-4 py-2 bg-red-500 text-white rounded-xl text-xs font-bold transition-all";
+          ? "w-full py-3 bg-green-500 hover:bg-green-600 text-white text-xs font-black rounded-xl tracking-wider transition-colors" 
+          : "w-full py-3 bg-red-500 hover:bg-red-600 text-white text-xs font-black rounded-xl tracking-wider transition-colors";
       }
     });
 
@@ -154,45 +235,50 @@
       update(ref(db, 'shopStatus'), { isOpen: !storeOpen });
     };
 
-    // Live Orders Queue Listener
+    // Live telemetry update for orders
     onValue(ref(db, 'orders'), (snap) => {
       const data = snap.val();
       const orderContainer = document.getElementById('admin-orders-list');
       orderContainer.innerHTML = '';
+      
       if(!data) {
-        orderContainer.innerHTML = `<p class="text-xs text-gray-400">All caught up! No pending orders.</p>`;
+        document.getElementById('stat-orders-count').textContent = '0';
+        orderContainer.innerHTML = `<p class="text-xs text-gray-400 font-semibold py-4 text-center">Operational pipeline is clear. No active orders.</p>`;
         return;
       }
 
-      Object.entries(data).reverse().forEach(([id, order]) => {
+      const activeOrdersList = Object.entries(data);
+      document.getElementById('stat-orders-count').textContent = activeOrdersList.length;
+
+      activeOrdersList.reverse().forEach(([id, order]) => {
         let itemsStr = order.items.map(i => `${i.name} (x${i.qty})`).join(', ');
-        let statusBadgeColor = "bg-yellow-50 text-yellow-600";
-        if(order.status === 'shipping' || order.status === 'preparing') statusBadgeColor = "bg-blue-50 text-blue-600";
-        if(order.status === 'shipped') statusBadgeColor = "bg-green-50 text-green-600";
-        if(order.status === 'declined') statusBadgeColor = "bg-red-50 text-red-600";
+        let statusColor = "bg-yellow-50 text-yellow-600";
+        if(order.status === 'shipping' || order.status === 'preparing') statusColor = "bg-blue-50 text-blue-600";
+        if(order.status === 'shipped') statusColor = "bg-green-50 text-green-600";
+        if(order.status === 'declined') statusColor = "bg-red-50 text-red-600";
 
         orderContainer.innerHTML += `
-          <div class="bg-gray-50 p-5 rounded-2xl space-y-3 relative">
+          <div class="bg-gray-50/50 border border-gray-100 p-5 rounded-2xl space-y-3 relative hover:border-black/5 transition-all">
             <div class="flex justify-between items-start">
               <div>
                 <h4 class="font-extrabold text-sm text-black">${order.customerName} (${order.customerPhone})</h4>
-                <p class="text-[10px] text-gray-400 mt-0.5">Order UID: #${id.slice(-6).toUpperCase()}</p>
+                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">UID: #${id.slice(-6).toUpperCase()}</p>
               </div>
-              <span class="text-[9px] font-bold px-2 py-1 rounded-lg ${statusBadgeColor}">${order.status.toUpperCase()}</span>
+              <span class="text-[9px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider ${statusColor}">${order.status}</span>
             </div>
-            <p class="text-xs text-gray-600"><strong>Cart:</strong> ${itemsStr}</p>
-            <p class="text-xs text-gray-600"><strong>Location:</strong> ${order.address}</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-100">
-              <span class="text-xs font-extrabold text-black">Total: ₹${order.totalAmount}</span>
+            <p class="text-xs text-gray-600 font-semibold"><strong>Items:</strong> ${itemsStr}</p>
+            <p class="text-xs text-gray-600 font-semibold"><strong>Address:</strong> ${order.address}</p>
+            <div class="flex justify-between items-center pt-3 border-t border-gray-100">
+              <span class="text-xs font-black text-black uppercase tracking-wider">Total: ₹${order.totalAmount}</span>
               <div class="flex gap-1.5">
                 ${order.status === 'pending' ? `
-                  <button onclick="modifyOrderStatus('${id}', 'preparing')" class="px-3 py-1.5 bg-black text-white text-[10px] font-bold rounded-lg">Accept</button>
-                  <button onclick="modifyOrderStatus('${id}', 'declined')" class="px-3 py-1.5 bg-gray-200 text-black text-[10px] font-bold rounded-lg">Decline</button>
+                  <button onclick="modifyOrderStatus('${id}', 'preparing')" class="px-4 py-2 bg-black text-white text-[10px] font-bold rounded-lg uppercase">Accept</button>
+                  <button onclick="modifyOrderStatus('${id}', 'declined')" class="px-4 py-2 bg-gray-200 text-black text-[10px] font-bold rounded-lg uppercase">Decline</button>
                 ` : order.status === 'preparing' ? `
-                  <button onclick="modifyOrderStatus('${id}', 'shipping')" class="px-3 py-1.5 bg-blue-600 text-white text-[10px] font-bold rounded-lg">Ship</button>
+                  <button onclick="modifyOrderStatus('${id}', 'shipping')" class="px-4 py-2 bg-blue-600 text-white text-[10px] font-bold rounded-lg uppercase">Ship Package</button>
                 ` : order.status === 'shipping' ? `
-                  <button onclick="modifyOrderStatus('${id}', 'shipped')" class="px-3 py-1.5 bg-green-600 text-white text-[10px] font-bold rounded-lg">Complete Delivery</button>
-                ` : `<span class="text-[10px] text-gray-400 font-semibold"><i class="fa-solid fa-circle-check mr-1 text-green-500"></i>Handled</span>`}
+                  <button onclick="modifyOrderStatus('${id}', 'shipped')" class="px-4 py-2 bg-green-600 text-white text-[10px] font-bold rounded-lg uppercase">Complete Delivery</button>
+                ` : `<span class="text-[10px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-circle-check text-green-500 mr-1.5"></i>Dispatched</span>`}
               </div>
             </div>
           </div>
@@ -204,28 +290,42 @@
       update(ref(db, `orders/${id}`), { status: newStatus });
     };
 
-    // Load Live Catalog Products
+    // Watch catalog products
     onValue(ref(db, 'products'), (snap) => {
       const data = snap.val();
       const container = document.getElementById('admin-products-grid');
       container.innerHTML = '';
-      if(!data) return;
+      
+      if(!data) {
+        document.getElementById('stat-products-count').textContent = '0';
+        return;
+      }
 
-      Object.entries(data).forEach(([id, prod]) => {
+      const productsList = Object.entries(data);
+      document.getElementById('stat-products-count').textContent = productsList.length;
+
+      productsList.forEach(([id, prod]) => {
         container.innerHTML += `
-          <div class="p-4 bg-gray-50 rounded-2xl flex justify-between items-center">
-            <div class="flex items-center gap-3">
-              <img src="${prod.image}" class="w-12 h-12 object-cover rounded-xl bg-white p-0.5">
+          <div class="p-4 bg-white border border-gray-100 shadow-sm rounded-2xl flex justify-between items-center hover:border-black/5 transition-all">
+            <div class="flex items-center gap-4">
+              <img src="${prod.image}" class="w-12 h-12 object-contain rounded-xl bg-gray-50 p-1 border border-gray-100">
               <div>
                 <h4 class="font-extrabold text-xs text-black leading-tight">${prod.name}</h4>
-                <p class="text-[10px] text-gray-400 mt-1">₹${prod.price}</p>
+                <p class="text-[10px] text-gray-400 mt-1 font-bold">₹${prod.price} <span class="mx-1.5">•</span> ${prod.categoryId || 'No Category'}</p>
               </div>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="toggleStockStatus('${id}', ${!prod.inStock})" class="px-2.5 py-1 text-[9px] font-bold rounded-lg ${prod.inStock ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
-                ${prod.inStock ? 'In Stock' : 'Out of Stock'}
+              <button onclick="toggleStockStatus('${id}', ${!prod.inStock})" class="px-2.5 py-1.5 text-[9px] font-black uppercase tracking-wider rounded-lg ${prod.inStock ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}">
+                ${prod.inStock ? 'In Stock' : 'Out Stock'}
               </button>
-              <button onclick="removeProduct('${id}')" class="w-7 h-7 bg-white border border-gray-100 rounded-lg flex items-center justify-center text-red-500 text-xs"><i class="fa-solid fa-trash"></i></button>
+              
+              <button onclick="editProductItem('${id}', '${prod.name.replace(/'/g, "\\'")}', ${prod.price}, '${prod.image}', '${prod.categoryId || ''}')" class="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100">
+                <i class="fa-solid fa-pen text-xs"></i>
+              </button>
+
+              <button onclick="removeProduct('${id}')" class="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center text-red-500 hover:bg-red-100">
+                <i class="fa-solid fa-trash text-xs"></i>
+              </button>
             </div>
           </div>
         `;
@@ -237,49 +337,74 @@
     };
 
     window.removeProduct = (id) => {
-      if(confirm("Confirm item deletion?")) {
+      if(confirm("Delete product asset from registry?")) {
         remove(ref(db, `products/${id}`));
       }
     };
 
-    // Product Modals
-    window.openProductModal = () => document.getElementById('prod-modal').classList.remove('hidden');
+    // Product setup Modals
+    window.openNewProductModal = () => {
+      document.getElementById('modal-title').textContent = "Add New Product";
+      document.getElementById('prod-id').value = "";
+      document.getElementById('prod-name').value = "";
+      document.getElementById('prod-price').value = "";
+      document.getElementById('prod-img').value = "";
+      document.getElementById('prod-modal').classList.remove('hidden');
+    };
+
+    window.editProductItem = (id, name, price, image, categoryId) => {
+      document.getElementById('modal-title').textContent = "Edit Product Settings";
+      document.getElementById('prod-id').value = id;
+      document.getElementById('prod-name').value = name;
+      document.getElementById('prod-price').value = price;
+      document.getElementById('prod-img').value = image;
+      document.getElementById('prod-cat').value = categoryId;
+      document.getElementById('prod-modal').classList.remove('hidden');
+    };
+
     window.closeProductModal = () => document.getElementById('prod-modal').classList.add('hidden');
 
     window.saveProductItem = () => {
+      const id = document.getElementById('prod-id').value;
       const name = document.getElementById('prod-name').value.trim();
       const price = parseFloat(document.getElementById('prod-price').value);
       const image = document.getElementById('prod-img').value.trim() || 'https://images.unsplash.com/photo-1579758629938-03607ccdbaba?w=120';
       const categoryId = document.getElementById('prod-cat').value;
 
       if(!name || isNaN(price)) return;
-      const pushKey = push(ref(db, 'products')).key;
-      set(ref(db, `products/${pushKey}`), { name, price, image, categoryId, inStock: true })
-        .then(() => {
-          closeProductModal();
-          document.getElementById('prod-name').value = '';
-          document.getElementById('prod-price').value = '';
-          document.getElementById('prod-img').value = '';
-        });
+      
+      if(id) {
+        update(ref(db, `products/${id}`), { name, price, image, categoryId })
+          .then(() => closeProductModal());
+      } else {
+        const pushKey = push(ref(db, 'products')).key;
+        set(ref(db, `products/${pushKey}`), { name, price, image, categoryId, inStock: true })
+          .then(() => closeProductModal());
+      }
     };
 
-    // Live Chat Operations Box
+    // Active Live Chats tracking
     onValue(ref(db, 'chats'), (snap) => {
       const data = snap.val();
       const list = document.getElementById('chats-queue');
+      const dot = document.getElementById('chat-alert-dot');
       list.innerHTML = '';
+      
       if(!data) {
-        list.innerHTML = `<p class="text-xs text-gray-400">Inbox empty.</p>`;
+        list.innerHTML = `<p class="text-xs text-gray-400 font-semibold py-4 text-center">Inbox is empty.</p>`;
+        dot.classList.add('hidden');
         return;
       }
+
+      dot.classList.remove('hidden');
       Object.entries(data).forEach(([key, val]) => {
         const info = val.customerInfo;
         if(!info) return;
         list.innerHTML += `
-          <button onclick="openChatSession('${key}', '${info.name}')" class="w-full text-left p-3 bg-gray-50 hover:bg-gray-100 rounded-xl flex items-center justify-between transition-colors">
+          <button onclick="openChatSession('${key}', '${info.name}')" class="w-full text-left p-3.5 bg-gray-50 hover:bg-gray-100 rounded-xl flex items-center justify-between transition-colors">
             <div>
               <p class="font-extrabold text-xs text-black">${info.name}</p>
-              <p class="text-[9px] text-gray-400 mt-0.5">${info.phone}</p>
+              <p class="text-[9px] text-gray-400 font-bold tracking-wider mt-0.5">${info.phone}</p>
             </div>
             <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
           </button>
@@ -301,8 +426,8 @@
           const isCustomer = msg.sender === 'customer';
           box.innerHTML += `
             <div class="flex ${isCustomer ? 'justify-start' : 'justify-end'}">
-              <div class="max-w-[75%] p-2 rounded-xl ${isCustomer ? 'bg-white text-black border border-gray-200' : 'bg-black text-white'}">
-                <p class="leading-relaxed">${msg.text}</p>
+              <div class="max-w-[75%] p-2.5 rounded-2xl ${isCustomer ? 'bg-white text-black border border-gray-200' : 'bg-black text-white'}">
+                <p class="leading-relaxed font-semibold">${msg.text}</p>
               </div>
             </div>
           `;
@@ -325,7 +450,7 @@
       inp.value = '';
     };
 
-    // Coupons Engine Control Operations
+    // Coupon operations
     window.createCouponCode = () => {
       const code = document.getElementById('new-coupon-code').value.toUpperCase().trim();
       const val = parseFloat(document.getElementById('new-coupon-val').value);
@@ -348,9 +473,9 @@
       if(!data) return;
       Object.entries(data).forEach(([code, c]) => {
         box.innerHTML += `
-          <div class="flex justify-between items-center bg-gray-50 p-2.5 rounded-xl text-xs">
-            <span class="font-extrabold text-black">${code} (${c.value}%)</span>
-            <button onclick="deleteCoupon('${code}')" class="text-red-500"><i class="fa-solid fa-circle-minus"></i></button>
+          <div class="flex justify-between items-center bg-gray-50 p-3.5 rounded-2xl text-xs font-bold">
+            <span class="text-black uppercase tracking-wider">${code} (${c.value}% OFF)</span>
+            <button onclick="deleteCoupon('${code}')" class="text-red-500 hover:text-red-600"><i class="fa-solid fa-circle-minus text-lg"></i></button>
           </div>
         `;
       });
@@ -362,4 +487,3 @@
   </script>
 </body>
 </html>
-
