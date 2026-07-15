@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nikate Nutritions</title>
+  <title>Nikate Admin Console</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,164 +12,232 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
       background-color: #ffffff; 
       color: #000000; 
+      min-height: 100vh;
     }
     .apple-card {
       background: #f5f5f7;
-      border-radius: 24px;
-      border: 1px solid rgba(0, 0, 0, 0.01);
+      border-radius: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease;
+    }
+    .apple-input {
+      background: #f5f5f7;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      transition: all 0.2s ease;
+    }
+    .apple-input:focus {
+      background: #ffffff;
+      border-color: #000000;
+      box-shadow: 0 0 0 1px #000000;
+    }
+    .pill-nav { 
+      background: rgba(255, 255, 255, 0.9); 
+      backdrop-filter: blur(20px); 
+      -webkit-backdrop-filter: blur(20px); 
+      border: 1px solid rgba(0, 0, 0, 0.06); 
     }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    
-    /* Smooth slide-up transition for the details drawer */
-    .detail-drawer {
-      transform: translateY(100%);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .detail-drawer.active {
-      transform: translateY(0);
-    }
   </style>
 </head>
-<body class="pb-24 antialiased">
+<body class="pb-32 antialiased selection:bg-black selection:text-white">
 
-  <!-- ================= TOP ACTION NAVIGATION ================= -->
-  <header class="sticky top-0 bg-white/80 backdrop-blur-md z-40 max-w-md mx-auto px-6 py-4 flex justify-between items-center border-b border-gray-100">
-    <div>
-      <h1 class="text-xl font-black tracking-tight">Nikate</h1>
-      <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Premium Supplements</p>
-    </div>
-    <div class="flex items-center gap-4">
-      <button onclick="toggleCart()" class="relative p-2 text-black">
-        <i class="fa-solid fa-bag-shopping text-xl"></i>
-        <span id="cart-count" class="absolute -top-1 -right-1 bg-black text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- ================= MAIN FRONT STOREFRONT ================= -->
-  <main class="max-w-md mx-auto px-6 mt-6 space-y-6">
-    
-    <!-- CATEGORY HORIZONTAL FILTER TRACK -->
-    <div class="flex gap-2 overflow-x-auto hide-scrollbar py-1">
-      <button onclick="filterCategory('all')" class="cat-chip px-4 py-2 bg-black text-white text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap" data-cat="all">All Items</button>
-      <button onclick="filterCategory('cat_01')" class="cat-chip px-4 py-2 bg-gray-100 text-gray-500 text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap" data-cat="cat_01">Whey Protein</button>
-      <button onclick="filterCategory('cat_02')" class="cat-chip px-4 py-2 bg-gray-100 text-gray-500 text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap" data-cat="cat_02">Creatine & Pre</button>
-      <button onclick="filterCategory('cat_03')" class="cat-chip px-4 py-2 bg-gray-100 text-gray-500 text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap" data-cat="cat_03">Vitamins</button>
-    </div>
-
-    <!-- MAIN PRODUCT SYSTEM GRID -->
-    <div id="store-grid" class="grid grid-cols-2 gap-4">
-      <!-- Generated dynamically by script framework -->
-    </div>
-  </main>
-
-  <!-- ================= FIXED SLIDE-UP PRODUCT DETAIL DRAWER ================= -->
-  <div id="detail-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 z-50" onclick="closeProductDetail()"></div>
-  
-  <div id="detail-drawer" class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white rounded-t-[32px] z-50 max-h-[90vh] overflow-y-auto hide-scrollbar detail-drawer border-t border-gray-100 shadow-2xl flex flex-col">
-    <div class="sticky top-0 bg-white px-6 py-4 flex justify-between items-center border-b border-gray-50 z-10">
-      <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Product Details</span>
-      <button onclick="closeProductDetail()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-black font-bold"><i class="fa-solid fa-xmark text-xs"></i></button>
-    </div>
-    
-    <div class="p-6 space-y-6 flex-1">
-      <div class="apple-card bg-gray-50 p-6 flex justify-center items-center h-56">
-        <img id="modal-img" src="" class="max-h-48 object-contain">
+  <!-- ================= SECURE AUTHENTICATION SCREEN ================= -->
+  <div id="login-screen" class="fixed inset-0 z-[999] flex items-center justify-center p-6 bg-white">
+    <div class="w-full max-w-sm space-y-8">
+      <div class="text-center">
+        <div class="inline-flex w-14 h-14 bg-black text-white text-xl rounded-2xl items-center justify-center mb-4">💊</div>
+        <h2 class="text-3xl font-black tracking-tight text-black">Nikate Admin</h2>
+        <p class="text-xs text-gray-400 font-medium mt-1">Authorized Store Access Terminal</p>
       </div>
-      <div>
-        <h2 id="modal-name" class="text-2xl font-black tracking-tight leading-tight">Product Title</h2>
-        <p id="modal-price" class="text-xl font-bold text-black mt-2">₹0</p>
-      </div>
-      <div class="border-t border-gray-100 pt-4">
-        <h4 class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Formula Profile & Specs</h4>
-        <p id="modal-desc" class="text-xs text-gray-600 leading-relaxed font-medium whitespace-pre-line">Description details live here.</p>
-      </div>
-    </div>
 
-    <!-- ACTION BUTTON & REVIEWS WRAPPER (BELOW ADD CART BUTTON) -->
-    <div class="p-6 bg-white border-t border-gray-100 pb-8 space-y-6">
-      <button id="modal-action-btn" class="w-full py-4 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:opacity-90 transition-opacity"></button>
+      <div class="bg-red-50 text-red-600 text-xs font-bold p-3.5 rounded-xl text-center hidden" id="errorMsg"></div>
       
-      <!-- COMMUNITY FEEDBACK SPACE -->
-      <div class="border-t border-gray-100 pt-5 space-y-3">
-        <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest block">User Reviews & Feedback</span>
-        
-        <!-- Live Comments Feed Container -->
-        <div id="modal-reviews-feed" class="space-y-2.5 max-h-40 overflow-y-auto hide-scrollbar">
-          <!-- Populated dynamically -->
+      <div class="space-y-4 pt-2">
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Corporate Email</label>
+          <input class="w-full px-4 py-3.5 apple-input outline-none text-sm font-medium text-black" id="email" type="email" placeholder="admin@example.com">
         </div>
-        
-        <!-- Review Input Interface -->
-        <div class="flex gap-2 pt-1">
-          <input type="text" id="review-input" placeholder="Share your experience..." class="flex-1 px-3.5 py-2.5 bg-gray-50 border border-gray-150 rounded-xl text-xs font-medium outline-none text-black placeholder:text-gray-400">
-          <button onclick="submitProductReview()" class="px-4 py-2.5 bg-black text-white text-xs font-bold rounded-xl uppercase tracking-wider hover:opacity-90 transition-opacity">Post</button>
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-1.5">Security Password</label>
+          <input class="w-full px-4 py-3.5 apple-input outline-none text-sm font-medium text-black" id="password" type="password" placeholder="••••••••">
+        </div>
+        <button class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity mt-2" id="loginBtn">Authenticate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MASTER DASHBOARD TERMINAL (MOBILE-FIRST) ================= -->
+  <div id="dashboard-screen" class="hidden">
+    
+    <!-- EXECUTIVE TOP NAV BAR -->
+    <header class="max-w-md mx-auto px-6 pt-6 flex justify-between items-center border-b border-gray-100 pb-5">
+      <div>
+        <h1 class="text-2xl font-black tracking-tight text-black">Console</h1>
+        <p id="page-subtitle" class="text-[9px] text-gray-400 font-black uppercase tracking-widest mt-0.5">Operational Pipeline</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="shop-toggle-btn" onclick="toggleStoreStatus()" class="px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5">Checking...</button>
+      </div>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <main class="max-w-md mx-auto px-6 mt-6">
+      
+      <!-- TAB 1: OPERATIONAL PIPELINE (ORDERS) -->
+      <section id="view-orders" class="dash-view space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-bolt mr-1.5 text-black"></i>Customer Queues</h3>
+          <span class="text-xs font-black text-black">Active: <span id="stat-orders">0</span></span>
+        </div>
+        <div id="orders-list" class="space-y-4"></div>
+      </section>
+
+      <!-- TAB 2: PRODUCT ASSET CATALOG -->
+      <section id="view-catalog" class="dash-view hidden space-y-4">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-boxes-stacked mr-1.5 text-black"></i>Product Assets</h3>
+          <button onclick="openProductModal()" class="px-4 py-2 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider hover:opacity-90 transition-opacity"><i class="fa-solid fa-plus mr-1"></i> Add Asset</button>
+        </div>
+        <div id="products-list" class="space-y-3"></div>
+      </section>
+
+      <!-- TAB 3: PROMO ENGINE (COUPONS) -->
+      <section id="view-coupons" class="dash-view hidden space-y-6">
+        <div class="space-y-4">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-tag mr-1.5 text-black"></i>Create Promo Rule</h3>
+          <div class="space-y-3">
+            <input type="text" id="new-coupon-code" placeholder="PROMO CODE (E.G. FIT20)" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-bold uppercase tracking-wide text-black">
+            <input type="number" id="new-coupon-val" placeholder="Discount Percentage (%)" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-bold text-black">
+            <button onclick="createCouponCode()" class="w-full py-3.5 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-opacity hover:opacity-90">Activate Promo</button>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Promo Configurations</h3>
+          <div id="coupons-list" class="space-y-2"></div>
+        </div>
+      </section>
+
+      <!-- TAB 4: CLIENT INBOX (CHATS) -->
+      <section id="view-chats" class="dash-view hidden space-y-4">
+        <div class="space-y-4">
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider"><i class="fa-solid fa-users mr-1.5 text-black"></i>Active User Rooms</h3>
+          <div id="chats-queue" class="space-y-2 max-h-[360px] overflow-y-auto hide-scrollbar"></div>
+        </div>
+
+        <!-- Pop-up overlay for Active Chat Window -->
+        <div id="admin-chat-box" class="hidden fixed inset-0 bg-white z-[150] flex flex-col">
+          <div class="bg-black text-white p-4 flex justify-between items-center">
+            <div>
+              <h4 id="active-chat-title" class="font-bold text-sm">Active Thread</h4>
+              <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Secure Customer Support Link</p>
+            </div>
+            <button onclick="closeAdminChat()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20"><i class="fa-solid fa-xmark text-sm"></i></button>
+          </div>
+          <div id="admin-messages-box" class="p-4 flex-1 overflow-y-auto space-y-3 text-xs bg-gray-50 hide-scrollbar"></div>
+          <div class="p-3 bg-white border-t border-gray-100 flex gap-2 items-center pb-8">
+            <input type="text" id="admin-chat-input" placeholder="Type transmission response..." class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs outline-none font-semibold text-black">
+            <button onclick="sendAdminReply()" class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center hover:opacity-90 transition-opacity"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: SYSTEM TERMINAL -->
+      <section id="view-system" class="dash-view hidden space-y-6">
+        <div>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3"><i class="fa-solid fa-gears mr-1.5 text-black"></i>System Parameters</h3>
+          <div class="apple-card p-5 space-y-4 border border-gray-100">
+            <div>
+              <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Active Database Node</p>
+              <p class="font-bold text-xs text-black mt-1">nikte-nutritions-default-rtdb</p>
+            </div>
+            <div class="border-t border-gray-100 pt-4">
+              <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-2">Platform Power State</p>
+              <button id="system-toggle-wide" onclick="toggleStoreStatus()" class="w-full py-3 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider">Toggle Operational Power</button>
+            </div>
+          </div>
+        </div>
+        <button id="logoutBtn" class="w-full py-4 bg-red-50 text-red-600 border border-red-100 font-bold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center gap-2 hover:bg-red-100/50 transition-colors"><i class="fa-solid fa-right-from-bracket text-xs"></i> Shut Down Session</button>
+      </section>
+
+    </main>
+
+    <!-- ================= FLOATING NAV PILL DRAWER ================= -->
+    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm pill-nav rounded-2xl px-1 py-2.5 shadow-xl z-50 flex justify-between items-center">
+      <button onclick="switchTab('orders')" class="nav-btn text-black flex flex-col items-center flex-1 py-1" data-tab="orders">
+        <i class="fa-solid fa-box text-base"></i>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Pipeline</span>
+      </button>
+      <button onclick="switchTab('catalog')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="catalog">
+        <i class="fa-solid fa-list text-base"></i>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Catalog</span>
+      </button>
+      <button onclick="switchTab('coupons')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="coupons">
+        <i class="fa-solid fa-tags text-base"></i>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Promo</span>
+      </button>
+      <button onclick="switchTab('chats')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1 relative" data-tab="chats">
+        <i class="fa-solid fa-comments text-base"></i>
+        <span id="chat-alert-dot" class="w-1.5 h-1.5 rounded-full bg-black absolute top-1 right-6 hidden animate-pulse"></span>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">Inbox</span>
+      </button>
+      <button onclick="switchTab('system')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="system">
+        <i class="fa-solid fa-sliders text-base"></i>
+        <span class="text-[8px] mt-1 font-black uppercase tracking-wider">System</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- ================= ASSET EDIT/ADD POPUP INTERFACE MODAL ================= -->
+  <div id="prod-modal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-md z-[200] flex items-center justify-center p-4">
+    <div class="bg-white p-6 rounded-3xl w-full max-w-sm space-y-4 border border-gray-100">
+      <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+        <h3 id="modal-title" class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Database Entry Setup</h3>
+        <button onclick="closeProductModal()" class="text-gray-400 hover:text-black"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <input type="hidden" id="prod-id" value="">
+      
+      <div class="space-y-3">
+        <div>
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Product Designation Name</label>
+          <input type="text" id="prod-name" class="w-full px-4 py-3 apple-input text-xs font-semibold text-black outline-none">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Price Value (INR)</label>
+            <input type="number" id="prod-price" class="w-full px-4 py-3 apple-input text-xs font-bold text-black outline-none">
+          </div>
+          <div>
+            <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Operational Category</label>
+            <select id="prod-cat" class="w-full px-4 py-3 apple-input text-xs font-bold text-black outline-none appearance-none">
+              <option value="cat_01">Whey Protein</option>
+              <option value="cat_02">Creatine & Pre</option>
+              <option value="cat_03">Vitamins</option>
+              <option value="cat_04">Gainers</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Direct Cloud Image URI Link</label>
+          <input type="text" id="prod-img" class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none">
+        </div>
+        <div>
+          <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Full Client Specifications</label>
+          <textarea id="prod-desc" rows="4" placeholder="Detail supplement formula parameters, verified purity components..." class="w-full px-4 py-3 apple-input text-xs font-medium text-black outline-none resize-none hide-scrollbar"></textarea>
         </div>
       </div>
+
+      <button onclick="saveProduct()" class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider mt-2 hover:opacity-90 transition-opacity">Commit Database Sync</button>
     </div>
   </div>
 
-  <!-- ================= FLEXIBLE CHECKOUT SHOPPING BAG DRAWER ================= -->
-  <div id="cart-drawer" class="hidden fixed inset-0 bg-white z-50 flex flex-col">
-    <div class="p-6 flex justify-between items-center border-b border-gray-100">
-      <div>
-        <h3 class="font-black text-lg">Your Bag</h3>
-        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Secure Checkout Pipeline</p>
-      </div>
-      <button onclick="toggleCart()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-black"><i class="fa-solid fa-xmark text-xs"></i></button>
-    </div>
-    
-    <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4 hide-scrollbar"></div>
-
-    <div class="p-6 bg-white border-t border-gray-100 space-y-4 pb-8">
-      <div class="flex gap-2">
-        <input type="text" id="coupon-input" placeholder="PROMO CODE" class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold tracking-wider text-black uppercase outline-none">
-        <button onclick="applyPromoCode()" class="px-4 py-3 bg-black text-white text-xs font-bold rounded-xl uppercase tracking-wider">Apply</button>
-      </div>
-      <div class="space-y-1 text-xs font-bold border-b border-gray-100 pb-3">
-        <div class="flex justify-between text-gray-400"><span>Bag Subtotal</span><span id="cart-subtotal">₹0</span></div>
-        <div class="flex justify-between text-red-500 hidden" id="promo-row"><span>Promo Discount</span><span id="cart-discount">-₹0</span></div>
-        <div class="flex justify-between text-black text-sm font-black pt-1"><span>Order Total</span><span id="cart-total">₹0</span></div>
-      </div>
-      <div class="space-y-2">
-        <input type="text" id="cust-name" placeholder="Full Name" class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold text-black outline-none">
-        <input type="tel" id="cust-phone" placeholder="Phone Number" class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold text-black outline-none">
-        <input type="text" id="cust-addr" placeholder="Shipping Logistics Target Address" class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold text-black outline-none">
-      </div>
-      <button onclick="submitOrder()" class="w-full py-4 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl">Transmit Secure Order</button>
-    </div>
-  </div>
-
-  <!-- ================= LIVE CHAT EMBED SYSTEM ================= -->
-  <button onclick="toggleChat()" class="fixed bottom-6 right-6 w-12 h-12 bg-black text-white rounded-full shadow-2xl z-40 flex items-center justify-center"><i class="fa-solid fa-comment text-lg"></i></button>
-
-  <div id="chat-window" class="hidden fixed inset-0 bg-white z-50 flex flex-col">
-    <div class="bg-black text-white p-5 flex justify-between items-center">
-      <div>
-        <h4 class="font-bold text-sm">Nikate Concierge Support</h4>
-        <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Secure Matrix Encryption Routing</p>
-      </div>
-      <button onclick="toggleChat()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white"><i class="fa-solid fa-xmark text-sm"></i></button>
-    </div>
-    
-    <div id="chat-setup" class="p-6 space-y-4 my-auto max-w-sm mx-auto w-full">
-      <h3 class="text-center font-black text-base">Initialize Support Tunnel</h3>
-      <input type="text" id="chat-name" placeholder="Enter Full Name" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold text-black outline-none">
-      <input type="tel" id="chat-phone" placeholder="Enter Contact Number" class="w-full px-4 py-3.5 bg-gray-50 border border-gray-100 rounded-xl text-xs font-semibold text-black outline-none">
-      <button onclick="connectSupport()" class="w-full py-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-wider">Establish Link</button>
-    </div>
-
-    <div id="chat-messages" class="hidden flex-1 p-4 bg-gray-50 overflow-y-auto space-y-3 text-xs hide-scrollbar"></div>
-    <div id="chat-input-bar" class="hidden p-3 bg-white border-t border-gray-100 flex gap-2 pb-8">
-      <input type="text" id="user-msg-input" placeholder="Type query details..." class="flex-1 px-4 py-3 bg-gray-50 rounded-xl text-xs font-medium outline-none text-black">
-      <button onclick="sendChatMessage()" class="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center"><i class="fa-solid fa-paper-plane text-xs"></i></button>
-    </div>
-  </div>
-
-  <!-- ================= CORE DATABASE ENGINE ARCHITECTURE ================= -->
+  <!-- ================= CORE FRAMEWORK EXECUTION MODULE ================= -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-    import { getDatabase, ref, onValue, set, push } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import { getDatabase, ref, onValue, update, push, set, remove } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDF6_9adRR6L_OFlqEVxXWhD1vzu5s-rdQ",
@@ -182,322 +250,320 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // Dynamic state management caches
-    let productsCache = {};
-    let globalCoupons = {};
-    let cart = [];
-    let currentFilter = 'all';
-    let userChatRoomId = localStorage.getItem('chatRoomId') || null;
-    let appliedDiscountPercent = 0;
-    let activeProductId = null; // Track currently open modal asset
+    let storeOpen = true;
+    let selectedChatId = null;
 
-    // ================= DYNAMIC DOM STREAM RECEIVER =================
-    onValue(ref(db, 'products'), (snap) => {
-      productsCache = snap.val() || {};
-      renderGrid();
-      
-      // Real-time update inside the open detail view if a review is added
-      if (activeProductId && document.getElementById('detail-drawer').classList.contains('active')) {
-        renderModalReviews(activeProductId);
-      }
-    });
-
-    onValue(ref(db, 'coupons'), (snap) => {
-      globalCoupons = snap.val() || {};
-    });
-
-    function renderGrid() {
-      const grid = document.getElementById('store-grid');
-      grid.innerHTML = '';
-      
-      Object.entries(productsCache).forEach(([id, prod]) => {
-        if (currentFilter !== 'all' && prod.categoryId !== currentFilter) return;
-        
-        grid.innerHTML += `
-          <div class="apple-card p-4 flex flex-col bg-gray-50/50 justify-between">
-            <div onclick="openProductDetail('${id}')" class="cursor-pointer">
-              <div class="bg-white rounded-2xl p-4 flex justify-center items-center h-32 border border-gray-100">
-                <img src="${prod.image}" class="max-h-24 object-contain">
-              </div>
-              <h3 class="font-bold text-xs mt-3 text-black leading-tight line-clamp-2">${prod.name}</h3>
-            </div>
-            <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
-              <span class="font-black text-xs">₹${prod.price}</span>
-              ${prod.inStock ? `
-                <button onclick="openProductDetail('${id}')" class="w-7 h-7 bg-black text-white rounded-lg flex items-center justify-center text-[10px]"><i class="fa-solid fa-arrow-right"></i></button>
-              ` : `
-                <span class="text-[8px] text-red-500 font-bold uppercase tracking-wider">Void</span>
-              `}
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    // ================= SECURE PRODUCT DETAIL ACTION LOGIC =================
-    window.openProductDetail = (id) => {
-      const prod = productsCache[id];
-      if (!prod) return;
-      
-      activeProductId = id; // Set focus configuration target
-
-      document.getElementById('modal-img').src = prod.image;
-      document.getElementById('modal-name').textContent = prod.name;
-      document.getElementById('modal-price').textContent = `₹${prod.price}`;
-      document.getElementById('modal-desc').textContent = prod.description || 'No direct active specifications provided.';
-      document.getElementById('review-input').value = '';
-      
-      // Render existing comments
-      renderModalReviews(id);
-      
-      const btn = document.getElementById('modal-action-btn');
-      if(prod.inStock) {
-        btn.textContent = "Secure to Shopping Bag";
-        btn.className = "w-full py-4 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:opacity-90";
-        btn.onclick = () => { addToCart(id); closeProductDetail(); };
+    // ================= SECURITY VERIFICATION PIPELINE =================
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('dashboard-screen').style.display = 'block';
+        loadDashboardData();
       } else {
-        btn.textContent = "Out of Stock Allocation";
-        btn.className = "w-full py-4 bg-gray-100 text-gray-400 text-xs font-bold uppercase tracking-wider rounded-xl cursor-not-allowed";
-        btn.onclick = null;
+        document.getElementById('login-screen').style.display = 'flex';
+        document.getElementById('dashboard-screen').style.display = 'none';
       }
+    });
 
-      document.getElementById('detail-overlay').classList.add('opacity-100', 'pointer-events-auto');
-      document.getElementById('detail-drawer').classList.add('active');
-    };
-
-    window.closeProductDetail = () => {
-      document.getElementById('detail-overlay').classList.remove('opacity-100', 'pointer-events-auto');
-      document.getElementById('detail-drawer').classList.remove('active');
-      activeProductId = null;
-    };
-
-    // Render active product comments
-    function renderModalReviews(id) {
-      const prod = productsCache[id];
-      const feed = document.getElementById('modal-reviews-feed');
-      if (!prod || !feed) return;
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorMsg = document.getElementById('errorMsg');
+      const btn = document.getElementById('loginBtn');
       
-      feed.innerHTML = '';
-      if (prod.reviews) {
-        // Show newest comment first
-        Object.values(prod.reviews).reverse().forEach(rev => {
-          feed.innerHTML += `
-            <div class="bg-gray-50 p-3 rounded-xl space-y-0.5 border border-gray-100/60">
-              <div class="flex justify-between items-center">
-                <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider">Community User</span>
-                <span class="text-[8px] text-gray-400 font-semibold">${new Date(rev.timestamp).toLocaleDateString()}</span>
+      if(!email || !password) { 
+        errorMsg.textContent = 'Required validation parameters missing.'; 
+        errorMsg.classList.remove('hidden'); 
+        return; 
+      }
+      btn.textContent = "Processing Authorization..."; btn.disabled = true;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        btn.textContent = "Authenticate"; btn.disabled = false;
+        errorMsg.classList.add('hidden');
+      } catch(error) {
+        errorMsg.textContent = 'Invalid credentials. Access Denied.';
+        errorMsg.classList.remove('hidden');
+        btn.textContent = "Authenticate"; btn.disabled = false;
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+
+    // ================= INTERFACE PILL SWITCH SYSTEM =================
+    window.switchTab = (tabId) => {
+      document.querySelectorAll('.dash-view').forEach(v => v.classList.add('hidden'));
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+      
+      document.querySelectorAll('nav button').forEach(btn => {
+        if(btn.dataset.tab === tabId) {
+          btn.classList.add('text-black');
+          btn.classList.remove('text-gray-400');
+        } else {
+          btn.classList.remove('text-black');
+          btn.classList.add('text-gray-400');
+        }
+      });
+      const titles = { 
+        orders: 'Operational Pipeline', 
+        catalog: 'Product Asset Catalog', 
+        coupons: 'Promo Engine Room', 
+        chats: 'Communications Inbox',
+        system: 'System Configuration'
+      };
+      document.getElementById('page-subtitle').textContent = titles[tabId];
+    };
+
+    window.toggleStoreStatus = () => update(ref(db, 'shopStatus'), { isOpen: !storeOpen });
+
+    // ================= LIVE DATABASE LISTENERS =================
+    function loadDashboardData() {
+      // 1. Operational Engine Status
+      onValue(ref(db, 'shopStatus'), (snap) => {
+        const data = snap.val();
+        if(data) {
+          storeOpen = data.isOpen;
+          const btn = document.getElementById('shop-toggle-btn');
+          const wideBtn = document.getElementById('system-toggle-wide');
+          
+          btn.textContent = storeOpen ? 'STORE: ACTIVE' : 'STORE: PAUSED';
+          btn.className = storeOpen 
+            ? "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black text-white flex items-center gap-1.5"
+            : "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-red-50 text-red-600 border border-red-100 flex items-center gap-1.5";
+            
+          wideBtn.textContent = storeOpen ? 'DEACTIVATE STORE FRONT' : 'ACTIVATE STORE FRONT';
+          wideBtn.className = storeOpen
+            ? "w-full py-3 bg-red-50 border border-red-100 text-red-600 text-[10px] font-bold rounded-xl uppercase tracking-wider"
+            : "w-full py-3 bg-black text-white text-[10px] font-bold rounded-xl uppercase tracking-wider";
+        }
+      });
+
+      // 2. Order System Engine
+      onValue(ref(db, 'orders'), (snap) => {
+        const data = snap.val();
+        const list = document.getElementById('orders-list');
+        list.innerHTML = '';
+        if(!data) { 
+          document.getElementById('stat-orders').textContent = '0';
+          list.innerHTML = `<p class="text-xs text-gray-400 font-bold py-12 text-center apple-card bg-gray-50 border border-gray-100">Operational active pipeline empty.</p>`; 
+          return; 
+        }
+        
+        const arr = Object.entries(data);
+        document.getElementById('stat-orders').textContent = arr.length;
+        
+        arr.reverse().forEach(([id, order]) => {
+          let items = order.items.map(i => `${i.name} (x${i.qty})`).join(', ');
+          
+          // Badge colors based on status
+          let badgeColor = "text-yellow-600 bg-yellow-50";
+          if(order.status === 'preparing') badgeColor = "text-blue-600 bg-blue-50";
+          if(order.status === 'shipping') badgeColor = "text-purple-600 bg-purple-50";
+          if(order.status === 'shipped') badgeColor = "text-black bg-gray-100";
+          if(order.status === 'declined') badgeColor = "text-red-600 bg-red-50";
+
+          list.innerHTML += `
+            <div class="p-5 border border-gray-100 rounded-2xl bg-white shadow-sm">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h4 class="font-black text-xs text-black">${order.customerName}</h4>
+                  <p class="text-[9px] text-gray-400 font-semibold mt-0.5">${order.customerPhone}</p>
+                  <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-1">UID: #${id.slice(-6).toUpperCase()}</p>
+                </div>
+                <span class="px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider ${badgeColor}">${order.status}</span>
               </div>
-              <p class="text-xs text-black font-medium leading-relaxed">${rev.text}</p>
+              <div class="mt-3 space-y-1.5 border-t border-b border-gray-50 py-2.5 my-2.5">
+                <p class="text-[11px] text-gray-600 font-medium"><strong>Manifest:</strong> ${items}</p>
+                <p class="text-[11px] text-gray-600 font-medium"><strong>Logistics Target:</strong> ${order.address}</p>
+              </div>
+              <div class="flex justify-between items-center mt-4">
+                <span class="font-black text-sm text-black">₹${order.totalAmount}</span>
+                
+                <!-- ALL OPTIONS ACCESSIBLE AT ONCE VIA DROPDOWN SELECTOR -->
+                <div class="relative flex items-center">
+                  <select onchange="updateStatus('${id}', this.value)" class="pl-3 pr-8 py-1.5 bg-gray-50 border border-gray-200 text-black text-[10px] font-black uppercase tracking-wider rounded-xl outline-none appearance-none cursor-pointer focus:bg-white focus:border-black transition-all">
+                    <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>⏳ Pending</option>
+                    <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>📦 Preparing</option>
+                    <option value="shipping" ${order.status === 'shipping' ? 'selected' : ''}>🚚 Shipping</option>
+                    <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>✅ Shipped</option>
+                    <option value="declined" ${order.status === 'declined' ? 'selected' : ''}>❌ Declined</option>
+                  </select>
+                  <div class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[8px] text-gray-400">
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                </div>
+
+              </div>
             </div>
           `;
         });
-      } else {
-        feed.innerHTML = `<p class="text-[10px] text-gray-400 font-bold italic py-2 pl-1">No active reviews filed yet.</p>`;
-      }
-    }
-
-    // Handle posting a new public review
-    window.submitProductReview = () => {
-      const input = document.getElementById('review-input');
-      const text = input.value.trim();
-      if (!text || !activeProductId) return;
-
-      set(push(ref(db, `products/${activeProductId}/reviews`)), {
-        text: text,
-        timestamp: Date.now()
-      }).then(() => {
-        input.value = '';
       });
-    };
 
-    // ================= CATEGORY SEGMENT FILTERS =================
-    window.filterCategory = (catId) => {
-      currentFilter = catId;
-      document.querySelectorAll('.cat-chip').forEach(btn => {
-        if(btn.dataset.cat === catId) {
-          btn.className = "cat-chip px-4 py-2 bg-black text-white text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap";
-        } else {
-          btn.className = "cat-chip px-4 py-2 bg-gray-100 text-gray-500 text-xs font-bold rounded-full uppercase tracking-wider whitespace-nowrap";
+      // 3. Products Manifest Pipeline
+      onValue(ref(db, 'products'), (snap) => {
+        const data = snap.val();
+        const list = document.getElementById('products-list');
+        list.innerHTML = '';
+        if(!data) return;
+
+        Object.entries(data).forEach(([id, prod]) => {
+          const safeName = prod.name.replace(/'/g, "\\'");
+          const safeDesc = (prod.description || '').replace(/'/g, "\\'").replace(/\n/g, "\\n");
+
+          list.innerHTML += `
+            <div class="p-4 apple-card flex justify-between items-center bg-gray-50/50">
+              <div class="flex items-center gap-3">
+                <img src="${prod.image}" class="w-12 h-12 object-contain rounded-xl bg-white border border-gray-100 p-1">
+                <div>
+                  <h4 class="font-black text-[11px] text-black leading-tight">${prod.name}</h4>
+                  <p class="text-[9px] text-gray-400 font-bold mt-1">₹${prod.price} <span class="mx-1 text-gray-200">•</span> ${prod.categoryId || 'NONE'}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="toggleStock('${id}', ${!prod.inStock})" class="px-2 py-1 rounded text-[8px] font-black uppercase tracking-wide ${prod.inStock ? 'bg-white text-black border border-gray-200' : 'bg-red-50 text-red-500'}">${prod.inStock ? 'In Stock' : 'Void'}</button>
+                <button onclick="editProduct('${id}', '${safeName}', ${prod.price}, '${prod.image}', '${prod.categoryId || ''}', '${safeDesc}')" class="w-7 h-7 bg-white border border-gray-150 text-black rounded-lg flex justify-center items-center"><i class="fa-solid fa-pen text-[9px]"></i></button>
+                <button onclick="deleteProduct('${id}')" class="w-7 h-7 bg-white border border-gray-150 text-red-500 rounded-lg flex justify-center items-center"><i class="fa-solid fa-trash text-[9px]"></i></button>
+              </div>
+            </div>
+          `;
+        });
+      });
+
+      // 4. Coupon Matrix Rules
+      onValue(ref(db, 'coupons'), (snap) => {
+        const data = snap.val();
+        const box = document.getElementById('coupons-list');
+        box.innerHTML = '';
+        if(!data) {
+          box.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50">No active promo rules deployed.</p>`;
+          return;
         }
-      });
-      renderGrid();
-    };
-
-    // ================= SHOPPING CART LOGIC MATRIX =================
-    function addToCart(id) {
-      const exist = cart.find(i => i.id === id);
-      if(exist) exist.qty += 1;
-      else cart.push({ id, name: productsCache[id].name, price: productsCache[id].price, qty: 1 });
-      updateCartBadge();
-    }
-
-    window.updateQty = (id, delta) => {
-      const match = cart.find(i => i.id === id);
-      if(!match) return;
-      match.qty += delta;
-      if(match.qty <= 0) cart = cart.filter(i => i.id !== id);
-      updateCartBadge();
-      renderCartItems();
-    };
-
-    function updateCartBadge() {
-      const count = cart.reduce((acc, i) => acc + i.qty, 0);
-      const badge = document.getElementById('cart-count');
-      if(count > 0) { badge.textContent = count; badge.classList.remove('hidden'); }
-      else badge.classList.add('hidden');
-    }
-
-    window.toggleCart = () => {
-      const drawer = document.getElementById('cart-drawer');
-      drawer.classList.toggle('hidden');
-      if(!drawer.classList.contains('hidden')) renderCartItems();
-    };
-
-    function renderCartItems() {
-      const container = document.getElementById('cart-items');
-      container.innerHTML = '';
-      let subtotal = 0;
-      
-      if(cart.length === 0) {
-        container.innerHTML = `<p class="text-xs text-gray-400 font-bold text-center pt-24">Your shopping bag allocation is empty.</p>`;
-        calculatePricing(0);
-        return;
-      }
-
-      cart.forEach(item => {
-        subtotal += item.price * item.qty;
-        container.innerHTML += `
-          <div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl">
-            <div class="flex-1 pr-4">
-              <h4 class="font-bold text-xs text-black leading-snug">${item.name}</h4>
-              <p class="text-[10px] text-gray-400 font-bold mt-1">₹${item.price}</p>
+        Object.entries(data).forEach(([code, c]) => {
+          box.innerHTML += `
+            <div class="flex justify-between items-center bg-gray-50 border border-gray-100 p-3.5 rounded-xl text-xs font-bold">
+              <span class="text-black uppercase tracking-wide">${code} <span class="text-gray-400 font-semibold ml-2">(${c.value}% OFF)</span></span>
+              <button onclick="remove(ref(db, 'coupons/${code}'))" class="text-red-500 hover:text-red-600 p-1"><i class="fa-solid fa-trash-can"></i></button>
             </div>
-            <div class="flex items-center gap-3 bg-white px-3 py-1.5 rounded-xl border border-gray-150 text-xs font-bold">
-              <button onclick="updateQty('${item.id}', -1)" class="text-gray-400">-</button>
-              <span class="text-black">${item.qty}</span>
-              <button onclick="updateQty('${item.id}', 1)" class="text-black">+</button>
-            </div>
-          </div>
-        `;
+          `;
+        });
       });
-      calculatePricing(subtotal);
-    }
 
-    function calculatePricing(subtotal) {
-      let discount = 0;
-      if (appliedDiscountPercent > 0) {
-        discount = Math.round(subtotal * (appliedDiscountPercent / 100));
-        document.getElementById('promo-row').classList.remove('hidden');
-      } else {
-        document.getElementById('promo-row').classList.add('hidden');
-      }
-      
-      const total = subtotal - discount;
-      document.getElementById('cart-subtotal').textContent = `₹${subtotal}`;
-      document.getElementById('cart-discount').textContent = `-₹${discount}`;
-      document.getElementById('cart-total').textContent = `₹${total}`;
-    }
-
-    window.applyPromoCode = () => {
-      const code = document.getElementById('coupon-input').value.toUpperCase().trim();
-      if(globalCoupons[code] && globalCoupons[code].isActive) {
-        appliedDiscountPercent = globalCoupons[code].value;
-        alert(`Promo verified: ${appliedDiscountPercent}% discount processing active.`);
-        renderCartItems();
-      } else {
-        appliedDiscountPercent = 0;
-        alert("Invalid or expired configuration promo key.");
-        renderCartItems();
-      }
-    };
-
-    window.submitOrder = () => {
-      const name = document.getElementById('cust-name').value.trim();
-      const phone = document.getElementById('cust-phone').value.trim();
-      const addr = document.getElementById('cust-addr').value.trim();
-      
-      if(!name || !phone || !addr || cart.length === 0) {
-        return alert("Missing explicit validation profile configurations.");
-      }
-
-      const total = parseInt(document.getElementById('cart-total').textContent.replace('₹', ''));
-      const orderPayload = {
-        customerName: name,
-        customerPhone: phone,
-        address: addr,
-        items: cart,
-        totalAmount: total,
-        status: 'pending',
-        timestamp: Date.now()
-      };
-
-      set(push(ref(db, 'orders')), orderPayload).then(() => {
-        alert("Order data transmitted and locked into deployment console successfully!");
-        cart = [];
-        appliedDiscountPercent = 0;
-        updateCartBadge();
-        toggleCart();
-      });
-    };
-
-    // ================= CLIENT CUSTOMER INBOX SYSTEM =================
-    window.toggleChat = () => document.getElementById('chat-window').classList.toggle('hidden');
-
-    window.connectSupport = () => {
-      const name = document.getElementById('chat-name').value.trim();
-      const phone = document.getElementById('chat-phone').value.trim();
-      if(!name || !phone) return alert("Required parameters missing.");
-
-      const newRoomRef = push(ref(db, 'chats'));
-      userChatRoomId = newRoomRef.key;
-      localStorage.setItem('chatRoomId', userChatRoomId);
-
-      set(ref(db, `chats/${userChatRoomId}/customerInfo`), { name, phone }).then(() => {
-        initializeLiveChat();
-      });
-    };
-
-    function initializeLiveChat() {
-      if(!userChatRoomId) return;
-      document.getElementById('chat-setup').classList.add('hidden');
-      document.getElementById('chat-messages').classList.remove('hidden');
-      document.getElementById('chat-input-bar').classList.remove('hidden');
-
-      onValue(ref(db, `chats/${userChatRoomId}/messages`), (snap) => {
-        const container = document.getElementById('chat-messages');
-        container.innerHTML = '';
-        if(!snap.val()) return;
+      // 5. Communications Sync Matrix
+      onValue(ref(db, 'chats'), (snap) => {
+        const data = snap.val();
+        const list = document.getElementById('chats-queue');
+        const dot = document.getElementById('chat-alert-dot');
+        list.innerHTML = '';
         
+        if(!data) { dot.classList.add('hidden'); return; }
+        dot.classList.remove('hidden');
+
+        Object.entries(data).forEach(([key, val]) => {
+          const info = val.customerInfo;
+          if(!info) return;
+          list.innerHTML += `
+            <button onclick="openAdminChat('${key}', '${info.name}')" class="w-full text-left p-4 bg-gray-50 border border-gray-100 hover:bg-gray-100 rounded-xl flex items-center justify-between transition-colors">
+              <div>
+                <p class="font-black text-xs text-black">${info.name}</p>
+                <p class="text-[9px] text-gray-400 font-bold tracking-wide mt-0.5">${info.phone}</p>
+              </div>
+              <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+            </button>
+          `;
+        });
+      });
+    }
+
+    // ================= DATA LOGIC HOOK OPERATIONS =================
+    window.updateStatus = (id, status) => update(ref(db, `orders/${id}`), { status });
+    window.toggleStock = (id, val) => update(ref(db, `products/${id}`), { inStock: val });
+    window.deleteProduct = (id) => { if(confirm('Delete product node permanently?')) remove(ref(db, `products/${id}`)); };
+
+    // Manifest Asset Control Modal Mechanics
+    window.openProductModal = () => {
+      document.getElementById('prod-id').value = '';
+      document.getElementById('prod-name').value = '';
+      document.getElementById('prod-price').value = '';
+      document.getElementById('prod-img').value = '';
+      document.getElementById('prod-desc').value = '';
+      document.getElementById('prod-modal').classList.remove('hidden');
+    };
+
+    window.editProduct = (id, name, price, image, cat, desc) => {
+      document.getElementById('prod-id').value = id;
+      document.getElementById('prod-name').value = name;
+      document.getElementById('prod-price').value = price;
+      document.getElementById('prod-img').value = image;
+      document.getElementById('prod-cat').value = cat;
+      document.getElementById('prod-desc').value = desc; 
+      document.getElementById('prod-modal').classList.remove('hidden');
+    };
+
+    window.closeProductModal = () => document.getElementById('prod-modal').classList.add('hidden');
+
+    window.saveProduct = () => {
+      const id = document.getElementById('prod-id').value;
+      const payload = {
+        name: document.getElementById('prod-name').value.trim(),
+        price: parseFloat(document.getElementById('prod-price').value),
+        image: document.getElementById('prod-img').value.trim() || 'https://images.unsplash.com/photo-1579758629938-03607ccdbaba?w=120',
+        categoryId: document.getElementById('prod-cat').value,
+        description: document.getElementById('prod-desc').value.trim(),
+        inStock: true
+      };
+      
+      if(!payload.name || isNaN(payload.price)) return alert("Requires primary designation and valid value parameters.");
+      if(id) update(ref(db, `products/${id}`), payload).then(closeProductModal);
+      else set(push(ref(db, 'products')), payload).then(closeProductModal);
+    };
+
+    // Promotion Rules Deletion/Creation Matrix
+    window.createCouponCode = () => {
+      const code = document.getElementById('new-coupon-code').value.toUpperCase().trim();
+      const val = parseFloat(document.getElementById('new-coupon-val').value);
+      if(!code || isNaN(val)) return;
+      set(ref(db, `coupons/${code}`), { discountType: "percentage", value: val, isActive: true }).then(() => {
+        document.getElementById('new-coupon-code').value = '';
+        document.getElementById('new-coupon-val').value = '';
+      });
+    };
+
+    // Customer Communications Channels
+    window.openAdminChat = (chatId, name) => {
+      selectedChatId = chatId;
+      document.getElementById('active-chat-title').textContent = `Room: ${name}`;
+      document.getElementById('admin-chat-box').classList.remove('hidden');
+      
+      onValue(ref(db, `chats/${chatId}/messages`), (snap) => {
+        const box = document.getElementById('admin-messages-box');
+        box.innerHTML = '';
+        if(!snap.val()) return;
         Object.values(snap.val()).forEach(msg => {
-          const isMe = msg.sender === 'customer';
-          container.innerHTML += `
-            <div class="flex ${isMe ? 'justify-end' : 'justify-start'}">
-              <div class="max-w-[80%] p-3 rounded-2xl ${isMe ? 'bg-black text-white rounded-br-none' : 'bg-gray-200 text-black rounded-bl-none'}">
+          const isCustomer = msg.sender === 'customer';
+          box.innerHTML += `
+            <div class="flex ${isCustomer ? 'justify-start' : 'justify-end'}">
+              <div class="max-w-[80%] p-3 rounded-2xl ${isCustomer ? 'bg-gray-250 text-black rounded-bl-none' : 'bg-black text-white rounded-br-none'}">
                 <p class="font-medium leading-relaxed">${msg.text}</p>
               </div>
             </div>
           `;
         });
-        container.scrollTop = container.scrollHeight;
+        box.scrollTop = box.scrollHeight;
       });
-    }
-
-    window.sendChatMessage = () => {
-      const input = document.getElementById('user-msg-input');
-      const text = input.value.trim();
-      if(!text || !userChatRoomId) return;
-
-      set(push(ref(db, `chats/${userChatRoomId}/messages`)), {
-        sender: 'customer',
-        text: text,
-        timestamp: Date.now()
-      });
-      input.value = '';
     };
-
-    if(userChatRoomId) initializeLiveChat();
+    
+    window.closeAdminChat = () => { document.getElementById('admin-chat-box').classList.add('hidden'); selectedChatId = null; };
+    
+    window.sendAdminReply = () => {
+      const inp = document.getElementById('admin-chat-input');
+      const text = inp.value.trim();
+      if(!text || !selectedChatId) return;
+      set(push(ref(db, `chats/${selectedChatId}/messages`)), { sender: 'admin', text: text, timestamp: Date.now() });
+      inp.value = '';
+    };
   </script>
 </body>
 </html>
