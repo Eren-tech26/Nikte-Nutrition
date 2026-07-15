@@ -149,52 +149,7 @@
       <div id="history-list" class="space-y-3"><p class="text-xs text-gray-400 font-bold py-4 text-center">No cached history nodes detected.</p></div>
     </div>
 
-    <!-- ================= VIEW 6: WRITE REVIEW SPACE ================= -->
-    <div id="view-reviews" class="view-tab hidden space-y-6">
-      <div>
-        <h3 class="text-2xl font-black tracking-tight text-black">Write Your Review</h3>
-        <p class="text-xs text-gray-400 font-medium">Share your experience with our products</p>
-      </div>
-
-      <div class="space-y-4">
-        <div>
-          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Select Product</label>
-          <select id="review-product" class="w-full px-4 py-3.5 apple-input text-xs font-semibold text-black outline-none">
-            <option value="">Choose a product...</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Your Name</label>
-          <input type="text" id="review-name" placeholder="Enter your name" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black">
-        </div>
-
-        <div>
-          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Rating (1-5 Stars)</label>
-          <div class="flex gap-3">
-            <button onclick="setRating(1)" class="rating-btn w-12 h-12 rounded-xl bg-gray-50 border-2 border-gray-100 text-black font-black text-lg hover:border-black transition-all" data-rating="1">1</button>
-            <button onclick="setRating(2)" class="rating-btn w-12 h-12 rounded-xl bg-gray-50 border-2 border-gray-100 text-black font-black text-lg hover:border-black transition-all" data-rating="2">2</button>
-            <button onclick="setRating(3)" class="rating-btn w-12 h-12 rounded-xl bg-gray-50 border-2 border-gray-100 text-black font-black text-lg hover:border-black transition-all" data-rating="3">3</button>
-            <button onclick="setRating(4)" class="rating-btn w-12 h-12 rounded-xl bg-gray-50 border-2 border-gray-100 text-black font-black text-lg hover:border-black transition-all" data-rating="4">4</button>
-            <button onclick="setRating(5)" class="rating-btn w-12 h-12 rounded-xl bg-gray-50 border-2 border-gray-100 text-black font-black text-lg hover:border-black transition-all" data-rating="5">5</button>
-          </div>
-          <p id="rating-display" class="text-xs text-gray-400 font-bold mt-2">No rating selected</p>
-        </div>
-
-        <div>
-          <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Your Review (Max 500 characters)</label>
-          <textarea id="review-text" placeholder="Share your honest feedback about this product..." rows="5" class="w-full px-4 py-3.5 apple-input text-xs outline-none font-semibold text-black resize-none h-32"></textarea>
-          <p id="char-count" class="text-[9px] text-gray-400 font-bold mt-1">0 / 500 characters</p>
-        </div>
-
-        <button onclick="submitReview()" class="w-full py-4 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity">Submit Review</button>
-      </div>
-
-      <div class="mt-8">
-        <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">All Customer Reviews</h4>
-        <div id="all-reviews" class="space-y-3"></div>
-      </div>
-    </div>
+  </main>
 
   <!-- ================= HIGH-END HIGH-CONTRAST AMAZON / APPLE PRODUCT DETAIL OVERLAY ================= -->
   <div id="product-detail-view" class="fixed inset-0 bg-white z-[100] hidden flex-col transform translate-y-full transition-transform duration-300">
@@ -240,24 +195,49 @@
           <p id="pd-desc" class="text-xs text-gray-600 leading-relaxed font-medium whitespace-pre-line bg-gray-50 p-4 rounded-2xl border border-gray-100/50"></p>
         </div>
         
+        <!-- WRITE YOUR OWN REVIEW SECTION -->
+        <div class="space-y-3 border-b border-gray-100 pb-6">
+          <h3 class="text-xs font-black text-black uppercase tracking-widest">Write Your Review</h3>
+          
+          <div class="space-y-3">
+            <div>
+              <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Your Name</label>
+              <input type="text" id="pd-review-name" placeholder="Enter your name" class="w-full px-4 py-2.5 apple-input text-xs outline-none font-semibold text-black">
+            </div>
+
+            <div>
+              <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Your Rating</label>
+              <div class="flex gap-2">
+                <button onclick="setPDRating(1)" class="pd-rating-btn w-10 h-10 rounded-lg bg-gray-50 border-2 border-gray-100 text-black font-black text-sm hover:border-black transition-all" data-rating="1">⭐</button>
+                <button onclick="setPDRating(2)" class="pd-rating-btn w-10 h-10 rounded-lg bg-gray-50 border-2 border-gray-100 text-black font-black text-sm hover:border-black transition-all" data-rating="2">⭐⭐</button>
+                <button onclick="setPDRating(3)" class="pd-rating-btn w-10 h-10 rounded-lg bg-gray-50 border-2 border-gray-100 text-black font-black text-sm hover:border-black transition-all" data-rating="3">⭐⭐⭐</button>
+                <button onclick="setPDRating(4)" class="pd-rating-btn w-10 h-10 rounded-lg bg-gray-50 border-2 border-gray-100 text-black font-black text-sm hover:border-black transition-all" data-rating="4">⭐⭐⭐⭐</button>
+                <button onclick="setPDRating(5)" class="pd-rating-btn w-10 h-10 rounded-lg bg-gray-50 border-2 border-gray-100 text-black font-black text-sm hover:border-black transition-all" data-rating="5">⭐⭐⭐⭐⭐</button>
+              </div>
+              <p id="pd-rating-text" class="text-[9px] text-gray-400 font-bold mt-1">Select rating</p>
+            </div>
+
+            <div>
+              <label class="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-1">Your Review (Max 300 chars)</label>
+              <textarea id="pd-review-text" placeholder="Share your experience with this product..." rows="3" class="w-full px-4 py-2.5 apple-input text-xs outline-none font-semibold text-black resize-none"></textarea>
+              <p id="pd-char-count" class="text-[8px] text-gray-400 font-bold mt-1">0 / 300 characters</p>
+            </div>
+
+            <button onclick="submitPDReview()" class="w-full py-3 bg-black text-white rounded-xl font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity">Post Review</button>
+          </div>
+        </div>
+
         <!-- Premium Amazon-Grade Customer Reviews Ledger Block -->
         <div class="space-y-3">
           <div class="flex justify-between items-center border-b border-gray-100 pb-2">
-            <h3 class="text-xs font-black text-black uppercase tracking-widest">Verified Customer Reviews</h3>
-            <span class="text-[10px] text-gray-400 font-bold uppercase">Showing Top Entries</span>
+            <h3 class="text-xs font-black text-black uppercase tracking-widest">Customer Reviews</h3>
+            <span class="text-[10px] text-gray-400 font-bold uppercase">All Reviews</span>
           </div>
           
-          <div class="space-y-2.5">
-            <div class="bg-gray-50 border border-gray-100 p-4 rounded-2xl space-y-1.5">
-              <div class="flex justify-between items-center text-xs">
-                <span class="font-black text-black">Aditya P.</span>
-                <div class="flex items-center gap-1.5 text-black font-bold text-[10px]">
-                  <span class="text-[9px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-circle-check text-black mr-0.5"></i> Verified Buyer</span>
-                  <span>•</span> 5.0 <i class="fa-solid fa-star text-[8px]"></i>
-                </div>
-              </div>
-              <p class="text-xs text-gray-600 font-medium leading-relaxed">Genuine factory-sealed box matrix parameters check out perfectly. Official importer verification code cleared without issue. Extremely prompt handling speed inside Pandharpur region.</p>
-            </div>
+          <div id="pd-reviews-container" class="space-y-2.5">
+            <p class="text-xs text-gray-400 font-bold text-center py-4">Loading reviews...</p>
+          </div>
+        </div>
 
             <div class="bg-gray-50 border border-gray-100 p-4 rounded-2xl space-y-1.5">
               <div class="flex justify-between items-center text-xs">
@@ -292,7 +272,6 @@
     </button>
     <button onclick="switchTab('contact')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="contact"><i class="fa-solid fa-circle-info text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Support</span></button>
     <button onclick="switchTab('history')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="history"><i class="fa-solid fa-clock-rotate-left text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">History</span></button>
-    <button onclick="switchTab('reviews')" class="nav-btn text-gray-400 flex flex-col items-center flex-1 py-1" data-tab="reviews"><i class="fa-solid fa-star text-base"></i><span class="text-[8px] mt-1 font-black uppercase tracking-wider">Reviews</span></button>
   </nav>
 
   <!-- ================= SYNCHRONIZED SUPPORT LIVE CHAT INTERFACE ================= -->
@@ -340,8 +319,7 @@
     let cart = [];
     let activeCoupon = null;
     let chatUser = JSON.parse(localStorage.getItem('chatUser')) || null;
-    let selectedRating = 0;
-    let allProducts = [];
+
     // ================= GLOBAL SCOPE SCOPING DECLARATIONS =================
     window.switchTab = (tabId) => {
       document.querySelectorAll('.view-tab').forEach(v => v.classList.add('hidden'));
@@ -408,14 +386,27 @@
     });
 
     // Amazon Interface Modal Presentation Mechanics
+    let currentProductId = null;
+    let pdSelectedRating = 0;
+
     window.openProductView = (id, name, price, image, inStock, desc, catLabel) => {
+      currentProductId = id;
+      pdSelectedRating = 0;
       const modal = document.getElementById('product-detail-view');
       document.getElementById('pd-image').src = image;
       document.getElementById('pd-name').textContent = name;
       document.getElementById('pd-price').textContent = `₹${price}`;
       document.getElementById('pd-desc').textContent = desc;
       document.getElementById('pd-cat-badge').textContent = catLabel.toUpperCase();
-
+      document.getElementById('pd-review-name').value = '';
+      document.getElementById('pd-review-text').value = '';
+      document.getElementById('pd-rating-text').textContent = 'Select rating';
+      document.getElementById('pd-char-count').textContent = '0 / 300 characters';
+      document.querySelectorAll('.pd-rating-btn').forEach(btn => {
+        btn.classList.remove('bg-black', 'text-white', 'border-black');
+        btn.classList.add('bg-gray-50', 'text-black', 'border-gray-100');
+      });
+      loadProductReviews(id);
       const addBtn = document.getElementById('pd-add-btn');
       const buyBtn = document.getElementById('pd-buy-btn');
 
@@ -634,106 +625,90 @@
       inp.value = '';
     };
 
-// ================= REVIEW MANAGEMENT ENGINE =================
-    let reviews = [];
-
-    window.setRating = (rating) => {
-      selectedRating = rating;
-      document.querySelectorAll('.rating-btn').forEach(btn => {
+// ================= PRODUCT DETAIL REVIEW FUNCTIONS =================
+    window.setPDRating = (rating) => {
+      pdSelectedRating = rating;
+      document.querySelectorAll('.pd-rating-btn').forEach(btn => {
         btn.classList.remove('bg-black', 'text-white', 'border-black');
         btn.classList.add('bg-gray-50', 'text-black', 'border-gray-100');
       });
-      document.querySelector(`[data-rating="${rating}"]`).classList.add('bg-black', 'text-white', 'border-black');
-      document.getElementById('rating-display').textContent = `${rating} star${rating > 1 ? 's' : ''} selected`;
+      document.querySelector(`.pd-rating-btn[data-rating="${rating}"]`).classList.add('bg-black', 'text-white', 'border-black');
+      document.getElementById('pd-rating-text').textContent = `${rating} star${rating > 1 ? 's' : ''} selected`;
     };
 
-    document.getElementById('review-text')?.addEventListener('input', (e) => {
-      const count = e.target.value.length;
-      document.getElementById('char-count').textContent = `${count} / 500 characters`;
-      if(count > 500) e.target.value = e.target.value.slice(0, 500);
+    document.addEventListener('input', (e) => {
+      if(e.target.id === 'pd-review-text') {
+        const count = e.target.value.length;
+        document.getElementById('pd-char-count').textContent = `${count} / 300 characters`;
+        if(count > 300) e.target.value = e.target.value.slice(0, 300);
+      }
     });
 
-    window.submitReview = () => {
-      const product = document.getElementById('review-product').value;
-      const name = document.getElementById('review-name').value.trim();
-      const text = document.getElementById('review-text').value.trim();
+    window.submitPDReview = () => {
+      const name = document.getElementById('pd-review-name').value.trim();
+      const text = document.getElementById('pd-review-text').value.trim();
       
-      if(!product || !name || selectedRating === 0 || !text) {
+      if(!name || pdSelectedRating === 0 || !text) {
         alert("Please fill all fields and select a rating.");
         return;
       }
 
+      if(!currentProductId) return;
+
       const review = {
-        productId: product,
-        productName: allProducts.find(p => p.id === product)?.name || 'Unknown Product',
+        productId: currentProductId,
         customerName: name,
-        rating: selectedRating,
+        rating: pdSelectedRating,
         text: text,
         timestamp: Date.now()
       };
 
-      const pushRef = push(ref(db, 'reviews'));
+      const pushRef = push(ref(db, `productReviews/${currentProductId}`));
       set(pushRef, review).then(() => {
-        alert("Review submitted successfully!");
-        document.getElementById('review-product').value = '';
-        document.getElementById('review-name').value = '';
-        document.getElementById('review-text').value = '';
-        selectedRating = 0;
-        document.getElementById('rating-display').textContent = 'No rating selected';
-        document.getElementById('char-count').textContent = '0 / 500 characters';
-        document.querySelectorAll('.rating-btn').forEach(btn => {
+        alert("Review posted successfully!");
+        document.getElementById('pd-review-name').value = '';
+        document.getElementById('pd-review-text').value = '';
+        pdSelectedRating = 0;
+        document.getElementById('pd-rating-text').textContent = 'Select rating';
+        document.getElementById('pd-char-count').textContent = '0 / 300 characters';
+        document.querySelectorAll('.pd-rating-btn').forEach(btn => {
           btn.classList.remove('bg-black', 'text-white', 'border-black');
           btn.classList.add('bg-gray-50', 'text-black', 'border-gray-100');
         });
-        loadAllReviews();
+        loadProductReviews(currentProductId);
       });
     };
 
-    function loadAllReviews() {
-      onValue(ref(db, 'reviews'), (snap) => {
+    function loadProductReviews(productId) {
+      onValue(ref(db, `productReviews/${productId}`), (snap) => {
         const data = snap.val();
-        const container = document.getElementById('all-reviews');
+        const container = document.getElementById('pd-reviews-container');
         container.innerHTML = '';
         
         if(!data) {
-          container.innerHTML = `<p class="text-xs text-gray-400 font-bold py-6 text-center apple-card bg-gray-50">No reviews yet. Be the first to review!</p>`;
+          container.innerHTML = `<p class="text-xs text-gray-400 font-bold py-4 text-center">No reviews yet. Be the first to review!</p>`;
           return;
         }
 
         Object.values(data).reverse().forEach(review => {
           const stars = '⭐'.repeat(review.rating);
           container.innerHTML += `
-            <div class="apple-card p-4 border border-gray-100 bg-gray-50/50">
-              <div class="flex justify-between items-start mb-2">
-                <div>
-                  <p class="text-xs font-black text-black">${review.customerName}</p>
-                  <p class="text-[9px] text-gray-400 font-bold">${review.productName}</p>
+            <div class="bg-gray-50 border border-gray-100 p-4 rounded-2xl space-y-1.5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-black text-black">${review.customerName}</span>
+                <div class="flex items-center gap-1.5 text-black font-bold text-[10px]">
+                  <span class="text-[9px] text-gray-400 font-bold uppercase"><i class="fa-solid fa-circle-check text-black mr-0.5"></i> Verified Buyer</span>
+                  <span>•</span> ${stars}
                 </div>
-                <span class="text-sm">${stars}</span>
               </div>
-              <p class="text-xs text-gray-600 leading-relaxed">${review.text}</p>
-              <p class="text-[8px] text-gray-300 mt-2">Reviewed on ${new Date(review.timestamp).toLocaleDateString()}</p>
+              <p class="text-xs text-gray-600 font-medium leading-relaxed">${review.text}</p>
+              <p class="text-[8px] text-gray-300">${new Date(review.timestamp).toLocaleDateString()}</p>
             </div>
           `;
         });
       });
     }
 
-    // Load products for dropdown
-    onValue(ref(db, 'products'), (snap) => {
-      const data = snap.val();
-      if(data) {
-        allProducts = Object.entries(data).map(([id, prod]) => ({ id, ...prod }));
-        const select = document.getElementById('review-product');
-        select.innerHTML = '<option value="">Choose a product...</option>';
-        allProducts.forEach(prod => {
-          select.innerHTML += `<option value="${prod.id}">${prod.name}</option>`;
-        });
-      }
-    });
-
-    loadAllReviews();
-    
     // Initial Processing Handlers
     renderHistory();
   </script>
